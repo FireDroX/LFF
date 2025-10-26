@@ -86,7 +86,7 @@ function App() {
                     ) : index === 2 ? (
                       <FaTrophy color="#CD7F32" />
                     ) : (
-                      index
+                      index + 1
                     )}
                   </span>
                   <span className="lff-classement-score">
@@ -110,7 +110,7 @@ function App() {
               />
               <button
                 onClick={() => {
-                  if (points !== 0) {
+                  if (points > 0) {
                     addPoints(points).then((newTop) => setTop(newTop));
                     setPoints(0);
                   }
