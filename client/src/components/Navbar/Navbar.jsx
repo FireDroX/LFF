@@ -95,7 +95,11 @@ const Navbar = () => {
           <div className="navbar-connection">
             <a
               id="login"
-              href="https://discord.com/oauth2/authorize?client_id=1431388474954748065&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000&scope=identify"
+              href={
+                process.env.NODE_ENV === "production"
+                  ? "https://discord.com/oauth2/authorize?client_id=1431388474954748065&response_type=code&redirect_uri=https%3A%2F%2Flff.onrender.com&scope=identify"
+                  : "https://discord.com/oauth2/authorize?client_id=1431388474954748065&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000&scope=identify"
+              }
             >
               <TbLogin2 />
               Discord Login
