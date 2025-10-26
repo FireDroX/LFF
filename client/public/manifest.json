@@ -1,0 +1,21 @@
+{
+  "name": "LFF",
+  "short_name": "LFF",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#547b33",
+  "theme_color": "#547b33",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "https://images.minecraft-heads.com/render3d/head/1d/1d129c9c653db28c75d7dc3cc472eb10.webp",
+      "sizes": "192x192",
+      "type": "image/webp"
+    },
+    {
+      "src": "https://images.minecraft-heads.com/render3d/head/1d/1d129c9c653db28c75d7dc3cc472eb10.webp",
+      "sizes": "512x512",
+      "type": "image/webp"
+    }
+  ]
+}

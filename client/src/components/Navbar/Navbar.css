@@ -1,0 +1,119 @@
+.navbar {
+  position: absolute;
+  background-color: var(--secondary10);
+  width: 100%;
+  height: 4rem;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  gap: 2.5rem;
+  z-index: 100;
+}
+
+.navbar-connection {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+  padding-inline: 2rem;
+  gap: 0.5rem;
+}
+
+.navbar-connection > a,
+.navbar-connection > div > p {
+  background: var(--accent35);
+  color: var(--text85);
+  text-decoration: none;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: all 0.3s;
+  border: none;
+}
+
+.navbar-connection > a:hover,
+.navbar-connection > a:focus,
+.navbar-connection > div > p:hover,
+.navbar-connection > div > p:focus {
+  cursor: pointer;
+  background: var(--accent);
+  color: var(--bg);
+}
+
+.navbar-user-dropdown {
+  padding-inline: 12px;
+  height: 80%;
+  border-radius: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: var(--text85);
+}
+
+.navbar-user-dropdown:hover {
+  background-color: var(--secondary15);
+}
+
+.navbar-user {
+  color: var(--text85);
+}
+
+.navbar-pic {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+}
+.navbar-connection > div {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dropdown-menu-navbar {
+  position: absolute;
+  top: 100%;
+  margin: 4px 0 0;
+  padding: 0;
+  list-style: none;
+  background: var(--bg);
+  border: 1px solid var(--accent35);
+  border-radius: 8px;
+  /* max-height: 200px; */
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+.LFF-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.LFF-img img {
+  width: 32px;
+  height: 32px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  cursor: pointer;
+  color: var(--text85);
+}
+
+.dropdown-item:hover {
+  background: var(--accent35);
+}
+
+.dropdown-item img {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+}

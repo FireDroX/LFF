@@ -1,0 +1,75 @@
+const express = require("express");
+const { createClient } = require("@supabase/supabase-js");
+
+const checkAuth = require("../../utils/checkAuth");
+
+const router = express.Router();
+
+const supabase = createClient(
+  process.env.SUPABASE_URL,
+  process.env.SUPABASE_SERVICE_ROLE_KEY
+);
+
+router.post("/", checkAuth, async (req, res) => {
+  const now = new Date();
+
+  try {
+    const score = req.body.score;
+    const username = req.user.username;
+
+    if (!username || typeof score !== "number") {
+      return res.status(400).json({ error: "username and points required" });
+    }
+
+    let { data: currentTop, error } = await supabase
+      .from("tops")
+      .select("*")
+      .lte("start_date", now.toISOString())
+      .gte("end_date", now.toISOString())
+      .single();
+
+    if (error) {
+      console.log("Aucun top trouvé.");
+      return res.status(500).json({ error: "Aucun top trouvé." });
+    }
+
+    let users = currentTop.users || [];
+
+    const userIndex = users.findIndex((u) => u.name === username);
+    if (userIndex >= 0) {
+      users[userIndex].score += score;
+    } else {
+      users.push({ name: username, score: score });
+    }
+
+    const { error: updateError } = await supabase
+      .from("tops")
+      .update({ users })
+      .eq("id", currentTop.id);
+
+    if (updateError) {
+      console.error("Erreur update top:", updateError);
+      return res
+        .status(500)
+        .json({ error: "Impossible de mettre à jour le classement" });
+    }
+
+    const sorted = users.sort((a, b) => b.score - a.score);
+
+    const top5 = sorted.slice(0, 5);
+
+    const filled = [
+      ...top5,
+      ...Array(5 - top5.length)
+        .fill()
+        .map(() => ({ score: 0, name: "Nobody" })),
+    ];
+
+    res.json(filled);
+  } catch (err) {
+    console.error("Error in /points/add", err);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+module.exports = router;
