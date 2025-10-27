@@ -10,7 +10,18 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-router.post("/", checkAuth, async (req, res) => {
+/**
+ * Route : /points/add/:type
+ * Exemple : /points/add/crystaux ou /points/add/iscoin
+ */
+router.post("/:type", checkAuth, async (req, res) => {
+  const { type } = req.params;
+
+  // Vérification du type demandé
+  if (!["crystaux", "iscoin"].includes(type)) {
+    return res.status(400).json({ error: "Invalid leaderboard type" });
+  }
+
   const now = new Date();
 
   try {
@@ -24,6 +35,7 @@ router.post("/", checkAuth, async (req, res) => {
     let { data: currentTop, error } = await supabase
       .from("tops")
       .select("*")
+      .eq("type", type)
       .lte("start_date", now.toISOString())
       .gte("end_date", now.toISOString())
       .single();
@@ -65,7 +77,12 @@ router.post("/", checkAuth, async (req, res) => {
         .map(() => ({ score: 0, name: "Nobody" })),
     ];
 
-    res.json(filled);
+    res.json({
+      users: filled,
+      start: currentTop.start_date,
+      end: currentTop.end_date,
+      type: currentTop.type,
+    });
   } catch (err) {
     console.error("Error in /points/add", err);
     res.status(500).json({ error: "Internal Server Error" });

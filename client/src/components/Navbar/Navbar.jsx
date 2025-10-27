@@ -67,7 +67,7 @@ const Navbar = () => {
                   alt="LFF"
                 />
               </div>
-              Crystaux LFF
+              Gang LFF
               <IoIosArrowDown />
               {isOpen && (
                 <ul className="dropdown-menu-navbar">
