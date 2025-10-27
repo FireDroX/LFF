@@ -61,7 +61,11 @@ router.get("/", async (_, res) => {
 
   // Étape 3 : Trie et renvoie les résultats (ou vide)
   const sorted = (currentTop.users || []).sort((a, b) => b.score - a.score);
-  res.json(sorted.slice(0, 5));
+  res.json({
+    users: sorted,
+    start: currentTop.start_date,
+    end: currentTop.end_date,
+  });
 });
 
 module.exports = router;
