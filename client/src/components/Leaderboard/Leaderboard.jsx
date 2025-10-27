@@ -4,7 +4,9 @@ import { formatNumberWithSpaces } from "../../utils/functions";
 
 const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
   // On trie les joueurs par score décroissant
-  const sorted = [...top].sort((a, b) => b.score - a.score);
+  const sorted = Array.isArray(top)
+    ? [...top].sort((a, b) => b.score - a.score)
+    : [];
 
   // Trouver la position où les scores passent en dessous de `requiredAmount` (50 ou 1000)
   const separationIndex = sorted.findIndex(
@@ -24,36 +26,41 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
     <div>
       <h5 style={{ color: "var(--text85)" }}>{title}</h5>
       <ul className="lff-classement">
-        {sorted.map(({ score, name }, index) => (
-          <>
-            {/* Barre de séparation si on est juste avant le groupe < 50 */}
-            {separationIndex === index && (
-              <li key="separator" className="lff-separator">
-                <span className="lff-separator-text">
-                  {requiredAmount} pts mini
+        {Array.isArray(sorted) &&
+          sorted.flatMap(({ score, name }, index) => {
+            const items = [];
+            if (separationIndex === index) {
+              items.push(
+                <li key={`separator-${index}`} className="lff-separator">
+                  <span className="lff-separator-text">
+                    {requiredAmount} pts mini
+                  </span>
+                </li>
+              );
+            }
+            items.push(
+              <li key={`player-${index}`}>
+                <span className="lff-classement-top">
+                  {index === 0 ? (
+                    <FaTrophy color="#FFD700" />
+                  ) : index === 1 ? (
+                    <FaTrophy color="#C0C0C0" />
+                  ) : index === 2 ? (
+                    <FaTrophy color="#CD7F32" />
+                  ) : (
+                    index + 1
+                  )}
                 </span>
+                <span className="lff-classement-score">
+                  {formatNumberWithSpaces(score)}
+                </span>
+                <span className="lff-classement-name">{name}</span>
               </li>
-            )}
-            <li key={index}>
-              <span className="lff-classement-top">
-                {index === 0 ? (
-                  <FaTrophy color="#FFD700" />
-                ) : index === 1 ? (
-                  <FaTrophy color="#C0C0C0" />
-                ) : index === 2 ? (
-                  <FaTrophy color="#CD7F32" />
-                ) : (
-                  index + 1
-                )}
-              </span>
-              <span className="lff-classement-score">
-                {formatNumberWithSpaces(score)}
-              </span>
-              <span className="lff-classement-name">{name}</span>
-            </li>
-          </>
-        ))}
-        <li key="separator" className="lff-separator">
+            );
+            return items;
+          })}
+
+        <li key="dates" className="lff-separator">
           <span className="lff-separator-text">
             {formatDateShort(start)} - {formatDateShort(end)}
           </span>
