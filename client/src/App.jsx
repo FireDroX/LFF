@@ -15,8 +15,8 @@ function App() {
 
   const [isLogged, setIsLogged] = useState(null);
   const [tops, setTops] = useState({
-    crystaux: null,
-    iscoin: null,
+    crystaux: { users: [] },
+    iscoin: { users: [] },
   });
 
   // Vérifier connexion
@@ -37,8 +37,8 @@ function App() {
     const top5 = sorted.slice(0, 5);
 
     const filled = [
-      ...top5,
-      ...Array(5 - top5.length)
+      ...(top5 || []),
+      ...Array(5 - (top5?.length || 0))
         .fill()
         .map(() => ({ score: 0, name: "Nobody" })),
     ];
