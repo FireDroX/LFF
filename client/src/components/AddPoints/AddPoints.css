@@ -29,18 +29,18 @@
   position: absolute;
   background: var(--bg);
   border: 1px solid var(--accent35);
-  width: 12rem;
-  height: 5rem;
+  width: 16rem;
+  height: 8rem;
   bottom: 4.2rem;
   right: 0.6rem;
   margin: 4px 0 0;
-  padding: 0.5rem 0.8rem;
+  padding: 1rem 1.6rem;
   border-radius: 15px;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   grid-template-rows: repeat(3, 1fr);
-  column-gap: 0.5rem;
-  row-gap: 0.4rem;
+  column-gap: 0.6rem;
+  row-gap: 0.5rem;
 }
 
 .grid-add1 {
@@ -69,9 +69,13 @@
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
+  border-radius: 8px;
+  border: 1px solid var(--accent15);
+  padding: 0px 12px;
 }
 
-.add-points > input {
+.add-points > input,
+.add-points > select {
   width: calc(100% - 1.6rem);
   box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
   padding: 0px 12px;
@@ -81,9 +85,18 @@
   color: var(--text85);
 }
 
+.add-points > select {
+  width: 100%;
+}
+
+.add-points > select > option {
+  background: var(--bg);
+  color: var(--text85);
+}
+
 .add-points > button {
   padding: 10px;
-  background: var(--bg);
+  background: var(--accent15);
   border: none;
   border-radius: 8px;
   color: var(--text85);
