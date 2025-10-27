@@ -70,7 +70,8 @@ small {
   }
 }
 
-.lff-classements-container {
+.lff-classements-container,
+.spinner-container {
   padding-top: 8rem;
   display: flex;
   flex-direction: row;

@@ -1,13 +1,15 @@
 import "./Leaderboard.css";
 import { FaTrophy } from "react-icons/fa";
-import formatNumberWithSpaces from "../../utils/formatNumberWithSpaces";
+import { formatNumberWithSpaces } from "../../utils/functions";
 
 const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
   // On trie les joueurs par score décroissant
   const sorted = [...top].sort((a, b) => b.score - a.score);
 
-  // Trouver la position où les scores passent en dessous de 50
-  const separationIndex = sorted.findIndex((player) => player.score < 50);
+  // Trouver la position où les scores passent en dessous de `requiredAmount` (50 ou 1000)
+  const separationIndex = sorted.findIndex(
+    (player) => player.score < requiredAmount
+  );
 
   const formatDateShort = (isoString) => {
     const date = new Date(isoString);

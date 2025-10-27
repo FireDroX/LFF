@@ -1,7 +1,7 @@
 const { defaultURL } = require("./defaultURL");
 
-const addPoints = async (score) => {
-  const result = await fetch(defaultURL + "/points/add", {
+const addPoints = async (score, selected) => {
+  const result = await fetch(defaultURL + "/points/add/" + selected, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

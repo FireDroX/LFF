@@ -14,8 +14,10 @@ function App() {
   const token_type = window.localStorage.getItem("token_type");
 
   const [isLogged, setIsLogged] = useState(null);
-  const [topCrystaux, setTopCrystaux] = useState(null);
-  const [topIscoin, setTopIscoin] = useState(null);
+  const [tops, setTops] = useState({
+    crystaux: null,
+    iscoin: null,
+  });
 
   // Vérifier connexion
   useEffect(() => {
@@ -55,20 +57,25 @@ function App() {
     }
 
     // Charger crystaux
-    currentTop("crystaux").then((data) =>
-      setTopCrystaux(formatTop(data.users, data.start, data.end, data.type))
-    );
-
     // Charger iscoin
-    currentTop("iscoin").then((data) =>
-      setTopIscoin(formatTop(data.users, data.start, data.end, data.type))
+    Promise.all([currentTop("crystaux"), currentTop("iscoin")]).then(
+      ([crystauxData, iscoinData]) => {
+        setTops({
+          crystaux: formatTop(
+            crystauxData.users,
+            crystauxData.start,
+            crystauxData.end
+          ),
+          iscoin: formatTop(iscoinData.users, iscoinData.start, iscoinData.end),
+        });
+      }
     );
   }, []);
 
-  if (isLogged === null || !topCrystaux || !topIscoin) {
+  if (isLogged === null) {
     return (
       <section className="App">
-        <div>
+        <div className="spinner-container">
           <div className="spinner" aria-hidden="true"></div>
         </div>
       </section>
@@ -83,28 +90,23 @@ function App() {
           {/* Classement Crystaux */}
           <Leaderboard
             title="Classement Crystaux 💎"
-            top={topCrystaux.users}
-            start={topCrystaux.start}
-            end={topCrystaux.end}
+            top={tops.crystaux?.users}
+            start={tops.crystaux?.start}
+            end={tops.crystaux?.end}
             requiredAmount={50}
           />
 
           {/* Classement Iscoin */}
           <Leaderboard
             title="Classement IsCoin 🪙"
-            top={topIscoin.users}
-            start={topIscoin.start}
-            end={topIscoin.end}
+            top={tops.iscoin?.users}
+            start={tops.iscoin?.start}
+            end={tops.iscoin?.end}
             requiredAmount={1000}
           />
         </div>
 
-        {isLogged && (
-          <AddPoints
-            setTopCrystaux={setTopCrystaux}
-            setTopIscoin={setTopIscoin}
-          />
-        )}
+        {isLogged && <AddPoints setTops={setTops} />}
       </section>
     </>
   );
