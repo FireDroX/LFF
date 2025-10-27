@@ -2,7 +2,7 @@ import "./Leaderboard.css";
 import { FaTrophy } from "react-icons/fa";
 import formatNumberWithSpaces from "../../utils/formatNumberWithSpaces";
 
-const Leaderboard = ({ top, start, end }) => {
+const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
   // On trie les joueurs par score décroissant
   const sorted = [...top].sort((a, b) => b.score - a.score);
 
@@ -19,15 +19,17 @@ const Leaderboard = ({ top, start, end }) => {
   };
 
   return (
-    <>
-      <h1 style={{ color: "var(--text85)" }}>Crystaux LFF</h1>
+    <div>
+      <h5 style={{ color: "var(--text85)" }}>{title}</h5>
       <ul className="lff-classement">
         {sorted.map(({ score, name }, index) => (
           <>
             {/* Barre de séparation si on est juste avant le groupe < 50 */}
             {separationIndex === index && (
               <li key="separator" className="lff-separator">
-                <span className="lff-separator-text">50 pts mini</span>
+                <span className="lff-separator-text">
+                  {requiredAmount} pts mini
+                </span>
               </li>
             )}
             <li key={index}>
@@ -55,7 +57,7 @@ const Leaderboard = ({ top, start, end }) => {
           </span>
         </li>
       </ul>
-    </>
+    </div>
   );
 };
 

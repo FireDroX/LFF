@@ -1,6 +1,5 @@
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
-const checkAuth = require("../../utils/checkAuth");
 
 const router = express.Router();
 
@@ -9,20 +8,32 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-router.get("/", async (_, res) => {
+/**
+ * Route : /leaderboard/current/:type
+ * Exemple : /leaderboard/current/crystaux ou /leaderboard/current/iscoin
+ */
+router.get("/:type", async (req, res) => {
+  const { type } = req.params;
+
+  // Vérification du type demandé
+  if (!["crystaux", "iscoin"].includes(type)) {
+    return res.status(400).json({ error: "Invalid leaderboard type" });
+  }
+
   const now = new Date();
 
   // Étape 1 : Cherche un classement existant pour cette semaine
   let { data: currentTop, error } = await supabase
     .from("tops")
     .select("*")
+    .eq("type", type)
     .lte("start_date", now.toISOString())
     .gte("end_date", now.toISOString())
     .single();
 
   // Étape 2 : Si aucun top trouvé → on le crée
   if (error || !currentTop) {
-    console.log("Aucun top trouvé, création d’un nouveau classement...");
+    console.log(`Aucun top trouvé pour '${type}', création en cours...`);
 
     // Calcul du dimanche (début de semaine)
     const day = now.getDay(); // 0 = dimanche, 6 = samedi
@@ -44,6 +55,7 @@ router.get("/", async (_, res) => {
           start_date: startDate.toISOString(),
           end_date: endDate.toISOString(),
           users: [],
+          type,
         },
       ])
       .select()
@@ -65,6 +77,7 @@ router.get("/", async (_, res) => {
     users: sorted,
     start: currentTop.start_date,
     end: currentTop.end_date,
+    type: currentTop.type,
   });
 });
 

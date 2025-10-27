@@ -13,14 +13,6 @@ body {
   height: 100%;
 }
 
-.App > div {
-  padding-top: 5rem;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
 h1,
 h2,
 h3,
@@ -75,5 +67,22 @@ small {
 @keyframes spin {
   to {
     transform: rotate(360deg);
+  }
+}
+
+.lff-classements-container {
+  padding-top: 8rem;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 4rem;
+}
+
+@media (max-width: 768px) {
+  .lff-classements-container {
+    flex-direction: column;
+    padding-top: 4rem;
+    gap: 2rem;
   }
 }
