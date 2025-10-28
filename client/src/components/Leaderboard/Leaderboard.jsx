@@ -1,6 +1,6 @@
 import "./Leaderboard.css";
 import { FaTrophy } from "react-icons/fa";
-import { formatNumberWithSpaces } from "../../utils/functions";
+import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
 
 const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
   // On trie les joueurs par score décroissant
@@ -12,17 +12,6 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
   const separationIndex = sorted.findIndex(
     (player) => player.score < requiredAmount
   );
-
-  const formatDateShort = (isoString) => {
-    if (!isoString) return ""; // ⛔️ évite les NaN
-    const date = new Date(isoString);
-    if (isNaN(date)) return ""; // ⛔️ si la date est invalide
-    const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-    const day = String(date.getUTCDate()).padStart(2, "0");
-    const hours = String(date.getUTCHours()).padStart(2, "0");
-    const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-    return `${day}/${month} ${hours}h${minutes}`;
-  };
 
   const startFormatted = formatDateShort(start);
   const endFormatted = formatDateShort(end);

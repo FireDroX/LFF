@@ -10,6 +10,7 @@ import { CgTrash } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
 
 import RemovePoints from "../RemovePoints/RemovePoints";
+import History from "../History/History";
 
 const Navbar = () => {
   const access_token = window.localStorage.getItem("access_token");
@@ -22,6 +23,7 @@ const Navbar = () => {
   const [userData, setUserData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
+  const [historyModal, setHistoryModal] = useState(false);
 
   useEffect(() => {
     if (access_token && token_type) {
@@ -78,7 +80,7 @@ const Navbar = () => {
                 <ul className="dropdown-menu-navbar">
                   <li
                     className="dropdown-item"
-                    // onClick={handleThemeChange}
+                    onClick={() => setHistoryModal((prev) => !prev)}
                   >
                     <FaHistory />
                     <span>History</span>
@@ -128,6 +130,7 @@ const Navbar = () => {
         )}
       </div>
       {removeModal && <RemovePoints closeModal={() => setRemoveModal(false)} />}
+      {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>
   );
 };

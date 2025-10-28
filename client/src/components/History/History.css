@@ -1,0 +1,69 @@
+.history-modal {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--bg);
+  width: 16rem;
+  height: 28rem;
+  z-index: 1000;
+  border-radius: 15px;
+  border: 1px solid var(--accent35);
+  padding: 2rem 1rem 1rem;
+  color: var(--text);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+
+.close-btn {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--text65);
+  transition: 0.2s;
+}
+.close-btn:hover {
+  color: var(--text);
+}
+
+/* Sélecteur centré en haut */
+.history-select {
+  position: absolute;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: var(--accent10);
+  border: 1px solid var(--accent35);
+  border-radius: 8px;
+  color: var(--text85);
+  padding: 0.3rem 0.8rem;
+  font-size: 0.85rem;
+  appearance: none;
+  cursor: pointer;
+}
+.history-select:hover {
+  background-color: var(--accent20);
+}
+
+.history-select > option {
+  background: var(--bg);
+  color: var(--text85);
+}
+
+.history-loading {
+  margin-top: 5rem;
+  color: var(--text85);
+}
+
+.history-leaderboard {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  padding-top: 1.5rem;
+  text-align: center;
+}
