@@ -1,7 +1,8 @@
 const fetch = require("node-fetch");
 
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
-const ROLE_ID = process.env.DISCORD_ROLE_ID;
+const ROLE_ISLAND = process.env.DISCORD_ROLE_ISLAND;
+const ROLE_GANG = process.env.DISCORD_ROLE_GANG;
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 async function checkAuth(req, res, next) {
@@ -49,13 +50,15 @@ async function checkAuth(req, res, next) {
 
     const memberData = await memberRes.json();
 
-    // 3️⃣ Vérifie si l'utilisateur possède le rôle requis
-    const hasRole = memberData.roles.includes(ROLE_ID);
+    // 3️⃣ Vérifie si le membre a l’un des deux rôles
+    const hasAllowedRole = memberData.roles.some((roleId) =>
+      [ROLE_ISLAND, ROLE_GANG].includes(roleId)
+    );
 
-    if (!hasRole) {
+    if (!hasAllowedRole) {
       return res
         .status(403)
-        .json({ error: "User does not have the required Discord role" });
+        .json({ error: "User does not have a required Discord role" });
     }
 
     // 4️⃣ Stocke les infos utilisateur dans req.user pour les routes suivantes
