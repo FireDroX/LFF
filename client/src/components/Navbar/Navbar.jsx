@@ -6,6 +6,11 @@ import getMe from "../../utils/getMe";
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
+import { CgTrash } from "react-icons/cg";
+import { FaHistory } from "react-icons/fa";
+
+import RemovePoints from "../RemovePoints/RemovePoints";
+import History from "../History/History";
 
 const Navbar = () => {
   const access_token = window.localStorage.getItem("access_token");
@@ -17,6 +22,8 @@ const Navbar = () => {
 
   const [userData, setUserData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
+  const [removeModal, setRemoveModal] = useState(false);
+  const [historyModal, setHistoryModal] = useState(false);
 
   useEffect(() => {
     if (access_token && token_type) {
@@ -73,6 +80,13 @@ const Navbar = () => {
                 <ul className="dropdown-menu-navbar">
                   <li
                     className="dropdown-item"
+                    onClick={() => setHistoryModal((prev) => !prev)}
+                  >
+                    <FaHistory />
+                    <span>History</span>
+                  </li>
+                  <li
+                    className="dropdown-item"
                     onClick={handleThemeChange}
                     style={{ borderBottom: "1px solid var(--accent35)" }}
                   >
@@ -82,6 +96,14 @@ const Navbar = () => {
                   <li
                     className="dropdown-item"
                     style={{ color: "#ff5252" }}
+                    onClick={() => setRemoveModal((prev) => !prev)}
+                  >
+                    <CgTrash />
+                    <span>Delete Points</span>
+                  </li>
+                  <li
+                    className="dropdown-item"
+                    style={{ color: "#a70000" }}
                     onClick={handleDisconnect}
                   >
                     <VscDebugDisconnect />
@@ -107,6 +129,8 @@ const Navbar = () => {
           </div>
         )}
       </div>
+      {removeModal && <RemovePoints closeModal={() => setRemoveModal(false)} />}
+      {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>
   );
 };
