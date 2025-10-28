@@ -14,13 +14,18 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
   );
 
   const formatDateShort = (isoString) => {
+    if (!isoString) return ""; // ⛔️ évite les NaN
     const date = new Date(isoString);
+    if (isNaN(date)) return ""; // ⛔️ si la date est invalide
     const month = String(date.getUTCMonth() + 1).padStart(2, "0");
     const day = String(date.getUTCDate()).padStart(2, "0");
     const hours = String(date.getUTCHours()).padStart(2, "0");
     const minutes = String(date.getUTCMinutes()).padStart(2, "0");
     return `${day}/${month} ${hours}h${minutes}`;
   };
+
+  const startFormatted = formatDateShort(start);
+  const endFormatted = formatDateShort(end);
 
   return (
     <div>
@@ -60,11 +65,14 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
             return items;
           })}
 
-        <li key="dates" className="lff-separator">
-          <span className="lff-separator-text">
-            {formatDateShort(start)} - {formatDateShort(end)}
-          </span>
-        </li>
+        {/* ✅ On affiche la ligne des dates uniquement si start & end sont valides */}
+        {startFormatted && endFormatted && (
+          <li key="dates" className="lff-separator">
+            <span className="lff-separator-text">
+              {startFormatted} - {endFormatted}
+            </span>
+          </li>
+        )}
       </ul>
     </div>
   );

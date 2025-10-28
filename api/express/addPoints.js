@@ -27,6 +27,7 @@ router.post("/:type", checkAuth, async (req, res) => {
   try {
     const score = req.body.score;
     const username = req.user.username;
+    const userId = req.user.id;
 
     if (!username || typeof score !== "number") {
       return res.status(400).json({ error: "username and points required" });
@@ -51,7 +52,7 @@ router.post("/:type", checkAuth, async (req, res) => {
     if (userIndex >= 0) {
       users[userIndex].score += score;
     } else {
-      users.push({ name: username, score: score });
+      users.push({ name: username, score: score, userId });
     }
 
     const { error: updateError } = await supabase
