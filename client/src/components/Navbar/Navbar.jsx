@@ -59,8 +59,8 @@ const Navbar = () => {
     const navigate = useNavigate();
     const location = useLocation();
 
-    const pathName = location.pathname.toLowerCase().substring(1);
-    const server = pathName || "weekly"; // fallback si vide
+    const queryParams = new URLSearchParams(location.search);
+    const server = queryParams.get("p").toLowerCase() || "weekly"; // fallback si vide
 
     const paths = [
       { path: "Weekly", icon: <MdLeaderboard /> },
@@ -75,7 +75,7 @@ const Navbar = () => {
             <li
               key={path}
               className="dropdown-item"
-              onClick={() => navigate(`/${path}`)}
+              onClick={() => navigate(`?p=${path}`)}
             >
               {icon}
               <span>{path}</span>

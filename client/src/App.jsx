@@ -14,10 +14,10 @@ const DynamicPage = ({ isLogged }) => {
   const [page, setPage] = useState(null);
   const location = useLocation();
 
-  // Get the text after the last '/' in the URL
+  // Get the text after the last 'p?' in the URL
   useEffect(() => {
-    const path = location.pathname.toLowerCase().split("/").pop();
-    setPage(path);
+    const queryParams = new URLSearchParams(location.search);
+    setPage(queryParams.get("p").toLowerCase());
   }, [location]);
 
   switch (page) {
