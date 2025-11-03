@@ -40,3 +40,19 @@ export const formatDateShort = (isoString) => {
   const minutes = String(date.getUTCMinutes()).padStart(2, "0");
   return `${day}/${month} ${hours}h${minutes}`;
 };
+
+export const formatTop = (users, start, end, type) => {
+  if (!Array.isArray(users)) return { users: [], start, end, type };
+
+  const sorted = users.sort((a, b) => b.score - a.score);
+  const top5 = sorted.slice(0, 5);
+
+  const filled = [
+    ...(top5 || []),
+    ...Array(5 - (top5?.length || 0))
+      .fill()
+      .map(() => ({ score: 0, name: "Nobody" })),
+  ];
+
+  return { users: filled, start, end, type };
+};

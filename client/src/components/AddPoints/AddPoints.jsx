@@ -3,13 +3,12 @@ import { useState } from "react";
 
 import { IoIosAdd } from "react-icons/io";
 
-import { formatNumberWithSpaces, compactNumber } from "../../utils/functions";
 import addPoints from "../../utils/addPoints";
 
-const AddPoints = ({ setTops }) => {
+const AddPoints = ({ setTops, selectDefault, options }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [points, setPoints] = useState(0);
-  const [selected, setSelected] = useState("Crystaux");
+  const [selected, setSelected] = useState(selectDefault);
 
   return (
     <>
@@ -28,8 +27,11 @@ const AddPoints = ({ setTops }) => {
             value={selected}
             onChange={(e) => setSelected(e.target.value)}
           >
-            <option value="Crystaux">Crystaux 💎</option>
-            <option value="IsCoin">IsCoin 🪙</option>
+            {Object.keys(options).map((key) => (
+              <option key={key} value={key}>
+                {options[key].label} {options[key].emoji}
+              </option>
+            ))}
           </select>
           <input
             className="grid-add3"
@@ -64,15 +66,7 @@ const AddPoints = ({ setTops }) => {
           >
             Ajouter
           </button>
-          <p className="grid-add5">
-            {selected === "Crystaux"
-              ? `${formatNumberWithSpaces(points)} = 
-            ${compactNumber(points * 100)} Crystaux`
-              : selected === "IsCoin"
-              ? `${formatNumberWithSpaces(points)} = 
-            ${compactNumber(points * 2000000)} $`
-              : "Undefined"}
-          </p>
+          <p className="grid-add5">{options[selected].format(points) || ""}</p>
         </div>
       )}
     </>

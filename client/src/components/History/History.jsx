@@ -76,27 +76,29 @@ const History = ({ closeModal }) => {
   );
 
   return (
-    <div className="history-modal">
-      <button className="close-btn" onClick={closeModal}>
-        <MdCancel size={22} />
-      </button>
+    <div className="modal-overlay" onClick={closeModal}>
+      <div className="history-modal">
+        <button className="close-btn" onClick={closeModal}>
+          <MdCancel size={22} />
+        </button>
 
-      <select
-        className="history-select"
-        value={selectedType}
-        onChange={(e) => setSelectedType(e.target.value)}
-      >
-        <option value="crystaux">💎 Crystaux</option>
-        <option value="iscoin">🪙 Iscoin</option>
-      </select>
+        <select
+          className="history-select"
+          value={selectedType}
+          onChange={(e) => setSelectedType(e.target.value)}
+        >
+          <option value="crystaux">💎 Crystaux</option>
+          <option value="iscoin">🪙 Iscoin</option>
+        </select>
 
-      {loading ? (
-        <div className="history-loading">Chargement...</div>
-      ) : selectedType === "crystaux" ? (
-        renderLeaderboard("💎 Historique Crystaux", history.crystaux)
-      ) : (
-        renderLeaderboard("🪙 Historique Iscoin", history.iscoin)
-      )}
+        {loading ? (
+          <div className="history-loading">Chargement...</div>
+        ) : selectedType === "crystaux" ? (
+          renderLeaderboard("💎 Historique Crystaux", history.crystaux)
+        ) : (
+          renderLeaderboard("🪙 Historique Iscoin", history.iscoin)
+        )}
+      </div>
     </div>
   );
 };

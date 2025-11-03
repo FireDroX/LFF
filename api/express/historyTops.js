@@ -1,6 +1,5 @@
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
-const checkAuth = require("../../utils/checkAuth");
 
 const router = express.Router();
 
@@ -10,7 +9,7 @@ const supabase = createClient(
 );
 
 // 🔹 GET /leaderboard/history
-router.get("/", checkAuth, async (_, res) => {
+router.get("/", async (_, res) => {
   try {
     const now = new Date();
 

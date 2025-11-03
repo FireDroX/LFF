@@ -15,11 +15,6 @@ const supabase = createClient(
 router.get("/:type", async (req, res) => {
   const { type } = req.params;
 
-  // Vérification du type demandé
-  if (!["crystaux", "iscoin"].includes(type)) {
-    return res.status(400).json({ error: "Invalid leaderboard type" });
-  }
-
   const now = new Date();
 
   // Étape 1 : Cherche un classement existant pour cette semaine
@@ -27,8 +22,9 @@ router.get("/:type", async (req, res) => {
     .from("tops")
     .select("*")
     .eq("type", type)
-    .lte("start_date", now.toISOString())
-    .gte("end_date", now.toISOString())
+    .or(
+      `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`
+    )
     .single();
 
   // Étape 2 : Si aucun top trouvé → on le crée

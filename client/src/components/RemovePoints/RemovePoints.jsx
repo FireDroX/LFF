@@ -13,17 +13,19 @@ const RemovePoints = ({ closeModal }) => {
   };
 
   return (
-    <div className="removePoints-modal">
-      <div className="removePoints-cancel" onClick={closeModal}>
-        <MdCancel />
+    <div className="modal-overlay" onClick={closeModal}>
+      <div className="removePoints-modal">
+        <div className="removePoints-cancel" onClick={closeModal}>
+          <MdCancel />
+        </div>
+        <h5 className="removePoints-grid1">Supprimez vos points ?</h5>
+        <button className="removePoints-grid2" onClick={handleRemovePoints}>
+          Supprimer
+        </button>
+        <button className="removePoints-grid3" onClick={closeModal}>
+          Annuler
+        </button>
       </div>
-      <h5 className="removePoints-grid1">Supprimez vos points ?</h5>
-      <button className="removePoints-grid2" onClick={handleRemovePoints}>
-        Supprimer
-      </button>
-      <button className="removePoints-grid3" onClick={closeModal}>
-        Annuler
-      </button>
     </div>
   );
 };

@@ -4,9 +4,6 @@ const historyTops = async () => {
   const result = await fetch(defaultURL + "/leaderboard/history", {
     headers: {
       "Content-Type": "application/json",
-      Authorization: `${localStorage.getItem(
-        "token_type"
-      )} ${localStorage.getItem("access_token")}`,
     },
   });
 

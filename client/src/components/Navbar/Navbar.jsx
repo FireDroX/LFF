@@ -1,5 +1,6 @@
 import "./Navbar.css";
 import { useEffect, useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 
 import getMe from "../../utils/getMe";
 
@@ -8,6 +9,8 @@ import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { CgTrash } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
+import { MdLeaderboard } from "react-icons/md";
+import { GiTwoCoins } from "react-icons/gi";
 
 import RemovePoints from "../RemovePoints/RemovePoints";
 import History from "../History/History";
@@ -52,11 +55,96 @@ const Navbar = () => {
     }
   };
 
+  const Leaderboards = () => {
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const pathName = location.pathname.toLowerCase().substring(1);
+    const server = pathName || "weekly"; // fallback si vide
+
+    const paths = [
+      { path: "Weekly", icon: <MdLeaderboard /> },
+      { path: "IsValue", icon: <GiTwoCoins /> },
+    ];
+
+    return (
+      <>
+        {paths
+          .filter(({ path }) => path.toLowerCase() !== server) // on retire le serveur actif
+          .map(({ path, icon }) => (
+            <li
+              key={path}
+              className="dropdown-item"
+              onClick={() => navigate(`/${path}`)}
+            >
+              {icon}
+              <span>{path}</span>
+            </li>
+          ))}
+      </>
+    );
+  };
+
   return (
     <>
       <div className="navbar">
-        {userData ? (
-          <div className="navbar-connection">
+        <div className="navbar-connection">
+          <div
+            className="navbar-user-dropdown"
+            onClick={() => setIsOpen((prev) => !prev)}
+          >
+            <div className="LFF-img">
+              <img
+                src="https://images.minecraft-heads.com/render3d/head/1d/1d129c9c653db28c75d7dc3cc472eb10.webp"
+                alt="LFF"
+              />
+            </div>
+            Gang LFF
+            <IoIosArrowDown />
+            {isOpen && (
+              <ul className="dropdown-menu-navbar">
+                <Leaderboards />
+                <li
+                  className="dropdown-item"
+                  onClick={() => setHistoryModal((prev) => !prev)}
+                  style={{
+                    borderTop: "1px solid var(--accent35)",
+                  }}
+                >
+                  <FaHistory />
+                  <span>History</span>
+                </li>
+                <li className="dropdown-item" onClick={handleThemeChange}>
+                  <IoIosColorPalette />
+                  <span>{theme === "Dark" ? "Light" : "Dark"} Theme</span>
+                </li>
+                {userData && (
+                  <>
+                    <li
+                      className="dropdown-item"
+                      style={{
+                        color: "#ff5252",
+                        borderTop: "1px solid var(--accent35)",
+                      }}
+                      onClick={() => setRemoveModal((prev) => !prev)}
+                    >
+                      <CgTrash />
+                      <span>Delete Points</span>
+                    </li>
+                    <li
+                      className="dropdown-item"
+                      style={{ color: "#a70000" }}
+                      onClick={handleDisconnect}
+                    >
+                      <VscDebugDisconnect />
+                      <span>Disconnect</span>
+                    </li>
+                  </>
+                )}
+              </ul>
+            )}
+          </div>
+          {userData ? (
             <div>
               <img
                 className="navbar-pic"
@@ -64,57 +152,7 @@ const Navbar = () => {
                 alt={userData.global_name}
               />
             </div>
-            <div
-              className="navbar-user-dropdown"
-              onClick={() => setIsOpen((prev) => !prev)}
-            >
-              <div className="LFF-img">
-                <img
-                  src="https://images.minecraft-heads.com/render3d/head/1d/1d129c9c653db28c75d7dc3cc472eb10.webp"
-                  alt="LFF"
-                />
-              </div>
-              Gang LFF
-              <IoIosArrowDown />
-              {isOpen && (
-                <ul className="dropdown-menu-navbar">
-                  <li
-                    className="dropdown-item"
-                    onClick={() => setHistoryModal((prev) => !prev)}
-                  >
-                    <FaHistory />
-                    <span>History</span>
-                  </li>
-                  <li
-                    className="dropdown-item"
-                    onClick={handleThemeChange}
-                    style={{ borderBottom: "1px solid var(--accent35)" }}
-                  >
-                    <IoIosColorPalette />
-                    <span>{theme === "Dark" ? "Light" : "Dark"} Theme</span>
-                  </li>
-                  <li
-                    className="dropdown-item"
-                    style={{ color: "#ff5252" }}
-                    onClick={() => setRemoveModal((prev) => !prev)}
-                  >
-                    <CgTrash />
-                    <span>Delete Points</span>
-                  </li>
-                  <li
-                    className="dropdown-item"
-                    style={{ color: "#a70000" }}
-                    onClick={handleDisconnect}
-                  >
-                    <VscDebugDisconnect />
-                    <span>Disconnect</span>
-                  </li>
-                </ul>
-              )}
-            </div>
-          </div>
-        ) : (
-          <div className="navbar-connection">
+          ) : (
             <a
               id="login"
               href={
@@ -126,8 +164,8 @@ const Navbar = () => {
               <TbLogin2 />
               Discord Login
             </a>
-          </div>
-        )}
+          )}
+        </div>
       </div>
       {removeModal && <RemovePoints closeModal={() => setRemoveModal(false)} />}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
