@@ -19,6 +19,13 @@ const Navbar = () => {
   const access_token = window.localStorage.getItem("access_token");
   const token_type = window.localStorage.getItem("token_type");
 
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const p = queryParams.get("p") ?? "weekly";
+  const server = p.toLowerCase();
+
   const [theme, setTheme] = useState(
     window.localStorage.getItem("theme") || "Dark"
   );
@@ -56,13 +63,6 @@ const Navbar = () => {
   };
 
   const Leaderboards = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const queryParams = new URLSearchParams(location.search);
-    const p = queryParams.get("p") ?? "weekly";
-    const server = p.toLowerCase();
-
     const paths = [
       { path: "Weekly", icon: <MdLeaderboard /> },
       { path: "IsValue", icon: <GiTwoCoins /> },
@@ -169,10 +169,7 @@ const Navbar = () => {
         </div>
       </div>
       {removeModal && (
-        <RemovePoints
-          closeModal={() => setRemoveModal(false)}
-          path={window.location.pathname.toLowerCase().substring(1) || "weekly"}
-        />
+        <RemovePoints closeModal={() => setRemoveModal(false)} path={server} />
       )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>
