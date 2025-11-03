@@ -10,13 +10,13 @@ const supabase = createClient(
 
 /**
  * Route : /leaderboard/current/:type
- * Exemple : /leaderboard/current/crystaux ou /leaderboard/current/iscoin
+ * Exemple : /leaderboard/current/crystaux, /iscoin, /dragonegg, /beacon ou /sponge
  */
 router.get("/:type", async (req, res) => {
   const { type } = req.params;
 
   // Vérification du type demandé
-  if (!["crystaux", "iscoin"].includes(type)) {
+  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge"].includes(type)) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 
@@ -27,8 +27,9 @@ router.get("/:type", async (req, res) => {
     .from("tops")
     .select("*")
     .eq("type", type)
-    .lte("start_date", now.toISOString())
-    .gte("end_date", now.toISOString())
+    .or(
+      `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`
+    )
     .single();
 
   // Étape 2 : Si aucun top trouvé → on le crée

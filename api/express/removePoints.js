@@ -9,22 +9,38 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-// 🔹 DELETE /points/remove
-router.delete("/", checkAuth, async (req, res) => {
+// DELETE /points/remove/weekly, /isvalue
+router.delete("/:type", checkAuth, async (req, res) => {
+  const { type } = req.params;
+
+  // Vérification du type demandé
+  if (!["weekly", "isvalue"].includes(type)) {
+    return res.status(400).json({ error: "Invalid type parameter" });
+  }
+
   const now = new Date();
   try {
     const userId = req.user.id;
 
-    // Récupère tous les tops (crystaux et iscoin)
-    let { data: currentTop, error } = await supabase
-      .from("tops")
-      .select("*")
-      .lte("start_date", now.toISOString())
-      .gte("end_date", now.toISOString());
+    let query = supabase.from("tops").select("*");
 
-    if (error) {
-      console.log("Aucun top trouvé.");
-      return res.status(500).json({ error: "Aucun top trouvé." });
+    if (type === "weekly") {
+      // ⏳ Mode Weekly — tops actifs selon date
+      query = query
+        .lte("start_date", now.toISOString())
+        .gte("end_date", now.toISOString());
+    } else if (type === "isvalue") {
+      // 🪙 Mode Isvalue — tops par type item
+      const isValueTypes = ["dragon_egg", "beacon", "sponge"];
+      query = query.in("type", isValueTypes);
+    }
+
+    let { data: currentTop, error } = await query;
+
+    if (error || !currentTop) {
+      return res
+        .status(500)
+        .json({ error: "Impossible de récupérer les tops." });
     }
 
     // Liste des tops à mettre à jour

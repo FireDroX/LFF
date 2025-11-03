@@ -12,13 +12,13 @@ const supabase = createClient(
 
 /**
  * Route : /points/add/:type
- * Exemple : /points/add/crystaux ou /points/add/iscoin
+ * Exemple : /points/add/crystaux, /iscoin, /dragonegg, /beacon ou /sponge
  */
 router.post("/:type", checkAuth, async (req, res) => {
   const { type } = req.params;
 
   // Vérification du type demandé
-  if (!["crystaux", "iscoin"].includes(type)) {
+  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge"].includes(type)) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 
@@ -37,8 +37,9 @@ router.post("/:type", checkAuth, async (req, res) => {
       .from("tops")
       .select("*")
       .eq("type", type)
-      .lte("start_date", now.toISOString())
-      .gte("end_date", now.toISOString())
+      .or(
+        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`
+      )
       .single();
 
     if (error) {

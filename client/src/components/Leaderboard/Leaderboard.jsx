@@ -54,14 +54,13 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
             return items;
           })}
 
-        {/* ✅ On affiche la ligne des dates uniquement si start & end sont valides */}
-        {startFormatted && endFormatted && (
-          <li key="dates" className="lff-separator">
-            <span className="lff-separator-text">
-              {startFormatted} - {endFormatted}
-            </span>
-          </li>
-        )}
+        <li key="dates" className="lff-separator">
+          <span className="lff-separator-text">
+            {startFormatted && endFormatted
+              ? `${startFormatted} - ${endFormatted}`
+              : ""}
+          </span>
+        </li>
       </ul>
     </div>
   );

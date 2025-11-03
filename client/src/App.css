@@ -80,10 +80,26 @@ small {
   gap: 4rem;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 920px) {
   .lff-classements-container {
     flex-direction: column;
     padding-top: 4rem;
     gap: 2rem;
   }
+}
+
+.lff-classements-icon {
+  width: 2.5rem;
+  height: 2.5rem;
+  vertical-align: middle;
+}
+
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
 }
