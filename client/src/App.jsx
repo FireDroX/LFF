@@ -17,7 +17,8 @@ const DynamicPage = ({ isLogged }) => {
   // Get the text after the last 'p?' in the URL
   useEffect(() => {
     const queryParams = new URLSearchParams(location.search);
-    setPage(queryParams.get("p").toLowerCase());
+    const p = queryParams.get("p") ?? "weekly";
+    setPage(p.toLowerCase());
   }, [location]);
 
   switch (page) {

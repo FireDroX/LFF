@@ -60,7 +60,8 @@ const Navbar = () => {
     const location = useLocation();
 
     const queryParams = new URLSearchParams(location.search);
-    const server = queryParams.get("p").toLowerCase() || "weekly"; // fallback si vide
+    const p = queryParams.get("p") ?? "weekly";
+    const server = p.toLowerCase();
 
     const paths = [
       { path: "Weekly", icon: <MdLeaderboard /> },
