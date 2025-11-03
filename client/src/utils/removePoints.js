@@ -1,7 +1,7 @@
 const { defaultURL } = require("./defaultURL");
 
-const removePoints = async () => {
-  const result = await fetch(defaultURL + "/points/remove", {
+const removePoints = async (path) => {
+  const result = await fetch(defaultURL + "/points/remove/" + path, {
     method: "DELETE",
     headers: {
       "Content-Type": "application/json",

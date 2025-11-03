@@ -4,9 +4,9 @@ import { MdCancel } from "react-icons/md";
 
 import removePoints from "../../utils/removePoints";
 
-const RemovePoints = ({ closeModal }) => {
+const RemovePoints = ({ closeModal, path }) => {
   const handleRemovePoints = () => {
-    removePoints().then(() => {
+    removePoints(path).then(() => {
       closeModal();
       window.location.reload();
     });
@@ -14,7 +14,7 @@ const RemovePoints = ({ closeModal }) => {
 
   return (
     <div className="modal-overlay" onClick={closeModal}>
-      <div className="removePoints-modal">
+      <div className="removePoints-modal" onClick={(e) => e.stopPropagation()}>
         <div className="removePoints-cancel" onClick={closeModal}>
           <MdCancel />
         </div>

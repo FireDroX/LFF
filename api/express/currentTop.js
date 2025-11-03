@@ -10,10 +10,15 @@ const supabase = createClient(
 
 /**
  * Route : /leaderboard/current/:type
- * Exemple : /leaderboard/current/crystaux ou /leaderboard/current/iscoin
+ * Exemple : /leaderboard/current/crystaux, /iscoin, /dragonegg, /beacon ou /sponge
  */
 router.get("/:type", async (req, res) => {
   const { type } = req.params;
+
+  // Vérification du type demandé
+  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge"].includes(type)) {
+    return res.status(400).json({ error: "Invalid leaderboard type" });
+  }
 
   const now = new Date();
 

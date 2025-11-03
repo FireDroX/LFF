@@ -167,7 +167,12 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {removeModal && <RemovePoints closeModal={() => setRemoveModal(false)} />}
+      {removeModal && (
+        <RemovePoints
+          closeModal={() => setRemoveModal(false)}
+          path={window.location.pathname.toLowerCase().substring(1) || "weekly"}
+        />
+      )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>
   );

@@ -77,7 +77,7 @@ const History = ({ closeModal }) => {
 
   return (
     <div className="modal-overlay" onClick={closeModal}>
-      <div className="history-modal">
+      <div className="history-modal" onClick={(e) => e.stopPropagation()}>
         <button className="close-btn" onClick={closeModal}>
           <MdCancel size={22} />
         </button>
