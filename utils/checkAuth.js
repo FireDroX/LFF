@@ -51,21 +51,28 @@ async function checkAuth(req, res, next) {
     const memberData = await memberRes.json();
 
     // 3️⃣ Vérifie si le membre a l’un des deux rôles
-    const hasAllowedRole = memberData.roles.some((roleId) =>
-      [ROLE_ISLAND, ROLE_GANG].includes(roleId)
-    );
+    const hasGangRole = memberData.roles.includes(ROLE_GANG);
+    const hasIslandRole = memberData.roles.includes(ROLE_ISLAND);
 
-    if (!hasAllowedRole) {
+    // Aucun des rôles requis
+    if (!hasGangRole && !hasIslandRole) {
       return res
         .status(403)
         .json({ error: "User does not have a required Discord role" });
     }
 
-    // 4️⃣ Stocke les infos utilisateur dans req.user pour les routes suivantes
+    // 4️⃣ Définition des flags selon les rôles
+    let flags = [];
+
+    if (hasGangRole) flags.push("crystaux");
+    if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
+
+    // 5️⃣ Stocke les infos utilisateur dans req.user
     req.user = {
       id: userData.id,
       username: userData.global_name || userData.username,
       avatar: userData.avatar,
+      flags,
     };
 
     next();

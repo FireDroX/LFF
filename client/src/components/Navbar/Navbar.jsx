@@ -15,6 +15,8 @@ import { GiTwoCoins } from "react-icons/gi";
 import RemovePoints from "../RemovePoints/RemovePoints";
 import History from "../History/History";
 
+import favicon from "../../assets/favicon.webp";
+
 const Navbar = () => {
   const access_token = window.localStorage.getItem("access_token");
   const token_type = window.localStorage.getItem("token_type");
@@ -95,10 +97,7 @@ const Navbar = () => {
             onClick={() => setIsOpen((prev) => !prev)}
           >
             <div className="LFF-img">
-              <img
-                src="https://images.minecraft-heads.com/render3d/head/1d/1d129c9c653db28c75d7dc3cc472eb10.webp"
-                alt="LFF"
-              />
+              <img src={favicon} alt="LFF" />
             </div>
             Gang LFF
             <IoIosArrowDown />
