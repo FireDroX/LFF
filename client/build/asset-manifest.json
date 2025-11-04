@@ -1,24 +1,25 @@
 {
   "files": {
     "main.css": "/static/css/main.84226cce.css",
-    "main.js": "/static/js/main.281244a8.js",
-    "static/css/984.a26b2b68.chunk.css": "/static/css/984.a26b2b68.chunk.css",
-    "static/js/984.654926a4.chunk.js": "/static/js/984.654926a4.chunk.js",
-    "static/css/544.a26b2b68.chunk.css": "/static/css/544.a26b2b68.chunk.css",
-    "static/js/544.370d7c56.chunk.js": "/static/js/544.370d7c56.chunk.js",
+    "main.js": "/static/js/main.fbc07699.js",
+    "static/css/532.b653d848.chunk.css": "/static/css/532.b653d848.chunk.css",
+    "static/js/532.7c541491.chunk.js": "/static/js/532.7c541491.chunk.js",
+    "static/css/68.b653d848.chunk.css": "/static/css/68.b653d848.chunk.css",
+    "static/js/68.e06cd135.chunk.js": "/static/js/68.e06cd135.chunk.js",
     "static/media/sponge.webp": "/static/media/sponge.c5d1b69c2e9e10cccf7c.webp",
     "static/media/beacon.webp": "/static/media/beacon.4493e6b9ee97a80325b2.webp",
+    "static/media/favicon.webp": "/static/media/favicon.1911b3c1a9203fb90bcb.webp",
     "static/media/dragon_egg.webp": "/static/media/dragon_egg.46bf7bb95bf9561239d7.webp",
     "index.html": "/index.html",
     "main.84226cce.css.map": "/static/css/main.84226cce.css.map",
-    "main.281244a8.js.map": "/static/js/main.281244a8.js.map",
-    "984.a26b2b68.chunk.css.map": "/static/css/984.a26b2b68.chunk.css.map",
-    "984.654926a4.chunk.js.map": "/static/js/984.654926a4.chunk.js.map",
-    "544.a26b2b68.chunk.css.map": "/static/css/544.a26b2b68.chunk.css.map",
-    "544.370d7c56.chunk.js.map": "/static/js/544.370d7c56.chunk.js.map"
+    "main.fbc07699.js.map": "/static/js/main.fbc07699.js.map",
+    "532.b653d848.chunk.css.map": "/static/css/532.b653d848.chunk.css.map",
+    "532.7c541491.chunk.js.map": "/static/js/532.7c541491.chunk.js.map",
+    "68.b653d848.chunk.css.map": "/static/css/68.b653d848.chunk.css.map",
+    "68.e06cd135.chunk.js.map": "/static/js/68.e06cd135.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.84226cce.css",
-    "static/js/main.281244a8.js"
+    "static/js/main.fbc07699.js"
   ]
 }
