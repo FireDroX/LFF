@@ -42,7 +42,16 @@ const Weekly = ({ isLogged, flags }) => {
         {keys.map((k) => (
           <Leaderboard
             key={k}
-            title={pointOptions[k].label + " " + pointOptions[k].emoji}
+            title={
+              <>
+                {pointOptions[k].label}{" "}
+                <img
+                  className="lff-classements-icon"
+                  src={pointOptions[k].icon}
+                  alt={pointOptions[k].label}
+                />
+              </>
+            }
             top={tops[k]?.users}
             start={tops[k]?.start}
             end={tops[k]?.end}

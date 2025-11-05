@@ -1,25 +1,27 @@
 import { formatNumberWithSpaces, compactNumber } from "./functions";
 
+import crystaux from "../assets/crystaux.webp";
+import iscoin from "../assets/iscoin.webp";
 import dragon_egg from "../assets/dragon_egg.webp";
 import beacon from "../assets/beacon.webp";
 import sponge from "../assets/sponge.webp";
 
 export const WEEKLY_OPTIONS = {
   crystaux: {
-    emoji: "💎",
     multiplier: 100,
     label: "Crystaux",
     format: (p) =>
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 100)} Crystaux`,
     requiredAmount: 50,
+    icon: crystaux,
   },
   iscoin: {
-    emoji: "🪙",
     multiplier: 2000000,
     label: "IsCoin",
     format: (p) =>
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 2000000)} $`,
     requiredAmount: 1000,
+    icon: iscoin,
   },
 };
 
