@@ -174,6 +174,49 @@ const NEW_TOP_MESSAGES = [
     `> 📈 Redémarrage du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\``,
 ];
 
+// ✅ Messages pour fin de top
+const END_TOP_MESSAGES = [
+  ({ type, start, end, podium }) =>
+    `> 🏆 Résultats du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 📊 Fin du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 📅 Classement terminé pour **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 🥇 Fin de période pour **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 🏁 Bilan du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 🧾 Résumé final du top **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 🕒 Clôture du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 🧩 Classement **${type}** ${EMOJIS_TYPES[type]} terminé \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 📈 Résultats finaux pour **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+
+  ({ type, start, end, podium }) =>
+    `> 🗓️ Le classement **${type}** ${EMOJIS_TYPES[type]} est maintenant clos \`(${start} → ${end})\`\n` +
+    podium.join("\n"),
+];
+
 // ✅ Fonction utilitaire pour tirer un message random
 function getRandomMessage(messages, payload) {
   const fn = messages[Math.floor(Math.random() * messages.length)];
@@ -190,5 +233,6 @@ module.exports = {
     NEW_TOP: NEW_TOP_MESSAGES,
     STAFF_ADD: STAFF_ADD_MESSAGES,
     STAFF_REMOVE: STAFF_REMOVE_MESSAGES,
+    END_TOP: END_TOP_MESSAGES,
   },
 };
