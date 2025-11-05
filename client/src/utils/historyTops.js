@@ -8,6 +8,10 @@ const historyTops = async () => {
   });
 
   const resultJson = await result.json();
+
+  if (!result.ok) {
+    throw new Error(resultJson?.error || "Failed to fetch history tops");
+  }
   return resultJson;
 };
 

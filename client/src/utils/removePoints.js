@@ -12,6 +12,11 @@ const removePoints = async (path) => {
   });
 
   const resultJson = await result.json();
+
+  if (!result.ok) {
+    throw new Error(resultJson?.error || "Points removal failed");
+  }
+
   return resultJson;
 };
 
