@@ -9,8 +9,9 @@ import Navbar from "./components/Navbar/Navbar";
 
 const Weekly = lazy(() => import("./pages/weekly/Weekly"));
 const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
+const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 
-const DynamicPage = ({ isLogged, flags }) => {
+const DynamicPage = ({ isLogged, data }) => {
   const [page, setPage] = useState(null);
   const location = useLocation();
 
@@ -22,10 +23,12 @@ const DynamicPage = ({ isLogged, flags }) => {
   }, [location]);
 
   switch (page) {
+    case "dashboard":
+      return <Dashboard islogged={isLogged} isAdmin={data?.isAdmin} />;
     case "isvalue":
-      return <IsValue isLogged={isLogged} flags={flags} />;
+      return <IsValue isLogged={isLogged} flags={data?.flags} />;
     default:
-      return <Weekly isLogged={isLogged} flags={flags} />;
+      return <Weekly isLogged={isLogged} flags={data?.flags} />;
   }
 };
 
@@ -33,17 +36,22 @@ function App() {
   const access_token = window.localStorage.getItem("access_token");
   const token_type = window.localStorage.getItem("token_type");
 
-  const [userInfos, setUserInfos] = useState({ isLogged: false, flags: [] });
+  const [userInfos, setUserInfos] = useState({
+    data: null,
+    isLogged: false,
+  });
 
   // Vérifier connexion
   useEffect(() => {
     if (access_token && token_type) {
       getMe(token_type, access_token).then((data) => {
         if (data && !data.error)
-          setUserInfos({ isLogged: true, flags: data.flags });
-        else setUserInfos({ isLogged: false, flags: [] });
+          setUserInfos({
+            data,
+            isLogged: true,
+          });
       });
-    } else setUserInfos({ isLogged: false, flags: [] });
+    }
   }, [access_token, token_type]);
 
   // Charger le token de connexion OAuth2 s'il y a un code dans l'URL
@@ -67,7 +75,7 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      <Navbar userData={userInfos.data} />
       <Routes>
         <Route
           path="/*"
@@ -75,7 +83,7 @@ function App() {
             <Suspense fallback={<Loader />}>
               <DynamicPage
                 isLogged={userInfos.isLogged}
-                flags={userInfos.flags}
+                data={userInfos.data}
               />
             </Suspense>
           }
