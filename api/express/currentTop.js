@@ -1,12 +1,25 @@
 const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
+const sendDiscordLog = require("../../utils/sendDiscordLog");
+const { NEW_TOP_MESSAGES, getRandomMessage } = require("../../utils/messages");
 const router = express.Router();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
+
+const formatDateShort = (isoString) => {
+  if (!isoString) return ""; // ⛔️ évite les NaN
+  const date = new Date(isoString);
+  if (isNaN(date)) return ""; // ⛔️ si la date est invalide
+  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
+  const day = String(date.getUTCDate()).padStart(2, "0");
+  const hours = String(date.getUTCHours()).padStart(2, "0");
+  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
+  return `${day}/${month} ${hours}h${minutes}`;
+};
 
 /**
  * Route : /leaderboard/current/:type
@@ -68,6 +81,14 @@ router.get("/:type", async (req, res) => {
         .status(500)
         .json({ error: "Impossible de créer le classement" });
     }
+
+    await sendDiscordLog(
+      getRandomMessage(NEW_TOP_MESSAGES, {
+        type,
+        start: formatDateShort(newTop.start_date),
+        end: formatDateShort(newTop.end_date),
+      })
+    );
 
     currentTop = newTop;
   }

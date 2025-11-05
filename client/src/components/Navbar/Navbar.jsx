@@ -15,9 +15,18 @@ import { GiTwoCoins } from "react-icons/gi";
 import RemovePoints from "../RemovePoints/RemovePoints";
 import History from "../History/History";
 
+import favicon from "../../assets/favicon.webp";
+
 const Navbar = () => {
   const access_token = window.localStorage.getItem("access_token");
   const token_type = window.localStorage.getItem("token_type");
+
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+  const p = queryParams.get("p") ?? "weekly";
+  const server = p.toLowerCase();
 
   const [theme, setTheme] = useState(
     window.localStorage.getItem("theme") || "Dark"
@@ -56,13 +65,6 @@ const Navbar = () => {
   };
 
   const Leaderboards = () => {
-    const navigate = useNavigate();
-    const location = useLocation();
-
-    const queryParams = new URLSearchParams(location.search);
-    const p = queryParams.get("p") ?? "weekly";
-    const server = p.toLowerCase();
-
     const paths = [
       { path: "Weekly", icon: <MdLeaderboard /> },
       { path: "IsValue", icon: <GiTwoCoins /> },
@@ -95,10 +97,7 @@ const Navbar = () => {
             onClick={() => setIsOpen((prev) => !prev)}
           >
             <div className="LFF-img">
-              <img
-                src="https://images.minecraft-heads.com/render3d/head/1d/1d129c9c653db28c75d7dc3cc472eb10.webp"
-                alt="LFF"
-              />
+              <img src={favicon} alt="LFF" />
             </div>
             Gang LFF
             <IoIosArrowDown />
@@ -169,10 +168,7 @@ const Navbar = () => {
         </div>
       </div>
       {removeModal && (
-        <RemovePoints
-          closeModal={() => setRemoveModal(false)}
-          path={window.location.pathname.toLowerCase().substring(1) || "weekly"}
-        />
+        <RemovePoints closeModal={() => setRemoveModal(false)} path={server} />
       )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>

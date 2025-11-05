@@ -2,6 +2,13 @@ const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
 const checkAuth = require("../../utils/checkAuth");
+const sendDiscordLog = require("../../utils/sendDiscordLog");
+const {
+  ADD_MESSAGES,
+  FIRST_PLACE_MESSAGES,
+  FIRST_ENTRY_MESSAGES,
+  getRandomMessage,
+} = require("../../utils/messages");
 
 const router = express.Router();
 
@@ -14,6 +21,7 @@ const supabase = createClient(
  * Route : /points/add/:type
  * Exemple : /points/add/crystaux, /iscoin, /dragonegg, /beacon ou /sponge
  */
+
 router.post("/:type", checkAuth, async (req, res) => {
   const { type } = req.params;
 
@@ -48,12 +56,34 @@ router.post("/:type", checkAuth, async (req, res) => {
     }
 
     let users = currentTop.users || [];
+    // ✅ Top 1 avant modification
+    const previousSorted = [...users].sort((a, b) => b.score - a.score);
+    const previousLeader = previousSorted[0]?.name || null;
 
+    let totalScore;
     const userIndex = users.findIndex((u) => u.name === username);
+
     if (userIndex >= 0) {
       users[userIndex].score += score;
+
+      await sendDiscordLog(
+        getRandomMessage(ADD_MESSAGES, {
+          user: req.user.username,
+          score,
+          type,
+          total: users[userIndex].score,
+        })
+      );
     } else {
-      users.push({ name: username, score: score, userId });
+      users.push({ name: username, score, userId });
+
+      await sendDiscordLog(
+        getRandomMessage(FIRST_ENTRY_MESSAGES, {
+          user: req.user.username,
+          type,
+          score,
+        })
+      );
     }
 
     const { error: updateError } = await supabase
@@ -69,6 +99,24 @@ router.post("/:type", checkAuth, async (req, res) => {
     }
 
     const sorted = users.sort((a, b) => b.score - a.score);
+
+    // ✅ Top 1 après modification
+    const newLeader = sorted[0]?.name || null;
+
+    // ✅ Notification prise de première place
+    if (
+      newLeader === username &&
+      previousLeader &&
+      previousLeader !== username
+    ) {
+      await sendDiscordLog(
+        getRandomMessage(FIRST_PLACE_MESSAGES, {
+          user: username,
+          previousLeader,
+          type,
+        })
+      );
+    }
 
     const top5 = sorted.slice(0, 5);
 

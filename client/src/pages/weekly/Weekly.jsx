@@ -1,41 +1,20 @@
 import { useEffect, useState } from "react";
 
 import currentTop from "../../utils/currentTop";
-import {
-  formatTop,
-  formatNumberWithSpaces,
-  compactNumber,
-} from "../../utils/functions";
+import { formatTop, filterPointOptions } from "../../utils/functions";
+import { WEEKLY_OPTIONS as pointOptions } from "../../utils/pointOptions";
 
 import AddPoints from "../../components/AddPoints/AddPoints";
 import Leaderboard from "../../components/Leaderboard/Leaderboard";
 
-const Weekly = ({ isLogged }) => {
+const Weekly = ({ isLogged, flags }) => {
   const [tops, setTops] = useState({
     crystaux: { users: [] },
     iscoin: { users: [] },
   });
 
-  const pointOptions = {
-    Crystaux: {
-      emoji: "💎",
-      multiplier: 100,
-      label: "Crystaux",
-      format: (points) =>
-        `${formatNumberWithSpaces(points)} = ${compactNumber(
-          points * 100
-        )} Crystaux`,
-    },
-    IsCoin: {
-      emoji: "🪙",
-      multiplier: 2000000,
-      label: "IsCoin",
-      format: (points) =>
-        `${formatNumberWithSpaces(points)} = ${compactNumber(
-          points * 2000000
-        )} $`,
-    },
-  };
+  // ✅ Filtre pointOptions selon flags
+  const filteredPointOptions = filterPointOptions(pointOptions, flags);
 
   useEffect(() => {
     // Charger crystaux
@@ -54,33 +33,39 @@ const Weekly = ({ isLogged }) => {
     );
   }, []);
 
+  const keys = ["crystaux", "iscoin"];
+
   return (
     <section className="App">
       <div className="lff-classements-container">
-        {/* Classement Crystaux */}
-        <Leaderboard
-          title="Classement Crystaux 💎"
-          top={tops.crystaux?.users}
-          start={tops.crystaux?.start}
-          end={tops.crystaux?.end}
-          requiredAmount={50}
-        />
-
-        {/* Classement Iscoin */}
-        <Leaderboard
-          title="Classement IsCoin 🪙"
-          top={tops.iscoin?.users}
-          start={tops.iscoin?.start}
-          end={tops.iscoin?.end}
-          requiredAmount={1000}
-        />
+        {/* Classement Crystaux et IsCoin */}
+        {keys.map((k) => (
+          <Leaderboard
+            key={k}
+            title={
+              <>
+                {pointOptions[k].label}{" "}
+                <img
+                  className="lff-classements-icon"
+                  src={pointOptions[k].icon}
+                  alt={pointOptions[k].label}
+                />
+              </>
+            }
+            top={tops[k]?.users}
+            start={tops[k]?.start}
+            end={tops[k]?.end}
+            requiredAmount={pointOptions[k].requiredAmount}
+          />
+        ))}
       </div>
 
-      {isLogged && (
+      {/* ✅ Affiche AddPoints seulement si connecté + flags > 0 */}
+      {isLogged && Object.keys(filteredPointOptions).length > 0 && (
         <AddPoints
           setTops={setTops}
-          selectDefault="Crystaux"
-          options={pointOptions}
+          selectDefault={Object.keys(filteredPointOptions)[0]}
+          options={filteredPointOptions}
         />
       )}
     </section>

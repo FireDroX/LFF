@@ -56,3 +56,19 @@ export const formatTop = (users, start, end, type) => {
 
   return { users: filled, start, end, type };
 };
+
+export const filterPointOptions = (pointOptions, flags) => {
+  if (!Array.isArray(flags)) return {};
+
+  return Object.fromEntries(
+    Object.entries(pointOptions).filter(([key]) => {
+      return (
+        (key === "crystaux" && flags.includes("crystaux")) ||
+        (key === "iscoin" && flags.includes("iscoin")) ||
+        (key === "dragonegg" && flags.includes("dragonegg")) ||
+        (key === "beacon" && flags.includes("beacon")) ||
+        (key === "sponge" && flags.includes("sponge"))
+      );
+    })
+  );
+};

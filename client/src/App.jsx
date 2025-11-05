@@ -10,7 +10,7 @@ import Navbar from "./components/Navbar/Navbar";
 const Weekly = lazy(() => import("./pages/weekly/Weekly"));
 const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
 
-const DynamicPage = ({ isLogged }) => {
+const DynamicPage = ({ isLogged, flags }) => {
   const [page, setPage] = useState(null);
   const location = useLocation();
 
@@ -23,9 +23,9 @@ const DynamicPage = ({ isLogged }) => {
 
   switch (page) {
     case "isvalue":
-      return <IsValue isLogged={isLogged} />;
+      return <IsValue isLogged={isLogged} flags={flags} />;
     default:
-      return <Weekly isLogged={isLogged} />;
+      return <Weekly isLogged={isLogged} flags={flags} />;
   }
 };
 
@@ -33,16 +33,17 @@ function App() {
   const access_token = window.localStorage.getItem("access_token");
   const token_type = window.localStorage.getItem("token_type");
 
-  const [isLogged, setIsLogged] = useState(null);
+  const [userInfos, setUserInfos] = useState({ isLogged: false, flags: [] });
 
   // Vérifier connexion
   useEffect(() => {
     if (access_token && token_type) {
       getMe(token_type, access_token).then((data) => {
-        if (data && !data.error) setIsLogged(true);
-        else setIsLogged(false);
+        if (data && !data.error)
+          setUserInfos({ isLogged: true, flags: data.flags });
+        else setUserInfos({ isLogged: false, flags: [] });
       });
-    } else setIsLogged(false);
+    } else setUserInfos({ isLogged: false, flags: [] });
   }, [access_token, token_type]);
 
   // Charger le token de connexion OAuth2 s'il y a un code dans l'URL
@@ -72,7 +73,10 @@ function App() {
           path="/*"
           element={
             <Suspense fallback={<Loader />}>
-              <DynamicPage isLogged={isLogged} />
+              <DynamicPage
+                isLogged={userInfos.isLogged}
+                flags={userInfos.flags}
+              />
             </Suspense>
           }
         />
