@@ -3,12 +3,7 @@ const { createClient } = require("@supabase/supabase-js");
 
 const checkAuth = require("../../utils/checkAuth");
 const sendDiscordLog = require("../../utils/sendDiscordLog");
-const {
-  ADD_MESSAGES,
-  FIRST_PLACE_MESSAGES,
-  FIRST_ENTRY_MESSAGES,
-  getRandomMessage,
-} = require("../../utils/messages");
+const { MESSAGE_SETS, getRandomMessage } = require("../../utils/messages");
 
 const router = express.Router();
 
@@ -67,7 +62,7 @@ router.post("/:type", checkAuth, async (req, res) => {
       users[userIndex].score += score;
 
       await sendDiscordLog(
-        getRandomMessage(ADD_MESSAGES, {
+        getRandomMessage(MESSAGE_SETS.ADD, {
           user: req.user.username,
           score,
           type,
@@ -78,7 +73,7 @@ router.post("/:type", checkAuth, async (req, res) => {
       users.push({ name: username, score, userId });
 
       await sendDiscordLog(
-        getRandomMessage(FIRST_ENTRY_MESSAGES, {
+        getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
           user: req.user.username,
           type,
           score,
@@ -110,7 +105,7 @@ router.post("/:type", checkAuth, async (req, res) => {
       previousLeader !== username
     ) {
       await sendDiscordLog(
-        getRandomMessage(FIRST_PLACE_MESSAGES, {
+        getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
           user: username,
           previousLeader,
           type,

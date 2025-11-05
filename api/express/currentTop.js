@@ -2,7 +2,7 @@ const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
 const sendDiscordLog = require("../../utils/sendDiscordLog");
-const { NEW_TOP_MESSAGES, getRandomMessage } = require("../../utils/messages");
+const { MESSAGE_SETS, getRandomMessage } = require("../../utils/messages");
 const router = express.Router();
 
 const supabase = createClient(
@@ -83,7 +83,7 @@ router.get("/:type", async (req, res) => {
     }
 
     await sendDiscordLog(
-      getRandomMessage(NEW_TOP_MESSAGES, {
+      getRandomMessage(MESSAGE_SETS.NEW_TOP, {
         type,
         start: formatDateShort(newTop.start_date),
         end: formatDateShort(newTop.end_date),
