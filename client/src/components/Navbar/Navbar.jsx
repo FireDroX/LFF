@@ -1,8 +1,6 @@
 import "./Navbar.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import getMe from "../../utils/getMe";
 
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
@@ -17,10 +15,7 @@ import History from "../History/History";
 
 import favicon from "../../assets/favicon.webp";
 
-const Navbar = () => {
-  const access_token = window.localStorage.getItem("access_token");
-  const token_type = window.localStorage.getItem("token_type");
-
+const Navbar = ({ userData }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,20 +27,9 @@ const Navbar = () => {
     window.localStorage.getItem("theme") || "Dark"
   );
 
-  const [userData, setUserData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
-  const isStaff = Boolean(userData?.flags?.includes("staff"));
-  const canManagePersonalPoints = ["weekly", "isvalue"].includes(server);
-
-  useEffect(() => {
-    if (access_token && token_type) {
-      getMe(token_type, access_token).then((data) => {
-        if (data && !data.error) setUserData(data);
-      });
-    }
-  }, [access_token, token_type]);
 
   const handleDisconnect = () => {
     window.localStorage.clear();
@@ -116,43 +100,38 @@ const Navbar = () => {
                   <FaHistory />
                   <span>History</span>
                 </li>
-                {isStaff && (
-                  <li
-                    className="dropdown-item"
-                    onClick={() => {
-                      setIsOpen(false);
-                      navigate(`?p=Staff`);
-                    }}
-                  >
-                    <MdAdminPanelSettings />
-                    <span>Staff Dashboard</span>
-                  </li>
-                )}
                 <li className="dropdown-item" onClick={handleThemeChange}>
                   <IoIosColorPalette />
                   <span>{theme === "Dark" ? "Light" : "Dark"} Theme</span>
                 </li>
                 {userData && (
                   <>
-                    {canManagePersonalPoints && (
+                    {userData.isAdmin && (
                       <li
                         className="dropdown-item"
+                        onClick={() => navigate(`?p=Dashboard`)}
                         style={{
-                          color: "#ff5252",
                           borderTop: "1px solid var(--accent35)",
                         }}
-                        onClick={() => setRemoveModal((prev) => !prev)}
                       >
-                        <CgTrash />
-                        <span>Delete Points</span>
+                        <MdAdminPanelSettings />
+                        <span>Dashboard</span>
                       </li>
                     )}
                     <li
                       className="dropdown-item"
                       style={{
-                        color: "#a70000",
+                        color: "#ff5252",
                         borderTop: "1px solid var(--accent35)",
                       }}
+                      onClick={() => setRemoveModal((prev) => !prev)}
+                    >
+                      <CgTrash />
+                      <span>Delete Points</span>
+                    </li>
+                    <li
+                      className="dropdown-item"
+                      style={{ color: "#a70000" }}
                       onClick={handleDisconnect}
                     >
                       <VscDebugDisconnect />
@@ -186,7 +165,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {removeModal && canManagePersonalPoints && (
+      {removeModal && (
         <RemovePoints closeModal={() => setRemoveModal(false)} path={server} />
       )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
