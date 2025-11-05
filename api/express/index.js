@@ -7,5 +7,6 @@ router.use("/leaderboard/current", require("./currentTop"));
 router.use("/leaderboard/history", require("./historyTops"));
 router.use("/points/add", require("./addPoints"));
 router.use("/points/remove", require("./removePoints"));
+router.use("/staff", require("./staff"));
 
 module.exports = router;

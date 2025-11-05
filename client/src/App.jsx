@@ -9,6 +9,7 @@ import Navbar from "./components/Navbar/Navbar";
 
 const Weekly = lazy(() => import("./pages/weekly/Weekly"));
 const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
+
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 
 const DynamicPage = ({ isLogged, data }) => {
@@ -26,7 +27,7 @@ const DynamicPage = ({ isLogged, data }) => {
     case "dashboard":
       return <Dashboard islogged={isLogged} isAdmin={data?.isAdmin} />;
     case "isvalue":
-      return <IsValue isLogged={isLogged} flags={data?.flags} />;
+      return <IsValue isLogged={isLogged} flags={flags} />;
     default:
       return <Weekly isLogged={isLogged} flags={data?.flags} />;
   }
