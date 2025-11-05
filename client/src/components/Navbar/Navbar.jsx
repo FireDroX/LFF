@@ -9,7 +9,7 @@ import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { CgTrash } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
-import { MdLeaderboard } from "react-icons/md";
+import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { GiTwoCoins } from "react-icons/gi";
 
 import RemovePoints from "../RemovePoints/RemovePoints";
@@ -36,6 +36,8 @@ const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
+  const isStaff = Boolean(userData?.flags?.includes("staff"));
+  const canManagePersonalPoints = ["weekly", "isvalue"].includes(server);
 
   useEffect(() => {
     if (access_token && token_type) {
@@ -114,26 +116,43 @@ const Navbar = () => {
                   <FaHistory />
                   <span>History</span>
                 </li>
+                {isStaff && (
+                  <li
+                    className="dropdown-item"
+                    onClick={() => {
+                      setIsOpen(false);
+                      navigate(`?p=Staff`);
+                    }}
+                  >
+                    <MdAdminPanelSettings />
+                    <span>Staff Dashboard</span>
+                  </li>
+                )}
                 <li className="dropdown-item" onClick={handleThemeChange}>
                   <IoIosColorPalette />
                   <span>{theme === "Dark" ? "Light" : "Dark"} Theme</span>
                 </li>
                 {userData && (
                   <>
+                    {canManagePersonalPoints && (
+                      <li
+                        className="dropdown-item"
+                        style={{
+                          color: "#ff5252",
+                          borderTop: "1px solid var(--accent35)",
+                        }}
+                        onClick={() => setRemoveModal((prev) => !prev)}
+                      >
+                        <CgTrash />
+                        <span>Delete Points</span>
+                      </li>
+                    )}
                     <li
                       className="dropdown-item"
                       style={{
-                        color: "#ff5252",
+                        color: "#a70000",
                         borderTop: "1px solid var(--accent35)",
                       }}
-                      onClick={() => setRemoveModal((prev) => !prev)}
-                    >
-                      <CgTrash />
-                      <span>Delete Points</span>
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      style={{ color: "#a70000" }}
                       onClick={handleDisconnect}
                     >
                       <VscDebugDisconnect />
@@ -167,7 +186,7 @@ const Navbar = () => {
           )}
         </div>
       </div>
-      {removeModal && (
+      {removeModal && canManagePersonalPoints && (
         <RemovePoints closeModal={() => setRemoveModal(false)} path={server} />
       )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
