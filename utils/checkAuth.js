@@ -3,6 +3,8 @@ const fetch = require("node-fetch");
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
 const ROLE_ISLAND = process.env.DISCORD_ROLE_ISLAND;
 const ROLE_GANG = process.env.DISCORD_ROLE_GANG;
+const ROLE_STAFF = process.env.DISCORD_ROLE_STAFF;
+
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 async function checkAuth(req, res, next) {
@@ -53,6 +55,7 @@ async function checkAuth(req, res, next) {
     // 3️⃣ Vérifie si le membre a l’un des deux rôles
     const hasGangRole = memberData.roles.includes(ROLE_GANG);
     const hasIslandRole = memberData.roles.includes(ROLE_ISLAND);
+    const hasStaffRole = memberData.roles.includes(ROLE_STAFF);
 
     // Aucun des rôles requis
     if (!hasGangRole && !hasIslandRole) {
@@ -73,6 +76,7 @@ async function checkAuth(req, res, next) {
       username: userData.global_name || userData.username,
       avatar: userData.avatar,
       flags,
+      isAdmin: hasStaffRole,
     };
 
     next();

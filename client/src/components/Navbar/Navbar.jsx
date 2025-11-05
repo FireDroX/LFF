@@ -1,15 +1,13 @@
 import "./Navbar.css";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-
-import getMe from "../../utils/getMe";
 
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { CgTrash } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
-import { MdLeaderboard } from "react-icons/md";
+import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { GiTwoCoins } from "react-icons/gi";
 
 import RemovePoints from "../RemovePoints/RemovePoints";
@@ -17,10 +15,7 @@ import History from "../History/History";
 
 import favicon from "../../assets/favicon.webp";
 
-const Navbar = () => {
-  const access_token = window.localStorage.getItem("access_token");
-  const token_type = window.localStorage.getItem("token_type");
-
+const Navbar = ({ userData }) => {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -32,18 +27,9 @@ const Navbar = () => {
     window.localStorage.getItem("theme") || "Dark"
   );
 
-  const [userData, setUserData] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
-
-  useEffect(() => {
-    if (access_token && token_type) {
-      getMe(token_type, access_token).then((data) => {
-        if (data && !data.error) setUserData(data);
-      });
-    }
-  }, [access_token, token_type]);
 
   const handleDisconnect = () => {
     window.localStorage.clear();
@@ -120,6 +106,18 @@ const Navbar = () => {
                 </li>
                 {userData && (
                   <>
+                    {userData.isAdmin && (
+                      <li
+                        className="dropdown-item"
+                        onClick={() => navigate(`?p=Dashboard`)}
+                        style={{
+                          borderTop: "1px solid var(--accent35)",
+                        }}
+                      >
+                        <MdAdminPanelSettings />
+                        <span>Dashboard</span>
+                      </li>
+                    )}
                     <li
                       className="dropdown-item"
                       style={{

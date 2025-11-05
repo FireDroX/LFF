@@ -46,6 +46,24 @@ const REMOVE_MESSAGES = [
   ({ user, type }) => `> ♻️ **${user}** a réinitialisé son score (**${type}**)`,
 ];
 
+const STAFF_ADD_MESSAGES = [
+  ({ staff, target, score, type, total }) =>
+    `> 🛠️ **${staff}** ajoute **${score}** points à **${target}** sur **${type}** ${EMOJIS_TYPES[type]} (total : **${total}**)`,
+  ({ staff, target, score, type, total }) =>
+    `> ✅ Staff : **${staff}** booste **${target}** de **${score}** pts (**${type}** ${EMOJIS_TYPES[type]}) → total **${total}**`,
+  ({ staff, target, score, type, total }) =>
+    `> 📈 **${staff}** crédite **${target}** de **+${score}** pts sur **${type}** ${EMOJIS_TYPES[type]} (total : **${total}**)`,
+];
+
+const STAFF_REMOVE_MESSAGES = [
+  ({ staff, target, score, type, total }) =>
+    `> ⚠️ **${staff}** retire **${score}** points à **${target}** sur **${type}** ${EMOJIS_TYPES[type]} (total : **${total}**)`,
+  ({ staff, target, score, type, total }) =>
+    `> 🧹 Staff : **${staff}** ajuste **${target}** de **-${score}** pts (**${type}** ${EMOJIS_TYPES[type]}) → total **${total}**`,
+  ({ staff, target, score, type, total }) =>
+    `> 📉 **${staff}** réduit le score de **${target}** de **${score}** pts sur **${type}** ${EMOJIS_TYPES[type]} (total : **${total}**)`,
+];
+
 // ✅ Messages pour nouveau top créé
 const NEW_TOP_MESSAGES = [
   ({ type, start, end }) =>
@@ -71,4 +89,6 @@ module.exports = {
   FIRST_PLACE_MESSAGES,
   REMOVE_MESSAGES,
   NEW_TOP_MESSAGES,
+  STAFF_ADD_MESSAGES,
+  STAFF_REMOVE_MESSAGES,
 };
