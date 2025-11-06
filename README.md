@@ -1,70 +1,85 @@
-# LFF
+# 🏝️ LFF – Classements Minecraft & Discord Integration
 
-> Leaderboard & Points pour la communauté
+## 🔍 Présentation
 
-## 📋 Table des matières
+**LFF** est une plateforme web connectée à un serveur Minecraft et à Discord permettant de gérer et afficher des classements dynamiques :
+💎 Crystaux, 🪙 IsCoin, 🥚 Dragon Egg, 🔷 Beacon et 🧽 Sponge.
 
-1. [Description](#description)
-2. [Fonctionnalités](#fonctionnalités)
-3. [Technologies](#technologies)
-4. [Utilisation](#utilisation)
-5. [Contribuer](#contribuer)
-6. [Contact](#contact)
+Les utilisateurs peuvent se connecter via Discord pour :
 
----
+- Ajouter ou retirer leurs points selon leurs rôles
+- Consulter les classements hebdomadaires
+- Visualiser l’historique de chaque type de classement
 
-## 🚀 Description
-
-LFF est une application full-stack légère qui permet de gérer un **classement de points** pour les membres d’une communauté.
-On peut :
-
-- Voir un **tableau de classement** des utilisateurs triés par score.
-- « Ajouter » des points pour un utilisateur (via un composant d’ajout).
-- Séparer visuellement les utilisateurs ayant **50 points ou plus** des autres avec une barre de séparation.
-- Afficher une période (date de début / fin) sur cette barre (ex : `(10/26 00h00)`) pour indiquer la période en cours.
+Les administrateurs disposent d’un **dashboard** dédié pour modifier les scores, lancer de nouveaux classements et surveiller l’activité.
 
 ---
 
-## 🧩 Fonctionnalités
+## ⚙️ Fonctionnalités principales
 
-- Affichage dynamique du classement (`top.users`) trié par score.
-- Icônes trophée pour les 3 premiers.
-- Formatage des scores (par ex. avec des espaces).
-- Barre de séparation « 50 pts mini » (ou personnalisable) pour distinguer deux groupes.
-- Composant d’ajout de points pour les utilisateurs connectés (`isLogged`).
-- Mise à jour partielle de l’état : seule la clé `users` est remplacée lorsque de nouveaux points sont ajoutés.
-- Période visible via `start` / `end`, formatée pour l’affichage.
+### 🔸 Côté utilisateur
+
+- 🔐 **Connexion via Discord OAuth2**
+- 🏆 **Classements dynamiques** : Crystaux, IsCoin, Dragon Egg, Beacon, Sponge
+- ⏱️ **Mises à jour automatiques** chaque semaine
+- 🌗 **Thèmes clair/sombre**
+- 🧾 **Historique des classements**
+- ➕ **Ajout et suppression de points** selon les permissions Discord
+
+### 🔸 Côté administrateur
+
+- 🛠️ **Dashboard admin** avec édition manuelle des scores
+- ✅ Vérification automatique du rôle Discord (“Manage Roles”) pour autorisation admin
+- 🧩 Système d’audit pour prévenir les modifications concurrentes
+- 📢 **Logs Discord automatiques** (ajout, suppression, nouveau classement, etc.)
+
+### 🔸 Côté technique
+
+- Backend : **Express.js + Supabase**
+- Frontend : **React.js**
+- Auth : **Discord OAuth2**
+- Hébergement : Supabase + Node.js
+- Système de messages dynamiques (`messages.js`) pour une expérience plus vivante
 
 ---
 
-## 🛠️ Technologies
+## 🚀 Installation
 
-- **Frontend** : React (JSX, CSS)
-- **Icons** : react-icons
-- **Backend / API** : Express (dossier `api/express`)
-- **Déploiement** : Peut être hébergé sur Render.com ou autre (voir lien du repo)
-- **Language principale** : JavaScript
-- **Styles** : CSS
+```bash
+# Clone du projet
+git clone https://github.com/FireDroX/LFF.git
+cd LFF
 
----
+# Installation des dépendances
+npm install
 
-## 🎮 Utilisation
+# Lancement du serveur backend
+npm run dev
 
-- Connecte-toi (ou tu peux activer la propriété `isLogged` manuellement pour test).
-- Ajoute des points via le bouton « Ajouter » (le bouton est actif quand `points > 0`).
-- Le tableau se mettra à jour : seule la partie `users` de l’état global est remplacée, ce qui permet de ne pas écraser `start` / `end`.
-- Le composant `Leaderboard` :
+# Lancement du frontend
+cd ./client
+npm run start
+```
 
-  ```jsx
-  <Leaderboard
-    top={topCrystaux.users}
-    start={topCrystaux.start}
-    end={topCrystaux.end}
-    requiredAmount={topCrystaux.requiredAmount}
-  />
-  ```
+Crée un fichier `.env` :
 
-- Le format de la date dans la barre de séparation est raccourci : ex : `(10/26 00h00)`.
+```env
+PORT=Celui que vous voulez
+
+DISCORD_CLIENT_ID=...
+DISCORD_CLIENT_TOKEN=...
+DISCORD_CLIENT_SECRET=...
+DISCORD_GUILD_ID=...
+DISCORD_ROLE_ISLAND=...
+DISCORD_ROLE_GANG=...
+DISCORD_ROLE_STAFF=...
+DISCORD_LOG_CHANNEL_ID=...
+
+FRONTEND_URL=...
+
+SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
 
 ---
 
@@ -82,11 +97,11 @@ Merci de respecter la structure du code, les conventions (naming, mise en forme)
 
 ---
 
-## 📬 Contact
+## 👑 Crédits
 
-Pour toute question ou suggestion :
+Développé avec ❤️ par **FireDroX**
+Intégration Discord et API Supabase par la communauté LFF.
 
-- GitHub : [FireDroX](https://github.com/FireDroX)
-- Projet hébergé : [lff.onrender.com](https://lff.onrender.com)
-
----
+GitHub : [FireDroX](https://github.com/FireDroX)
+<br />
+Projet hébergé : [lff.onrender.com](https://lff.onrender.com)

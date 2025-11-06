@@ -15,6 +15,11 @@ const addPoints = async (score, selected) => {
   });
 
   const resultJson = await result.json();
+
+  if (!result.ok) {
+    throw new Error(resultJson?.error || "Failed to add points");
+  }
+
   return resultJson;
 };
 

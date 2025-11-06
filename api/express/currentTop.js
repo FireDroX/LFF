@@ -2,7 +2,8 @@ const express = require("express");
 const { createClient } = require("@supabase/supabase-js");
 
 const sendDiscordLog = require("../../utils/sendDiscordLog");
-const { NEW_TOP_MESSAGES, getRandomMessage } = require("../../utils/messages");
+const { MESSAGE_SETS, getRandomMessage } = require("../../utils/messages");
+
 const router = express.Router();
 
 const supabase = createClient(
@@ -49,6 +50,42 @@ router.get("/:type", async (req, res) => {
   if (error || !currentTop) {
     console.log(`Aucun top trouvé pour '${type}', création en cours...`);
 
+    // 🔍 Recherche du dernier classement terminé
+    const { data: previousTop } = await supabase
+      .from("tops")
+      .select("*")
+      .eq("type", type)
+      .lt("end_date", now.toISOString())
+      .order("end_date", { ascending: false })
+      .limit(1)
+      .single();
+
+    // ✅ Si un top précédent existe, on envoie un message avec le podium
+    if (previousTop && previousTop.users && previousTop.users.length > 0) {
+      const sorted = previousTop.users.sort((a, b) => b.score - a.score);
+
+      const podium = [
+        sorted[0]
+          ? `> - 🥇 **${sorted[0].name}** — ${sorted[0].score} pts`
+          : null,
+        sorted[1]
+          ? `> - 🥈 **${sorted[1].name}** — ${sorted[1].score} pts`
+          : null,
+        sorted[2]
+          ? `> - 🥉 **${sorted[2].name}** — ${sorted[2].score} pts`
+          : null,
+      ].filter(Boolean);
+
+      await sendDiscordLog(
+        getRandomMessage(MESSAGE_SETS.END_TOP, {
+          type,
+          start: formatDateShort(previousTop.start_date),
+          end: formatDateShort(previousTop.end_date),
+          podium,
+        })
+      );
+    }
+
     // Calcul du dimanche (début de semaine)
     const day = now.getDay(); // 0 = dimanche, 6 = samedi
     const diffToSunday = day; // nombre de jours à reculer
@@ -83,7 +120,7 @@ router.get("/:type", async (req, res) => {
     }
 
     await sendDiscordLog(
-      getRandomMessage(NEW_TOP_MESSAGES, {
+      getRandomMessage(MESSAGE_SETS.NEW_TOP, {
         type,
         start: formatDateShort(newTop.start_date),
         end: formatDateShort(newTop.end_date),

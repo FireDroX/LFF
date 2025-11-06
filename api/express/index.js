@@ -8,5 +8,6 @@ router.use("/leaderboard/history", require("./historyTops"));
 router.use("/leaderboards/update", require("./updatePoints"));
 router.use("/points/add", require("./addPoints"));
 router.use("/points/remove", require("./removePoints"));
+router.use("/profile", require("./profile"));
 
 module.exports = router;

@@ -1,0 +1,136 @@
+.profile-dashboard {
+  padding-block: 5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  color: var(--text85);
+  align-items: center;
+}
+
+.profile-dashboard--center {
+  justify-content: center;
+  align-items: center;
+  min-height: 60vh;
+}
+
+.profile-card {
+  background: var(--text5);
+  border: 1px solid var(--accent35);
+  border-radius: 16px;
+  padding: 1rem 0 0 1rem;
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  width: 550px;
+  gap: 1rem;
+}
+
+.profile-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: left;
+  flex-direction: row;
+  gap: 3rem;
+  width: 100%;
+}
+
+.profile-card-footer {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  width: 100%;
+}
+
+.profile-card-name {
+  margin: 0;
+}
+
+.profile-card-pic {
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  border: 2px solid var(--accent35);
+}
+
+.profile-card-access {
+  margin-top: 0.3rem;
+  font-size: 0.9rem;
+  text-align: left;
+}
+
+.profile-access-badges {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.4rem;
+}
+
+.access-badge {
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--text85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  width: min-content;
+}
+
+.access-badge.gang {
+  background-color: var(--accent85);
+}
+
+.access-badge.island {
+  background-color: var(--accent85);
+}
+
+.access-badge.admin {
+  background-color: #ff5252;
+}
+
+.profile-chart {
+  border-radius: 10px;
+  width: 400px;
+  height: 222px;
+  object-fit: contain;
+}
+
+@media (max-width: 900px) {
+  .profile-card {
+    width: 400px;
+  }
+
+  .profile-card-footer {
+    flex-direction: column;
+  }
+
+  .profile-access-badges {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 500px) {
+  .profile-card {
+    width: 350px;
+  }
+
+  .profile-card-header {
+    gap: 1.5rem;
+  }
+
+  .profile-card-footer {
+    flex-direction: column;
+  }
+
+  .profile-access-badges {
+    flex-direction: row;
+  }
+
+  .profile-chart {
+    width: 350px;
+  }
+}

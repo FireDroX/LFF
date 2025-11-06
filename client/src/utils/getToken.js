@@ -11,6 +11,10 @@ const getToken = async (code) => {
 
   const resultJson = await result.json();
 
+  if (!result.ok) {
+    throw new Error(resultJson?.error || "Failed to fetch token");
+  }
+
   window.localStorage.setItem("access_token", resultJson.access_token);
   window.localStorage.setItem("token_type", resultJson.token_type);
   return resultJson;

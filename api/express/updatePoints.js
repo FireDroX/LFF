@@ -3,11 +3,7 @@ const { createClient } = require("@supabase/supabase-js");
 
 const checkAuth = require("../../utils/checkAuth");
 const sendDiscordLog = require("../../utils/sendDiscordLog");
-const {
-  getRandomMessage,
-  STAFF_ADD_MESSAGES,
-  STAFF_REMOVE_MESSAGES,
-} = require("../../utils/messages");
+const { getRandomMessage, MESSAGE_SETS } = require("../../utils/messages");
 
 const router = express.Router();
 
@@ -139,7 +135,7 @@ router.patch("/:type", checkAuth, async (req, res) => {
     const sortedUsers = [...users].sort((a, b) => b.score - a.score);
 
     const logMessage = getRandomMessage(
-      scoreDelta > 0 ? STAFF_ADD_MESSAGES : STAFF_REMOVE_MESSAGES,
+      scoreDelta > 0 ? MESSAGE_SETS.STAFF_ADD : MESSAGE_SETS.STAFF_REMOVE,
       {
         staff: req.user.username,
         target: logTargetName || "Unknown",
