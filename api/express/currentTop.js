@@ -66,13 +66,13 @@ router.get("/:type", async (req, res) => {
 
       const podium = [
         sorted[0]
-          ? `> 🥇 **${sorted[0].name}** — ${sorted[0].score} pts`
+          ? `> - 🥇 **${sorted[0].name}** — ${sorted[0].score} pts`
           : null,
         sorted[1]
-          ? `> 🥈 **${sorted[1].name}** — ${sorted[1].score} pts`
+          ? `> - 🥈 **${sorted[1].name}** — ${sorted[1].score} pts`
           : null,
         sorted[2]
-          ? `> 🥉 **${sorted[2].name}** — ${sorted[2].score} pts`
+          ? `> - 🥉 **${sorted[2].name}** — ${sorted[2].score} pts`
           : null,
       ].filter(Boolean);
 

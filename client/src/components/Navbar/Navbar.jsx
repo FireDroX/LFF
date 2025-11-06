@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
-import { CgTrash } from "react-icons/cg";
+import { CgTrash, CgProfile } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { GiTwoCoins } from "react-icons/gi";
@@ -50,30 +50,6 @@ const Navbar = ({ userData }) => {
     }
   };
 
-  const Leaderboards = () => {
-    const paths = [
-      { path: "Weekly", icon: <MdLeaderboard /> },
-      { path: "IsValue", icon: <GiTwoCoins /> },
-    ];
-
-    return (
-      <>
-        {paths
-          .filter(({ path }) => path.toLowerCase() !== server) // on retire le serveur actif
-          .map(({ path, icon }) => (
-            <li
-              key={path}
-              className="dropdown-item"
-              onClick={() => navigate(`?p=${path}`)}
-            >
-              {icon}
-              <span>{path}</span>
-            </li>
-          ))}
-      </>
-    );
-  };
-
   return (
     <>
       <div className="navbar">
@@ -89,56 +65,92 @@ const Navbar = ({ userData }) => {
             <IoIosArrowDown />
             {isOpen && (
               <ul className="dropdown-menu-navbar">
-                <Leaderboards />
-                <li
-                  className="dropdown-item"
-                  onClick={() => setHistoryModal((prev) => !prev)}
-                  style={{
-                    borderTop: "1px solid var(--accent35)",
-                  }}
-                >
-                  <FaHistory />
-                  <span>History</span>
-                </li>
-                <li className="dropdown-item" onClick={handleThemeChange}>
-                  <IoIosColorPalette />
-                  <span>{theme === "Dark" ? "Light" : "Dark"} Theme</span>
-                </li>
-                {userData && (
-                  <>
-                    {userData.isAdmin && (
+                {[
+                  // --- PROFIL ---
+                  userData && {
+                    label: "Profile",
+                    icon: <CgProfile />,
+                    action: () => navigate("?p=Profile"),
+                    borderBottom: true,
+                  },
+
+                  // --- CLASSEMENTS ---
+                  ...[
+                    { path: "Weekly", icon: <MdLeaderboard /> },
+                    { path: "IsValue", icon: <GiTwoCoins /> },
+                  ]
+                    .filter(({ path }) => path.toLowerCase() !== server)
+                    .map(({ path, icon }) => ({
+                      label: path,
+                      icon,
+                      action: () => navigate(`?p=${path}`),
+                    })),
+
+                  // --- HISTORY ---
+                  {
+                    label: "History",
+                    icon: <FaHistory />,
+                    action: () => setHistoryModal((prev) => !prev),
+                    borderTop: true,
+                  },
+
+                  // --- THEME ---
+                  {
+                    label: `${theme === "Dark" ? "Light" : "Dark"} Theme`,
+                    icon: <IoIosColorPalette />,
+                    action: handleThemeChange,
+                  },
+
+                  // --- ADMIN DASHBOARD ---
+                  userData?.isAdmin && {
+                    label: "Dashboard",
+                    icon: <MdAdminPanelSettings />,
+                    action: () => navigate("?p=Dashboard"),
+                    borderTop: true,
+                  },
+
+                  // --- DELETE POINTS ---
+                  userData && {
+                    label: "Delete Points",
+                    icon: <CgTrash />,
+                    action: () => setRemoveModal((prev) => !prev),
+                    color: "#ff5252",
+                    borderTop: true,
+                  },
+
+                  // --- DISCONNECT ---
+                  userData && {
+                    label: "Disconnect",
+                    icon: <VscDebugDisconnect />,
+                    action: handleDisconnect,
+                    color: "#a70000",
+                  },
+                ]
+                  .filter(Boolean) // enlève les 'false' ou undefined
+                  .map(
+                    (
+                      { label, icon, action, borderTop, borderBottom, color },
+                      i
+                    ) => (
                       <li
+                        key={i}
                         className="dropdown-item"
-                        onClick={() => navigate(`?p=Dashboard`)}
+                        onClick={action}
                         style={{
-                          borderTop: "1px solid var(--accent35)",
+                          ...(borderTop && {
+                            borderTop: "1px solid var(--accent35)",
+                          }),
+                          ...(borderBottom && {
+                            borderBottom: "1px solid var(--accent35)",
+                          }),
+                          ...(color && { color }),
                         }}
                       >
-                        <MdAdminPanelSettings />
-                        <span>Dashboard</span>
+                        {icon}
+                        <span>{label}</span>
                       </li>
-                    )}
-                    <li
-                      className="dropdown-item"
-                      style={{
-                        color: "#ff5252",
-                        borderTop: "1px solid var(--accent35)",
-                      }}
-                      onClick={() => setRemoveModal((prev) => !prev)}
-                    >
-                      <CgTrash />
-                      <span>Delete Points</span>
-                    </li>
-                    <li
-                      className="dropdown-item"
-                      style={{ color: "#a70000" }}
-                      onClick={handleDisconnect}
-                    >
-                      <VscDebugDisconnect />
-                      <span>Disconnect</span>
-                    </li>
-                  </>
-                )}
+                    )
+                  )}
               </ul>
             )}
           </div>

@@ -10,6 +10,7 @@ import Navbar from "./components/Navbar/Navbar";
 const Weekly = lazy(() => import("./pages/weekly/Weekly"));
 const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
+const Profile = lazy(() => import("./pages/profile/Profile"));
 
 const DynamicPage = ({ isLogged, data }) => {
   const [page, setPage] = useState(null);
@@ -23,6 +24,8 @@ const DynamicPage = ({ isLogged, data }) => {
   }, [location]);
 
   switch (page) {
+    case "profile":
+      return <Profile isLogged={isLogged} data={data} />;
     case "dashboard":
       return <Dashboard isLogged={isLogged} isAdmin={data?.isAdmin} />;
     case "isvalue":
