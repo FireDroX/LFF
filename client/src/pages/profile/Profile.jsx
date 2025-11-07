@@ -44,7 +44,7 @@ const Profile = ({ isLogged, data }) => {
       labels: ["Crystaux", "IsCoin", "DragonEgg", "Beacon", "Sponge"],
       datasets: [
         {
-          label: "Total Points",
+          label: "Valeur Totale (en $)",
           data: [
             totals.crystaux,
             totals.iscoin,
@@ -58,15 +58,16 @@ const Profile = ({ isLogged, data }) => {
       ],
     },
     options: {
-      indexAxis: "y", // met les barres horizontales
-      layout: { padding: 10 },
-      plugins: {
-        legend: { display: false },
-        title: { display: true, text: "Points Totaux par Classement" },
-      },
       scales: {
-        x: { beginAtZero: true, position: "top" }, // barre verticale à droite
-        y: { ticks: { color: "#fff" } },
+        yAxes: [
+          {
+            id: "Y1",
+            position: "right",
+          },
+        ],
+      },
+      plugins: {
+        tickFormat: "a",
       },
     },
   };
