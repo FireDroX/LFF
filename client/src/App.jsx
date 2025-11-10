@@ -2,8 +2,7 @@ import "./App.css";
 import { useState, useEffect, Suspense, lazy } from "react";
 import { Routes, Route, useLocation } from "react-router-dom";
 
-import getToken from "./utils/getToken";
-import getMe from "./utils/getMe";
+import { getMe, getToken } from "./utils/requests";
 
 import Navbar from "./components/Navbar/Navbar";
 

@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { GiTwoCoins } from "react-icons/gi";
 
-import profile from "../../utils/profile";
+import { profile } from "../../utils/requests";
 
 const Profile = ({ isLogged, data }) => {
   const [totals, setTotals] = useState({

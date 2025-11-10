@@ -2,7 +2,7 @@ import "./RemovePoints.css";
 
 import { MdCancel } from "react-icons/md";
 
-import removePoints from "../../utils/removePoints";
+import { removePoints } from "../../utils/requests";
 
 const RemovePoints = ({ closeModal, path }) => {
   const handleRemovePoints = () => {

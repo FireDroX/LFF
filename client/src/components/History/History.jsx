@@ -1,8 +1,10 @@
 import "./History.css";
 import { useEffect, useState } from "react";
-import { MdCancel } from "react-icons/md";
-import historyTops from "../../utils/historyTops";
+
+import { historyTops } from "../../utils/requests";
 import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
+
+import { MdCancel } from "react-icons/md";
 import { FaTrophy } from "react-icons/fa";
 
 const History = ({ closeModal }) => {
