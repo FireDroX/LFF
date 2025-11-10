@@ -10,7 +10,7 @@ const supabase = createClient(
 
 // 💰 Poids de conversion des points en "money"
 const VALUE_WEIGHTS = {
-  crystaux: 10_000_000_000, // 10B
+  crystaux: 1_000_000_000, // 1B
   iscoin: 2_000_000, // 2M
   dragonegg: 1_500_000_000, // 1.5B
   beacon: 150_000_000, // 150M
