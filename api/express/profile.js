@@ -8,6 +8,15 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
+// 💰 Poids de conversion des points en "money"
+const VALUE_WEIGHTS = {
+  crystaux: 10_000_000_000, // 10B
+  iscoin: 2_000_000, // 2M
+  dragonegg: 1_500_000_000, // 1.5B
+  beacon: 150_000_000, // 150M
+  sponge: 15_000_000, // 15M
+};
+
 router.get("/", checkAuth, async (req, res) => {
   const { id } = req.user;
 
@@ -24,7 +33,10 @@ router.get("/", checkAuth, async (req, res) => {
 
   for (const top of tops || []) {
     const player = top.users?.find((u) => u.userId === id);
-    if (player) totals[top.type] += player.score;
+    if (player) {
+      const weight = VALUE_WEIGHTS[top.type] || 1;
+      totals[top.type] += player.score * weight;
+    }
   }
 
   res.json({

@@ -3,8 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import Dropdown from "../../components/Dropdown/Dropdown.jsx";
 
-import currentTop from "../../utils/currentTop";
-import staffUpdatePoints from "../../utils/updatePoints";
+import { currentTop, updatePoints } from "../../utils/requests.js";
 import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../../utils/pointOptions";
 import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
 
@@ -163,7 +162,7 @@ const Dashboard = ({ isLogged, isAdmin }) => {
         userId: form.userId ? String(form.userId) : undefined,
       };
 
-      const updated = await staffUpdatePoints(type, payload);
+      const updated = await updatePoints(type, payload);
       if (updated?.error) {
         throw new Error(updated.error);
       }
