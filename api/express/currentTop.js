@@ -12,14 +12,19 @@ const supabase = createClient(
 );
 
 const formatDateShort = (isoString) => {
-  if (!isoString) return ""; // ⛔️ évite les NaN
+  if (!isoString) return "";
+
   const date = new Date(isoString);
-  if (isNaN(date)) return ""; // ⛔️ si la date est invalide
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const hours = String(date.getUTCHours()).padStart(2, "0");
-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-  return `${day}/${month} ${hours}h${minutes}`;
+
+  return date
+    .toLocaleString("fr-FR", {
+      timeZone: "Europe/Paris",
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    .replace(",", ""); // retir le ',' entre date et heure
 };
 
 /**
@@ -86,25 +91,34 @@ router.get("/:type", async (req, res) => {
       );
     }
 
-    // Calcul du dimanche (début de semaine)
-    const day = now.getDay(); // 0 = dimanche, 6 = samedi
-    const diffToSunday = day; // nombre de jours à reculer
-    const startDate = new Date(now);
-    startDate.setDate(now.getDate() - diffToSunday);
-    startDate.setHours(0, 0, 0, 0); // dimanche à 00:00:00
+    // 1 — date actuelle en France
+    const nowParis = new Date(
+      new Date().toLocaleString("en-CA", {
+        timeZone: "Europe/Paris",
+        hour12: false,
+      })
+    );
 
-    // Calcul du samedi (fin de semaine)
-    const endDate = new Date(startDate);
-    endDate.setDate(startDate.getDate() + 6);
-    endDate.setHours(23, 59, 59, 999); // samedi à 23:59:59
+    // 2 — quel jour FR
+    const day = nowParis.getDay(); // 0 dimanche, 6 samedi
+
+    // 3 — trouver dimanche FR
+    const startParis = new Date(nowParis);
+    startParis.setDate(nowParis.getDate() - day);
+    startParis.setHours(0, 0, 0, 0);
+
+    // 4 — samedi FR
+    const endParis = new Date(startParis);
+    endParis.setDate(startParis.getDate() + 6);
+    endParis.setHours(23, 59, 59, 999);
 
     // Insertion dans Supabase
     const { data: newTop, error: insertError } = await supabase
       .from("tops")
       .insert([
         {
-          start_date: startDate.toISOString(),
-          end_date: endDate.toISOString(),
+          start_date: startParis.toISOString(),
+          end_date: endParis.toISOString(),
           users: [],
           type,
         },
