@@ -35,7 +35,6 @@ router.get("/:type", async (req, res) => {
   }
 
   const now = new Date();
-  const nowUTC = new Date(now.getTime() - now.getTimezoneOffset() * 60000);
 
   // Étape 1 : Cherche un classement existant pour cette semaine
   let { data: currentTop, error } = await supabase
@@ -43,7 +42,7 @@ router.get("/:type", async (req, res) => {
     .select("*")
     .eq("type", type)
     .or(
-      `and(start_date.lte.${nowUTC.toISOString()},end_date.gte.${nowUTC.toISOString()}),and(start_date.is.null,end_date.is.null)`
+      `and(start_date.lte.'${now.toISOString()}',end_date.gte.'${now.toISOString()}'),and(start_date.is.null,end_date.is.null)`
     )
     .single();
 
@@ -56,7 +55,7 @@ router.get("/:type", async (req, res) => {
       .from("tops")
       .select("*")
       .eq("type", type)
-      .lt("end_date", nowUTC.toISOString())
+      .lt("end_date", now.toISOString())
       .order("end_date", { ascending: false })
       .limit(1)
       .single();
