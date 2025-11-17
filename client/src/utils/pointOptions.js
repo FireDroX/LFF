@@ -12,7 +12,7 @@ export const WEEKLY_OPTIONS = {
     label: "Crystaux",
     format: (p) =>
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 100)} Crystaux`,
-    requiredAmount: 50,
+    requiredAmount: 100,
     icon: crystaux,
   },
   iscoin: {
@@ -20,7 +20,7 @@ export const WEEKLY_OPTIONS = {
     label: "IsCoin",
     format: (p) =>
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 2000000)} $`,
-    requiredAmount: 1000,
+    requiredAmount: 10000,
     icon: iscoin,
   },
 };
