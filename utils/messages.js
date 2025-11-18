@@ -215,26 +215,26 @@ const END_TOP_MESSAGES = [
 
 // ✅ Message suppresion de X points dans X classement
 const REMOVE_SINGLE_MESSAGES = [
-  ({ user, amount, type, total }) =>
-    `> ➖ ${user} a retiré **${amount} ${type}** ${EMOJIS_TYPES[type]}. Nouveau total : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> 🔻 ${amount} ${type} ${EMOJIS_TYPES[type]} ont été retirés à ${user}. Total actuel : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> ❗ ${user} perd **${amount} ${type}** ${EMOJIS_TYPES[type]}. Nouveau score : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> 📉 Retrait de **${amount} ${type}** ${EMOJIS_TYPES[type]} pour ${user}. Total = **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> ⚠️ ${user} s'est vu retirer **${amount} ${type}** ${EMOJIS_TYPES[type]}. Score restant : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> 🔴 ${amount} ${type} ${EMOJIS_TYPES[type]} en moins pour ${user}. Nouveau total : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> ⬇️ ${user} perd ${amount} ${type} ${EMOJIS_TYPES[type]}. Total mis à jour : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> ❌ ${amount} ${type} ${EMOJIS_TYPES[type]} retirés à ${user}. Score après retrait : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> 🟥 ${user} perd ${amount} ${type} ${EMOJIS_TYPES[type]}. Nouveau score total : **${total}**.`,
-  ({ user, amount, type, total }) =>
-    `> 📕 ${amount} ${type} ${EMOJIS_TYPES[type]} retirés à ${user}. Total restant : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ➖ ${user} a retiré **${score} ${type}** ${EMOJIS_TYPES[type]}. Nouveau total : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 🔻 ${score} ${type} ${EMOJIS_TYPES[type]} ont été retirés à ${user}. Total actuel : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ❗ ${user} perd **${score} ${type}** ${EMOJIS_TYPES[type]}. Nouveau score : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 📉 Retrait de **${score} ${type}** ${EMOJIS_TYPES[type]} pour ${user}. Total = **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ⚠️ ${user} s'est vu retirer **${score} ${type}** ${EMOJIS_TYPES[type]}. Score restant : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 🔴 ${score} ${type} ${EMOJIS_TYPES[type]} en moins pour ${user}. Nouveau total : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ⬇️ ${user} perd ${score} ${type} ${EMOJIS_TYPES[type]}. Total mis à jour : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ❌ ${score} ${type} ${EMOJIS_TYPES[type]} retirés à ${user}. Score après retrait : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 🟥 ${user} perd ${score} ${type} ${EMOJIS_TYPES[type]}. Nouveau score total : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 📕 ${score} ${type} ${EMOJIS_TYPES[type]} retirés à ${user}. Total restant : **${total}**.`,
 ];
 
 // ✅ Fonction utilitaire pour tirer un message random

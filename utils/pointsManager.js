@@ -80,23 +80,37 @@ async function modifyPoints({ username, userId, type, amount }) {
     return { error: "Aucun classement actif trouvé." };
   }
 
-  const users = currentTop.users || [];
+  let users = currentTop.users || [];
   let index = users.findIndex((u) => u.userId === userId);
+
+  let finalScore;
 
   if (index >= 0) {
     users[index].score += amount;
+    finalScore = users[index].score;
   } else {
+    finalScore = amount;
     users.push({
       name: username,
       userId,
       score: amount,
     });
-
-    // Recalculate index to get the new user's position
     index = users.length - 1;
   }
 
-  // 4️⃣ Sauvegarde
+  // 4️⃣ Suppression si score <= 0
+  if (finalScore <= 0) {
+    users = users.filter((u) => u.userId !== userId);
+
+    // Mise à jour BDD
+    await supabase.from("tops").update({ users }).eq("id", currentTop.id);
+
+    return {
+      deleted: true,
+    };
+  }
+
+  // 5️⃣ Sauvegarde normale
   const { error: updateError } = await supabase
     .from("tops")
     .update({ users })
@@ -106,7 +120,7 @@ async function modifyPoints({ username, userId, type, amount }) {
     return { error: "Erreur lors de la mise à jour du classement." };
   }
 
-  return { success: true, total: users[index].score };
+  return { success: true, total: finalScore };
 }
 
 module.exports = modifyPoints;

@@ -38,14 +38,28 @@ module.exports = async function points(req, res) {
     });
   }
 
+  if (result.deleted) {
+    const msg = getRandomMessage(MESSAGE_SETS.REMOVE_MESSAGES, {
+      user: username,
+      type,
+    });
+
+    await sendDiscordLog(msg);
+
+    return res.send({
+      type: 4,
+      data: { flags: 64, content: msg },
+    });
+  }
+
   // Récupérer le score total depuis Supabase
-  const total = result.total ?? null; // modifyPoints devra renvoyer total plus tard si tu veux
+  const total = result.total ?? null;
 
   const message = getRandomMessage(
     option === "add" ? MESSAGE_SETS.ADD : MESSAGE_SETS.REMOVE_SINGLE,
     {
-      username,
-      amount,
+      user: username,
+      score: amount,
       type,
       total,
     }
