@@ -10,25 +10,25 @@ export default async function registerCommands() {
       name: "uptime",
       description: "Voir depuis combien de temps le serveur est UP.",
     },
-    // {
-    //   name: "leaderboard",
-    //   description: "Voir un leaderboard spécifique",
-    //   options: [
-    //     {
-    //       name: "type",
-    //       type: 3,
-    //       required: true,
-    //       description: "Type de leaderboard",
-    //       choices: [
-    //         { name: "crystaux", value: "crystaux" },
-    //         { name: "iscoin", value: "iscoin" },
-    //         { name: "dragonegg", value: "dragonegg" },
-    //         { name: "beacon", value: "beacon" },
-    //         { name: "sponge", value: "sponge" },
-    //       ],
-    //     },
-    //   ],
-    // },
+    {
+      name: "leaderboard",
+      description: "Voir un leaderboard spécifique",
+      options: [
+        {
+          name: "type",
+          type: 3,
+          required: true,
+          description: "Type de leaderboard",
+          choices: [
+            { name: "crystaux", value: "crystaux" },
+            { name: "iscoin", value: "iscoin" },
+            { name: "dragonegg", value: "dragonegg" },
+            { name: "beacon", value: "beacon" },
+            { name: "sponge", value: "sponge" },
+          ],
+        },
+      ],
+    },
 
     // {
     //   name: "points",
