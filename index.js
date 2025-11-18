@@ -1,7 +1,7 @@
 // index.js
 require("dotenv/config");
 
-const interactionsHandler = require("./api/discord/index").default;
+const interactionsHandler = require("./api/discord/index");
 const { verifyKeyMiddleware } = require("discord-interactions");
 
 const cors = require("cors");

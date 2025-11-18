@@ -1,4 +1,4 @@
-export default async function uptime(req, res) {
+module.exports = async function uptime(req, res) {
   const seconds = Math.floor(process.uptime());
 
   const days = Math.floor(seconds / 86400);
@@ -21,4 +21,4 @@ export default async function uptime(req, res) {
       ],
     },
   });
-}
+};

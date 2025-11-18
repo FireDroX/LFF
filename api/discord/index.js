@@ -1,8 +1,8 @@
-import leaderboard from "./leaderboard.js";
-import points from "./points.js";
-import uptime from "./uptime.js";
+const leaderboard = require("./leaderboard");
+const points = require("./points");
+const uptime = require("./uptime");
 
-export default async function interactionsHandler(req, res) {
+module.exports = async function interactionsHandler(req, res) {
   const { type, data, member } = req.body;
 
   // Approuve
@@ -29,4 +29,4 @@ export default async function interactionsHandler(req, res) {
         });
     }
   }
-}
+};

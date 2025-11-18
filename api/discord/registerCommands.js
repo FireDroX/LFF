@@ -1,10 +1,10 @@
-import fetch from "node-fetch";
-import "dotenv/config";
+require("dotenv/config");
+const fetch = require("node-fetch");
 
 const appId = process.env.DISCORD_CLIENT_ID;
 const token = process.env.DISCORD_CLIENT_TOKEN;
 
-export default async function registerCommands() {
+async function registerCommands() {
   const commands = [
     {
       name: "uptime",

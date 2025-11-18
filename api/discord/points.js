@@ -1,8 +1,8 @@
-const { modifyPoints } = require("../../utils/pointsManager.js");
+const modifyPoints = require("../../utils/pointsManager");
 const { MESSAGE_SETS, getRandomMessage } = require("../../utils/messages");
 const sendDiscordLog = require("../../utils/sendDiscordLog");
 
-export default async function points(req, res) {
+module.exports = async function points(req, res) {
   const { member, data } = req.body;
 
   const option = data.options.find((o) => o.name === "option")?.value; // add/remove
@@ -57,4 +57,4 @@ export default async function points(req, res) {
     type: 4,
     data: { flags: 64, content: message },
   });
-}
+};

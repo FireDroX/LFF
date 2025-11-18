@@ -1,4 +1,4 @@
-export default async function leaderboard(req, res) {
+module.exports = async function leaderboard(req, res) {
   const interaction = req.body;
   const type = interaction.data.options[0].value;
 
@@ -28,7 +28,9 @@ export default async function leaderboard(req, res) {
       const user = users[i];
 
       if (user) {
-        top5.push(`> - ${medals[i]} **${user.score}** — ${user.name.slice(0, 18)}`);
+        top5.push(
+          `> - ${medals[i]} **${user.score}** — ${user.name.slice(0, 18)}`
+        );
       } else {
         top5.push(`> - ${medals[i]} **0** — Nobody`);
       }
@@ -69,7 +71,7 @@ export default async function leaderboard(req, res) {
       },
     });
   }
-}
+};
 
 /**
  * Convertit "2025-11-16T00:00:00.000Z" en "16/11 00:00"

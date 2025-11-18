@@ -1,5 +1,5 @@
-import fetch from "node-fetch";
-import { createClient } from "@supabase/supabase-js";
+const fetch = require("node-fetch");
+const { createClient } = require("@supabase/supabase-js");
 
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
