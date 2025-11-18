@@ -1,11 +1,13 @@
 {
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "register": "node api/discord/registerCommands.js"
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.46.0",
     "cors": "^2.8.5",
+    "discord-interactions": "^4.4.0",
     "dotenv": "^17.2.2",
     "express": "^5.1.0",
     "node-fetch": "^2.7.0"

@@ -19,27 +19,150 @@ Les administrateurs disposent d’un **dashboard** dédié pour modifier les sco
 
 ### 🔸 Côté utilisateur
 
-- 🔐 **Connexion via Discord OAuth2**
-- 🏆 **Classements dynamiques** : Crystaux, IsCoin, Dragon Egg, Beacon, Sponge
-- ⏱️ **Mises à jour automatiques** chaque semaine
-- 🌗 **Thèmes clair/sombre**
-- 🧾 **Historique des classements**
-- ➕ **Ajout et suppression de points** selon les permissions Discord
+#### 🧑‍💻 Connexion & Profil
 
-### 🔸 Côté administrateur
+- 🔐 **Connexion sécurisée via Discord OAuth2**
+- 📊 **Profil utilisateur avec graphique QuickChart** affichant :
 
-- 🛠️ **Dashboard admin** avec édition manuelle des scores
-- ✅ Vérification automatique du rôle Discord (“Manage Roles”) pour autorisation admin
-- 🧩 Système d’audit pour prévenir les modifications concurrentes
-- 📢 **Logs Discord automatiques** (ajout, suppression, nouveau classement, etc.)
+  - Total de chaque type de points
+  - Progression semaine par semaine
+  - Classement actuel
 
-### 🔸 Côté technique
+- 🖼️ **Avatar & pseudo Discord automatiquement synchronisés**
 
-- Backend : **Express.js + Supabase**
-- Frontend : **React.js**
-- Auth : **Discord OAuth2**
-- Hébergement : Supabase + Node.js
-- Système de messages dynamiques (`messages.js`) pour une expérience plus vivante
+#### 🏆 Classements & Historique
+
+- Visualisation en temps réel des classements :
+
+  - Crystaux
+  - IsCoin
+  - Dragon Egg
+  - Beacon
+  - Sponge
+
+- Historique complet par type de classement
+- Page dédiée aux tops hebdomadaires / mensuels
+
+#### ➕ Modification des points
+
+Selon leur rôle Discord, les utilisateurs peuvent :
+
+- Ajouter des points
+- Retirer des points
+- Voir en direct leur score mis à jour
+
+Avec des **messages dynamiques contextualisés** (messages.js).
+
+---
+
+### 🔸 **Côté administrateur**
+
+#### 🛠️ Dashboard
+
+- Gestion de tous les tops (activation, démarrage, fermeture)
+- Édition manuelle des scores
+- Visualisation détaillée de chaque utilisateur
+- Audit trail :
+
+  - Qui modifie ?
+  - Quand ?
+  - Quel type ?
+
+#### 🔐 Permissions avancées
+
+Basé sur les rôles Discord :
+
+| Rôle          | Permissions                                |
+| ------------- | ------------------------------------------ |
+| `ROLE_GANG`   | Modifier _crystaux_                        |
+| `ROLE_ISLAND` | Modifier iscoin, dragonegg, beacon, sponge |
+| `ROLE_STAFF`  | Accès complet (ignore les restrictions)    |
+
+#### 🔔 Logs automatiques Discord
+
+Chaque modification déclenche un log :
+
+- Ajout de points
+- Suppression de points
+- Création d’un classement
+- Fermeture d’un classement
+- Anomalies détectées
+
+---
+
+## 💬 Commandes Discord
+
+### `/leaderboard`
+
+Affiche le classement du type sélectionné.
+
+### `/points option:<add/remove> type:<...> amount:<nombre>`
+
+Permet aux utilisateurs (selon rôle) de :
+
+- Ajouter des points
+- Retirer des points
+
+Exemple :
+
+```
+/points option:add type:crystaux amount:50
+```
+
+### `/uptime`
+
+Affiche le temps de fonctionnement du bot.
+
+---
+
+## 🌐 Site Web
+
+### Pages principales :
+
+#### 🏆 Classements
+
+Visualisation en temps réel, filtrable par catégorie.
+
+#### 👤 Profil
+
+Contient :
+
+- Votre avatar Discord
+- Vos scores cumulés
+- Votre classement global
+- Un **graphique QuickChart** généré automatiquement
+
+#### 📚 Historique
+
+Liste de tous les tops terminés, consultables individuellement.
+
+#### 🔧 Dashboard (Admin uniquement)
+
+Gestion complète :
+
+- Modifier les scores d’un utilisateur
+- Lancer / terminer un classement
+- Vérifier les logs
+- Surveiller les événements récents
+
+---
+
+## 🧩 Partie technique
+
+### **Stack :**
+
+- **Backend :** Node.js + Express.js
+- **Base de données :** Supabase (PostgreSQL)
+- **Frontend :** React.js
+- **Auth :** Discord OAuth2
+- **Graphiques :** QuickChart
+- **Hébergement :** Render + Supabase
+
+### **Système des interactions Discord**
+
+- Commands via API Discord (sans discord.js)
+- Signature vérifiée via `verifyKeyMiddleware`
+- Gestion 100% manuelle des réponses
 
 ---
 
@@ -56,6 +179,9 @@ npm install
 # Lancement du serveur backend
 npm run dev
 
+# Install des commandes du bot discord
+npm run register
+
 # Lancement du frontend
 cd ./client
 npm run start
@@ -69,6 +195,8 @@ PORT=Celui que vous voulez
 DISCORD_CLIENT_ID=...
 DISCORD_CLIENT_TOKEN=...
 DISCORD_CLIENT_SECRET=...
+DISCORD_CLIENT_PUBLIC_KEY...
+
 DISCORD_GUILD_ID=...
 DISCORD_ROLE_ISLAND=...
 DISCORD_ROLE_GANG=...
@@ -102,6 +230,6 @@ Merci de respecter la structure du code, les conventions (naming, mise en forme)
 Développé avec ❤️ par **FireDroX**
 Intégration Discord et API Supabase par la communauté LFF.
 
-GitHub : [FireDroX](https://github.com/FireDroX)
-<br />
-Projet hébergé : [lff.onrender.com](https://lff.onrender.com)
+🔗 GitHub : [https://github.com/FireDroX](https://github.com/FireDroX)
+<br/>
+🌐 Site : [https://lff.onrender.com](https://lff.onrender.com)

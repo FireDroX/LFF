@@ -184,42 +184,57 @@ const END_TOP_MESSAGES = [
   ({ type, start, end, podium }) =>
     `> 🏆 Résultats du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 📊 Fin du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 📅 Classement terminé pour **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 🥇 Fin de période pour **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 🏁 Bilan du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 🧾 Résumé final du top **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 🕒 Clôture du classement **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 🧩 Classement **${type}** ${EMOJIS_TYPES[type]} terminé \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 📈 Résultats finaux pour **${type}** ${EMOJIS_TYPES[type]} \`(${start} → ${end})\`\n` +
     podium.join("\n"),
-
   ({ type, start, end, podium }) =>
     `> 🗓️ Le classement **${type}** ${EMOJIS_TYPES[type]} est maintenant clos \`(${start} → ${end})\`\n` +
     podium.join("\n"),
+];
+
+// ✅ Message suppresion de X points dans X classement
+const REMOVE_SINGLE_MESSAGES = [
+  ({ user, score, type, total }) =>
+    `> ➖ ${user} a retiré **${score} ${type}** ${EMOJIS_TYPES[type]}. Nouveau total : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 🔻 ${score} ${type} ${EMOJIS_TYPES[type]} ont été retirés à ${user}. Total actuel : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ❗ ${user} perd **${score} ${type}** ${EMOJIS_TYPES[type]}. Nouveau score : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 📉 Retrait de **${score} ${type}** ${EMOJIS_TYPES[type]} pour ${user}. Total = **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ⚠️ ${user} s'est vu retirer **${score} ${type}** ${EMOJIS_TYPES[type]}. Score restant : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 🔴 ${score} ${type} ${EMOJIS_TYPES[type]} en moins pour ${user}. Nouveau total : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ⬇️ ${user} perd ${score} ${type} ${EMOJIS_TYPES[type]}. Total mis à jour : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> ❌ ${score} ${type} ${EMOJIS_TYPES[type]} retirés à ${user}. Score après retrait : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 🟥 ${user} perd ${score} ${type} ${EMOJIS_TYPES[type]}. Nouveau score total : **${total}**.`,
+  ({ user, score, type, total }) =>
+    `> 📕 ${score} ${type} ${EMOJIS_TYPES[type]} retirés à ${user}. Total restant : **${total}**.`,
 ];
 
 // ✅ Fonction utilitaire pour tirer un message random
@@ -235,6 +250,7 @@ module.exports = {
     FIRST_ENTRY: FIRST_ENTRY_MESSAGES,
     FIRST_PLACE: FIRST_PLACE_MESSAGES,
     REMOVE: REMOVE_MESSAGES,
+    REMOVE_SINGLE: REMOVE_SINGLE_MESSAGES,
     NEW_TOP: NEW_TOP_MESSAGES,
     STAFF_ADD: STAFF_ADD_MESSAGES,
     STAFF_REMOVE: STAFF_REMOVE_MESSAGES,
