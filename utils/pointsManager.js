@@ -31,7 +31,7 @@ async function getUserRoles(userId) {
 /**
  * Modification des points
  */
-export async function modifyPoints({ username, userId, type, amount }) {
+async function modifyPoints({ username, userId, type, amount }) {
   // 1️⃣ Récupération des rôles du membre
   const member = await getUserRoles(userId);
 
@@ -105,3 +105,5 @@ export async function modifyPoints({ username, userId, type, amount }) {
 
   return { success: true, total: users[index].score };
 }
+
+module.exports = modifyPoints;

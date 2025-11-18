@@ -1,9 +1,8 @@
-import { modifyPoints } from "../../utils/pointsManager.js";
-import { getRandomMessage, MESSAGE_SETS } from "../../utils/messages.js";
+const { modifyPoints } = require("../../utils/pointsManager.js");
+const { MESSAGE_SETS, getRandomMessage } = require("../../utils/messages");
+const sendDiscordLog = require("../../utils/sendDiscordLog");
 
 export default async function points(req, res) {
-  const sendDiscordLog = require("../../utils/sendDiscordLog");
-
   const { member, data } = req.body;
 
   const option = data.options.find((o) => o.name === "option")?.value; // add/remove
