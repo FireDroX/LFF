@@ -74,9 +74,25 @@ export default async function registerCommands() {
       Authorization: `Bot ${token}`,
     },
     body: JSON.stringify(commands),
-  });
+  })
+    .then(async (res) => {
+      const data = await res.json().catch(() => null);
 
-  console.log("Slash Commands Registered ✔");
+      if (!res.ok) {
+        console.error("❌ Erreur lors du register des commandes :", data);
+        return;
+      }
+
+      console.log("✅ Slash Commands Registered !");
+      console.log("📌 Commandes enregistrées :");
+
+      data.forEach((cmd) => {
+        console.log(`   ➜ ${cmd.name} (id: ${cmd.id})`);
+      });
+    })
+    .catch((err) => {
+      console.error("❌ Erreur réseau :", err);
+    });
 }
 
 registerCommands().catch((err) => {

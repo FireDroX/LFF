@@ -4,7 +4,7 @@ export default async function leaderboard(req, res) {
 
   try {
     const response = await fetch(
-      `https://lff.onrender.com/leaderboard/${type}`
+      `https://lff.onrender.com/leaderboard/current/${type}`
     );
 
     if (!response.ok) {
