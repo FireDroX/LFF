@@ -3,6 +3,8 @@
 import uptime from "./uptime.js";
 
 export default async function interactionsHandler(req, res) {
+  const { type, data, member } = req.body;
+
   // Approuve
   if (type === 1) return res.send({ type: 1 });
 
