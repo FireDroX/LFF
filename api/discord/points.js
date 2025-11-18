@@ -1,5 +1,5 @@
 import { modifyPoints } from "../../utils/pointsManager.js";
-import messages, { MESSAGE_SETS } from "../../utils/messages.js";
+import { getRandomMessage, MESSAGE_SETS } from "../../utils/messages.js";
 
 export default async function points(req, res) {
   const sendDiscordLog = require("../../utils/sendDiscordLog");
@@ -42,12 +42,7 @@ export default async function points(req, res) {
   // Récupérer le score total depuis Supabase
   const total = result.total ?? null; // modifyPoints devra renvoyer total plus tard si tu veux
 
-  const message =
-    option === "add"
-      ? messages.POINTS_ADD(username, amount, type)
-      : messages.POINTS_REMOVE(username, amount, total, type);
-
-  await sendDiscordLog(
+  const message = getRandomMessage(
     option === "add" ? MESSAGE_SETS.ADD : MESSAGE_SETS.REMOVE_SINGLE,
     {
       username,
@@ -56,6 +51,8 @@ export default async function points(req, res) {
       total,
     }
   );
+
+  await sendDiscordLog(message);
 
   return res.send({
     type: 4,
