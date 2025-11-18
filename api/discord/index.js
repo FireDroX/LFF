@@ -1,5 +1,5 @@
 import leaderboard from "./leaderboard.js";
-// import points from "./points.js";
+import points from "./points.js";
 import uptime from "./uptime.js";
 
 export default async function interactionsHandler(req, res) {
@@ -16,8 +16,8 @@ export default async function interactionsHandler(req, res) {
       case "leaderboard":
         return leaderboard(req, res);
 
-      // case "points":
-      //   return points(req, res);
+      case "points":
+        return points(req, res);
 
       case "uptime":
         return uptime(req, res);

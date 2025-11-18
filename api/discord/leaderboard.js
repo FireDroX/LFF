@@ -28,9 +28,9 @@ export default async function leaderboard(req, res) {
       const user = users[i];
 
       if (user) {
-        top5.push(`${medals[i]} **${user.score}** — ${user.name.slice(0, 18)}`);
+        top5.push(`> - ${medals[i]} **${user.score}** — ${user.name.slice(0, 18)}`);
       } else {
-        top5.push(`${medals[i]} **0** — Nobody`);
+        top5.push(`> - ${medals[i]} **0** — Nobody`);
       }
     }
 

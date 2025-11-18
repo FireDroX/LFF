@@ -29,42 +29,41 @@ export default async function registerCommands() {
         },
       ],
     },
-
-    // {
-    //   name: "points",
-    //   description: "Ajouter ou retirer des points",
-    //   options: [
-    //     {
-    //       name: "option",
-    //       type: 3,
-    //       required: true,
-    //       description: "add/remove",
-    //       choices: [
-    //         { name: "add", value: "add" },
-    //         { name: "remove", value: "remove" },
-    //       ],
-    //     },
-    //     {
-    //       name: "type",
-    //       type: 3,
-    //       required: true,
-    //       description: "Type de points",
-    //       choices: [
-    //         { name: "crystaux", value: "crystaux" },
-    //         { name: "iscoin", value: "iscoin" },
-    //         { name: "dragonegg", value: "dragonegg" },
-    //         { name: "beacon", value: "beacon" },
-    //         { name: "sponge", value: "sponge" },
-    //       ],
-    //     },
-    //     {
-    //       name: "amount",
-    //       type: 4,
-    //       required: true,
-    //       description: "Nombre de points",
-    //     },
-    //   ],
-    // },
+    {
+      name: "points",
+      description: "Ajouter ou retirer des points",
+      options: [
+        {
+          name: "option",
+          type: 3,
+          required: true,
+          description: "add/remove",
+          choices: [
+            { name: "add", value: "add" },
+            { name: "remove", value: "remove" },
+          ],
+        },
+        {
+          name: "type",
+          type: 3,
+          required: true,
+          description: "Type de points",
+          choices: [
+            { name: "crystaux", value: "crystaux" },
+            { name: "iscoin", value: "iscoin" },
+            { name: "dragonegg", value: "dragonegg" },
+            { name: "beacon", value: "beacon" },
+            { name: "sponge", value: "sponge" },
+          ],
+        },
+        {
+          name: "amount",
+          type: 4,
+          required: true,
+          description: "Nombre de points",
+        },
+      ],
+    },
   ];
 
   await fetch(`https://discord.com/api/v10/applications/${appId}/commands`, {
