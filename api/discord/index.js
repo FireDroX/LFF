@@ -13,7 +13,9 @@ export default async function interactionsHandler(req, res) {
     Buffer.from(process.env.DISCORD_CLIENT_PUBLIC_KEY, "hex")
   );
 
-  console.log(isValid);
+  console.log("signature: " + signature);
+  console.log("timestamp: " + timestamp);
+  console.log("isValid: " + isValid);
 
   if (!isValid) return res.status(401).send("Invalid signature");
 
