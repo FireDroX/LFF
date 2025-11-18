@@ -1,27 +1,9 @@
-import nacl from "tweetnacl";
 // import leaderboard from "./leaderboard.js";
 // import points from "./points.js";
 import uptime from "./uptime.js";
 
 export default async function interactionsHandler(req, res) {
-  const signature = req.header("X-Signature-Ed25519");
-  const timestamp = req.header("X-Signature-Timestamp");
-
-  const isValid = nacl.sign.detached.verify(
-    Buffer.from(timestamp + req.rawBody),
-    Buffer.from(signature, "hex"),
-    Buffer.from(process.env.DISCORD_CLIENT_PUBLIC_KEY, "hex")
-  );
-
-  console.log("signature: " + signature);
-  console.log("timestamp: " + timestamp);
-  console.log("isValid: " + isValid);
-
-  if (!isValid) return res.status(401).send("Invalid signature");
-
-  const { type, data, member } = req.body;
-
-  // Ping Discord
+  // Approuve
   if (type === 1) return res.send({ type: 1 });
 
   // Slash command

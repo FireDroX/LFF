@@ -1,6 +1,9 @@
 // index.js
-const interactionsHandler = require("./api/discord/index").default;
 require("dotenv/config");
+
+const interactionsHandler = require("./api/discord/index").default;
+const { verifyKeyMiddleware } = require("discord-interactions");
+
 const cors = require("cors");
 const path = require("node:path");
 const express = require("express");
@@ -15,11 +18,7 @@ app.use("/", routes);
 
 app.post(
   "/interactions",
-  express.json({
-    verify: (req, res, buf) => {
-      req.rawBody = buf;
-    },
-  }),
+  verifyKeyMiddleware(process.env.DISCORD_CLIENT_PUBLIC_KEY),
   interactionsHandler
 );
 
