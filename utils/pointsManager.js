@@ -50,7 +50,7 @@ async function modifyPoints({ username, userId, type, amount }) {
     if (type === "crystaux" && !hasGang) {
       return {
         error:
-          "❌ Vous n'avez pas le rôle nécessaire pour modifier les points *crystaux*.",
+          "Vous n'avez pas le rôle nécessaire pour modifier les points *crystaux*.",
       };
     }
 
@@ -59,7 +59,7 @@ async function modifyPoints({ username, userId, type, amount }) {
       !hasIsland
     ) {
       return {
-        error: `❌ Vous n'avez pas le rôle nécessaire pour modifier les points *${type}*.`,
+        error: `Vous n'avez pas le rôle nécessaire pour modifier les points *${type}*.`,
       };
     }
   }
@@ -77,7 +77,9 @@ async function modifyPoints({ username, userId, type, amount }) {
     .single();
 
   if (error || !currentTop) {
-    return { error: "Aucun classement actif trouvé." };
+    return {
+      error: `Aucun classement actif trouvé. Essayez \`/leaderboard ${type}\``,
+    };
   }
 
   let users = currentTop.users || [];
