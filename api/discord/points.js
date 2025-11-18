@@ -38,8 +38,9 @@ module.exports = async function points(req, res) {
     });
   }
 
+  // ✅ suppression de la ligne → message REMOVE_MESSAGES
   if (result.deleted) {
-    const msg = getRandomMessage(MESSAGE_SETS.REMOVE_MESSAGES, {
+    const msg = getRandomMessage(MESSAGE_SETS.REMOVE, {
       user: username,
       type,
     });
