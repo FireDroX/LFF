@@ -10,7 +10,7 @@ module.exports = async function points(req, res) {
   const amount = data.options.find((o) => o.name === "amount")?.value;
 
   const userId = member?.user?.id;
-  const username = member?.user?.username;
+  const username = member?.user?.global_name || member?.user?.username;
 
   if (!userId || !username) {
     return res.send({

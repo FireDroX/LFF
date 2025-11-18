@@ -81,7 +81,7 @@ async function modifyPoints({ username, userId, type, amount }) {
   }
 
   const users = currentTop.users || [];
-  const index = users.findIndex((u) => u.userId === userId);
+  let index = users.findIndex((u) => u.userId === userId);
 
   if (index >= 0) {
     users[index].score += amount;
@@ -91,6 +91,9 @@ async function modifyPoints({ username, userId, type, amount }) {
       userId,
       score: amount,
     });
+
+    // Recalculate index to get the new user's position
+    index = users.length - 1;
   }
 
   // 4️⃣ Sauvegarde
