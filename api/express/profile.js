@@ -11,6 +11,7 @@ const supabase = createClient(
 // 💰 Poids de conversion des points en "money"
 const VALUE_WEIGHTS = {
   crystaux: 1_000_000_000, // 1B
+  pvp: 500_000_000, // 500M
   iscoin: 2_000_000, // 2M
   dragonegg: 1_500_000_000, // 1.5B
   beacon: 150_000_000, // 150M
@@ -25,6 +26,7 @@ router.get("/", checkAuth, async (req, res) => {
 
   const totals = {
     crystaux: 0,
+    pvp: 0,
     iscoin: 0,
     dragonegg: 0,
     beacon: 0,

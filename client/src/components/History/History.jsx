@@ -8,7 +8,7 @@ import { MdCancel } from "react-icons/md";
 import { FaTrophy } from "react-icons/fa";
 
 const History = ({ closeModal }) => {
-  const [history, setHistory] = useState({ crystaux: [], iscoin: [] });
+  const [history, setHistory] = useState({ crystaux: [], pvp: [], iscoin: [] });
   const [loading, setLoading] = useState(true);
   const [selectedType, setSelectedType] = useState("crystaux");
 
@@ -18,6 +18,7 @@ const History = ({ closeModal }) => {
       if (Array.isArray(data)) {
         setHistory({
           crystaux: data.filter((t) => t.type === "crystaux"),
+          pvp: data.filter((t) => t.type === "pvp"),
           iscoin: data.filter((t) => t.type === "iscoin"),
         });
       }
@@ -90,6 +91,7 @@ const History = ({ closeModal }) => {
           onChange={(e) => setSelectedType(e.target.value)}
         >
           <option value="crystaux">💎 Crystaux</option>
+          <option value="pvp">⚔️ PVP</option>
           <option value="iscoin">🪙 Iscoin</option>
         </select>
 
@@ -97,6 +99,8 @@ const History = ({ closeModal }) => {
           <div className="history-loading">Chargement...</div>
         ) : selectedType === "crystaux" ? (
           renderLeaderboard("💎 Historique Crystaux", history.crystaux)
+        ) : selectedType === "pvp" ? (
+          renderLeaderboard("⚔️ Historique PVP", history.pvp)
         ) : (
           renderLeaderboard("🪙 Historique Iscoin", history.iscoin)
         )}

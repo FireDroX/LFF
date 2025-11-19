@@ -1,6 +1,7 @@
 const EMOJIS_TYPES = {
   // ===== TYPES =====
   crystaux: "<:crystaux:1435609810438717551>",
+  pvp: "⚔️",
   iscoin: "<:iscoin:1435610578566516889>",
   dragonegg: "<:dragon_egg:1435590827723460628>",
   beacon: "<:beacon:1435590833276452874>",

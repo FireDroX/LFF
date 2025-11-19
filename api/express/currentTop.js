@@ -113,7 +113,7 @@ function formatDateShort(isoString) {
 router.get("/:type", async (req, res) => {
   const { type } = req.params;
 
-  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge"].includes(type)) {
+  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(type)) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 

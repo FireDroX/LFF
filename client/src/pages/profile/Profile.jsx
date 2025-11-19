@@ -9,6 +9,7 @@ import { profile } from "../../utils/requests";
 const Profile = ({ isLogged, data }) => {
   const [totals, setTotals] = useState({
     crystaux: 0,
+    pvp: 0,
     iscoin: 0,
     dragonegg: 0,
     beacon: 0,
@@ -41,12 +42,13 @@ const Profile = ({ isLogged, data }) => {
   const chartConfig = {
     type: "bar",
     data: {
-      labels: ["Crystaux", "IsCoin", "DragonEgg", "Beacon", "Sponge"],
+      labels: ["Crystaux", "PVP", "IsCoin", "DragonEgg", "Beacon", "Sponge"],
       datasets: [
         {
           label: "Valeur Totale (en $)",
           data: [
             totals.crystaux,
+            totals.pvp,
             totals.iscoin,
             totals.dragonegg,
             totals.beacon,

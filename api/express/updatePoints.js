@@ -12,7 +12,14 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY
 );
 
-const VALID_TYPES = ["crystaux", "iscoin", "dragonegg", "beacon", "sponge"];
+const VALID_TYPES = [
+  "crystaux",
+  "pvp",
+  "iscoin",
+  "dragonegg",
+  "beacon",
+  "sponge",
+];
 
 router.patch("/:type", checkAuth, async (req, res) => {
   try {

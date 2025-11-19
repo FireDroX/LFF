@@ -1,6 +1,7 @@
 import { formatNumberWithSpaces, compactNumber } from "./functions";
 
 import crystaux from "../assets/crystaux.webp";
+import pvp from "../assets/pvp.webp";
 import iscoin from "../assets/iscoin.webp";
 import dragon_egg from "../assets/dragon_egg.webp";
 import beacon from "../assets/beacon.webp";
@@ -14,6 +15,13 @@ export const WEEKLY_OPTIONS = {
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 100)} Crystaux`,
     requiredAmount: 100,
     icon: crystaux,
+  },
+  pvp: {
+    multiplier: 1,
+    label: "PVP",
+    format: (p) => `${formatNumberWithSpaces(p)} pts`,
+    requiredAmount: 100,
+    icon: pvp,
   },
   iscoin: {
     multiplier: 2000000,
