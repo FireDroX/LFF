@@ -49,7 +49,6 @@
   background: var(--bg);
   border: 1px solid var(--accent35);
   border-radius: 8px;
-  max-height: 200px;
   overflow-y: auto;
   z-index: 1000;
 }

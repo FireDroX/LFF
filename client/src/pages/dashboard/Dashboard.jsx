@@ -7,7 +7,14 @@ import { currentTop, updatePoints } from "../../utils/requests.js";
 import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../../utils/pointOptions";
 import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
 
-const STAFF_TYPES = ["crystaux", "iscoin", "dragonegg", "beacon", "sponge"];
+const STAFF_TYPES = [
+  "crystaux",
+  "pvp",
+  "iscoin",
+  "dragonegg",
+  "beacon",
+  "sponge",
+];
 const POINT_OPTIONS = {
   ...WEEKLY_OPTIONS,
   ...ISVALUE_OPTIONS,

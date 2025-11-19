@@ -21,7 +21,11 @@ router.post("/:type", checkAuth, async (req, res) => {
   const { type } = req.params;
 
   // Vérification du type demandé
-  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge"].includes(type)) {
+  if (
+    !["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(
+      type
+    )
+  ) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 
