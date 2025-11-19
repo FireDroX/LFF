@@ -47,7 +47,7 @@ async function modifyPoints({ username, userId, type, amount }) {
 
   // 2️⃣ Vérification permission selon le type
   if (!isStaff) {
-    if (type === "crystaux" && !hasGang) {
+    if (["crystaux", "pvp"].includes(type) && !hasGang) {
       return {
         error:
           "Vous n'avez pas le rôle nécessaire pour modifier les points *crystaux*.",

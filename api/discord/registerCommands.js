@@ -21,6 +21,7 @@ async function registerCommands() {
           description: "Type de leaderboard",
           choices: [
             { name: "crystaux", value: "crystaux" },
+            { name: "pvp", value: "pvp" },
             { name: "iscoin", value: "iscoin" },
             { name: "dragonegg", value: "dragonegg" },
             { name: "beacon", value: "beacon" },
@@ -50,6 +51,8 @@ async function registerCommands() {
           description: "Type de points",
           choices: [
             { name: "crystaux", value: "crystaux" },
+            { name: "pvp", value: "pvp" },
+
             { name: "iscoin", value: "iscoin" },
             { name: "dragonegg", value: "dragonegg" },
             { name: "beacon", value: "beacon" },
