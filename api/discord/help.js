@@ -10,6 +10,7 @@ module.exports = async function help(req, res) {
   return res.send({
     type: 4,
     data: {
+      flags: 64,
       embeds: [
         {
           title: "📘 Liste des commandes disponibles",

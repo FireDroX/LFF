@@ -25,7 +25,7 @@ module.exports = function handleHistoryButtons(req, res) {
         type: 7, // update message
         data: {
           embeds: [embed],
-          components: [paginationButtons(page, history.length)],
+          components: [paginationButtons(page, history.length, type)],
         },
       });
     })

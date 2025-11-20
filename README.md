@@ -114,6 +114,14 @@ Exemple :
 
 Affiche le temps de fonctionnement du bot.
 
+### `/help`
+
+Affiche la liste des commandes disponibles.
+
+### `/history type:<...>`
+
+Consulter les anciens classements et naviguer entre les semaines
+
 ---
 
 ## 🌐 Site Web

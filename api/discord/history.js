@@ -54,7 +54,7 @@ module.exports = async function history(req, res) {
       data: {
         flags: 64,
         embeds: [embed],
-        components: [paginationButtons(page, history.length)],
+        components: [paginationButtons(page, history.length, type)],
       },
     });
   } catch (err) {
