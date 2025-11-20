@@ -17,9 +17,16 @@ export function formatReadableDate(iso) {
 export function buildHistoryEmbed(history, page, type) {
   const top = history[page];
 
+  const medals = ["🥇", "🥈", "🥉"];
+
   const formattedUsers = (top.users || [])
     .slice(0, 10)
-    .map((u, i) => `> **#${i + 1}** — ${u.name} • **${u.score}**`)
+    .map(
+      (u, i) =>
+        `> - ${i <= 2 ? medals[i] : `**#${i + 1}**`} **${
+          u.score
+        }** — ${u.name.slice(0, 18)}`
+    )
     .join("\n");
 
   const start = formatReadableDate(top.start_date);
