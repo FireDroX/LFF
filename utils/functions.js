@@ -34,11 +34,11 @@ export function buildHistoryEmbed(history, page, type) {
     footer: {
       text: `Période : ${start} → ${end} | Page ${page + 1}/${history.length}`,
     },
-    color: parseInt("3498db", 16),
+    color: parseInt("9b59b6", 16), // Couleur embed
   };
 }
 
-export function paginationButtons(page, total) {
+export function paginationButtons(page, total, type) {
   const prevDisabled = page <= 0;
   const nextDisabled = page >= total - 1;
 
@@ -49,14 +49,14 @@ export function paginationButtons(page, total) {
         type: 2,
         style: 2,
         label: "⬅️",
-        custom_id: `history:${page - 1}`,
+        custom_id: `history:${page - 1}:${type}`,
         disabled: prevDisabled,
       },
       {
         type: 2,
         style: 2,
         label: "➡️",
-        custom_id: `history:${page + 1}`,
+        custom_id: `history:${page + 1}:${type}`,
         disabled: nextDisabled,
       },
     ],
