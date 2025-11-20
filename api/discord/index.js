@@ -37,4 +37,9 @@ module.exports = async function interactionsHandler(req, res) {
 
     return handler(req, res);
   }
+
+  // Interactions Boutons (Ex: history pagination)
+  if (type === 3) {
+    return require("./history_pages")(req, res);
+  }
 };

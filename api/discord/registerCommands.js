@@ -76,6 +76,25 @@ const commands = [
     name: "help",
     description: "Affiche la liste des commandes disponibles",
   },
+  // history
+  {
+    name: "history",
+    description:
+      "Consulter les anciens classements et naviguer entre les semaines",
+    options: [
+      {
+        name: "type",
+        type: 3,
+        required: true,
+        description: "Type de leaderboard",
+        choices: [
+          { name: "crystaux", value: "crystaux" },
+          { name: "pvp", value: "pvp" },
+          { name: "iscoin", value: "iscoin" },
+        ],
+      },
+    ],
+  },
 ];
 
 /**
