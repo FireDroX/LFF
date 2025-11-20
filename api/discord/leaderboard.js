@@ -1,3 +1,5 @@
+const { formatReadableDate } = require("../../utils/functions");
+
 module.exports = async function leaderboard(req, res) {
   const interaction = req.body;
   const type = interaction.data.options[0].value;
@@ -72,23 +74,3 @@ module.exports = async function leaderboard(req, res) {
     });
   }
 };
-
-/**
- * Convertit "2025-11-16T00:00:00.000Z" en "16/11 00:00"
- */
-function formatReadableDate(iso) {
-  const d = new Date(iso);
-  if (isNaN(d)) return "";
-
-  // Offset Paris (tu as déjà un système complet, voici une version simple)
-  const utc = d.getTime();
-  const offsetMinutes = d.getTimezoneOffset() === -120 ? 120 : 60;
-  const paris = new Date(utc + offsetMinutes * 60 * 1000);
-
-  const day = String(paris.getUTCDate()).padStart(2, "0");
-  const month = String(paris.getUTCMonth() + 1).padStart(2, "0");
-  const hour = String(paris.getUTCHours()).padStart(2, "0");
-  const minute = String(paris.getUTCMinutes()).padStart(2, "0");
-
-  return `${day}/${month} ${hour}:${minute}`;
-}
