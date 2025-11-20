@@ -31,7 +31,7 @@ module.exports = async function leaderboard(req, res) {
 
       if (user) {
         top5.push(
-          `> - ${medals[i]} **${user.score}** — ${user.name.slice(0, 18)}`
+          `> - ${medals[i]} — **${user.score}** — ${user.name.slice(0, 18)}`
         );
       } else {
         top5.push(`> - ${medals[i]} **0** — Nobody`);
