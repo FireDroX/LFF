@@ -3,7 +3,7 @@
 ## 🔍 Présentation
 
 **LFF** est une plateforme web connectée à un serveur Minecraft et à Discord permettant de gérer et afficher des classements dynamiques :
-💎 Crystaux, 🪙 IsCoin, 🥚 Dragon Egg, 🔷 Beacon et 🧽 Sponge.
+💎 Crystaux, ⚔️ PVP, 🪙 IsCoin, 🥚 Dragon Egg, 🔷 Beacon et 🧽 Sponge.
 
 Les utilisateurs peuvent se connecter via Discord pour :
 
@@ -35,6 +35,7 @@ Les administrateurs disposent d’un **dashboard** dédié pour modifier les sco
 - Visualisation en temps réel des classements :
 
   - Crystaux
+  - PVP
   - IsCoin
   - Dragon Egg
   - Beacon
@@ -74,7 +75,7 @@ Basé sur les rôles Discord :
 
 | Rôle          | Permissions                                |
 | ------------- | ------------------------------------------ |
-| `ROLE_GANG`   | Modifier _crystaux_                        |
+| `ROLE_GANG`   | Modifier crystaux, pvp                     |
 | `ROLE_ISLAND` | Modifier iscoin, dragonegg, beacon, sponge |
 | `ROLE_STAFF`  | Accès complet (ignore les restrictions)    |
 

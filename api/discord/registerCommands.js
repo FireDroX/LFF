@@ -8,10 +8,12 @@ const token = process.env.DISCORD_CLIENT_TOKEN;
  * 🔹 Liste des commandes exportées pour le /help
  */
 const commands = [
+  // uptime
   {
     name: "uptime",
     description: "Voir depuis combien de temps le serveur est UP.",
   },
+  // leaderboard
   {
     name: "leaderboard",
     description: "Voir un leaderboard spécifique",
@@ -32,6 +34,7 @@ const commands = [
       },
     ],
   },
+  // points
   {
     name: "points",
     description: "Ajouter ou retirer des points",
@@ -67,6 +70,11 @@ const commands = [
         description: "Nombre de points",
       },
     ],
+  },
+  // help
+  {
+    name: "help",
+    description: "Affiche la liste des commandes disponibles",
   },
 ];
 
