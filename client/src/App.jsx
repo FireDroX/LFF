@@ -12,6 +12,7 @@ const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Profile = lazy(() => import("./pages/profile/Profile"));
 
 const DynamicPage = ({ isLogged, data, currentUser }) => {
+const DynamicPage = ({ isLogged, data }) => {
   const [page, setPage] = useState(null);
   const location = useLocation();
 

@@ -34,6 +34,7 @@ const buildInitialFormsState = () =>
   }, {});
 
 const Dashboard = ({ isLogged, isAdmin, currentUser }) => {
+const Dashboard = ({ isLogged, isAdmin }) => {
   const isStaff = isLogged && isAdmin;
 
   const [leaderboards, setLeaderboards] = useState({});

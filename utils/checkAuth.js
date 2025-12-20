@@ -74,6 +74,8 @@ async function checkAuth(req, res, next) {
       if (hasGangRole) flags.push("crystaux", "pvp");
       if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
     }
+    if (hasGangRole) flags.push("crystaux", "pvp");
+    if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
 
     // 5️⃣ Stocke les infos utilisateur dans req.user
     req.user = {
