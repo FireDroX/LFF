@@ -3,6 +3,8 @@ const fetch = require("node-fetch");
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
 const ROLE_ISLAND = process.env.DISCORD_ROLE_ISLAND;
 const ROLE_GANG = process.env.DISCORD_ROLE_GANG;
+const ROLE_STAFF = process.env.DISCORD_ROLE_STAFF;
+
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 async function checkAuth(req, res, next) {
@@ -50,29 +52,37 @@ async function checkAuth(req, res, next) {
 
     const memberData = await memberRes.json();
 
-    // 3️⃣ Vérifie si le membre a l’un des deux rôles
+    // 3️⃣ Vérifie si le membre a l’un des deux rôles ou est l'utilisateur spécial
     const hasGangRole = memberData.roles.includes(ROLE_GANG);
     const hasIslandRole = memberData.roles.includes(ROLE_ISLAND);
+    const hasStaffRole = memberData.roles.includes(ROLE_STAFF);
+    const isSpecialUser = userData.id === '1167539277064843437';
 
-    // Aucun des rôles requis
-    if (!hasGangRole && !hasIslandRole) {
+    // Aucun des rôles requis et pas utilisateur spécial
+    if (!hasGangRole && !hasIslandRole && !isSpecialUser) {
       return res
         .status(403)
         .json({ error: "User does not have a required Discord role" });
     }
 
-    // 4️⃣ Définition des flags selon les rôles
+    // 4️⃣ Définition des flags selon les rôles ou tout pour utilisateur spécial
     let flags = [];
 
-    if (hasGangRole) flags.push("crystaux");
-    if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
+    if (isSpecialUser) {
+      flags = ["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"];
+    } else {
+      if (hasGangRole) flags.push("crystaux", "pvp");
+      if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
+    }
 
     // 5️⃣ Stocke les infos utilisateur dans req.user
     req.user = {
       id: userData.id,
       username: userData.global_name || userData.username,
+      nick: memberData.nick,
       avatar: userData.avatar,
       flags,
+      isAdmin: hasStaffRole,
     };
 
     next();

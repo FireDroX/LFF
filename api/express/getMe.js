@@ -27,7 +27,14 @@ router.get("/", checkAuth, async (req, res) => {
     const { id: discordID, global_name, avatar } = response;
 
     // ✅ 2. Retourner les infos utiles
-    const user = { id: discordID, global_name, avatar, flags: req.user.flags };
+    const user = {
+      id: discordID,
+      global_name,
+      nick: req.user.nick,
+      avatar,
+      flags: req.user.flags,
+      isAdmin: req.user.isAdmin,
+    };
     res.json(user);
   } catch (err) {
     console.error("Error in /get/me:", err);

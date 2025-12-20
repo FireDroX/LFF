@@ -31,14 +31,19 @@ export const compactNumber = (number = Number) => {
 };
 
 export const formatDateShort = (isoString) => {
-  if (!isoString) return ""; // ⛔️ évite les NaN
+  if (!isoString) return "";
+
   const date = new Date(isoString);
-  if (isNaN(date)) return ""; // ⛔️ si la date est invalide
-  const month = String(date.getUTCMonth() + 1).padStart(2, "0");
-  const day = String(date.getUTCDate()).padStart(2, "0");
-  const hours = String(date.getUTCHours()).padStart(2, "0");
-  const minutes = String(date.getUTCMinutes()).padStart(2, "0");
-  return `${day}/${month} ${hours}h${minutes}`;
+
+  return date
+    .toLocaleString("fr-FR", {
+      timeZone: "Europe/Paris",
+      day: "2-digit",
+      month: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    })
+    .replace(",", ""); // retir le ',' entre date et heure
 };
 
 export const formatTop = (users, start, end, type) => {
@@ -64,6 +69,7 @@ export const filterPointOptions = (pointOptions, flags) => {
     Object.entries(pointOptions).filter(([key]) => {
       return (
         (key === "crystaux" && flags.includes("crystaux")) ||
+        (key === "pvp" && flags.includes("pvp")) ||
         (key === "iscoin" && flags.includes("iscoin")) ||
         (key === "dragonegg" && flags.includes("dragonegg")) ||
         (key === "beacon" && flags.includes("beacon")) ||

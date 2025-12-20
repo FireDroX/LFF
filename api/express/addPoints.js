@@ -3,12 +3,7 @@ const { createClient } = require("@supabase/supabase-js");
 
 const checkAuth = require("../../utils/checkAuth");
 const sendDiscordLog = require("../../utils/sendDiscordLog");
-const {
-  ADD_MESSAGES,
-  FIRST_PLACE_MESSAGES,
-  FIRST_ENTRY_MESSAGES,
-  getRandomMessage,
-} = require("../../utils/messages");
+const { MESSAGE_SETS, getRandomMessage } = require("../../utils/messages");
 
 const router = express.Router();
 
@@ -26,7 +21,11 @@ router.post("/:type", checkAuth, async (req, res) => {
   const { type } = req.params;
 
   // Vérification du type demandé
-  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge"].includes(type)) {
+  if (
+    !["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(
+      type
+    )
+  ) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 
@@ -35,6 +34,8 @@ router.post("/:type", checkAuth, async (req, res) => {
   try {
     const score = req.body.score;
     const username = req.user.username;
+    const nick = req.user.nick;
+    const displayName = nick || username;
     const userId = req.user.id;
 
     if (!username || typeof score !== "number") {
@@ -65,9 +66,10 @@ router.post("/:type", checkAuth, async (req, res) => {
 
     if (userIndex >= 0) {
       users[userIndex].score += score;
+      users[userIndex].name = displayName; // Update name to use nickname if available
 
       await sendDiscordLog(
-        getRandomMessage(ADD_MESSAGES, {
+        getRandomMessage(MESSAGE_SETS.ADD, {
           user: req.user.username,
           score,
           type,
@@ -75,10 +77,10 @@ router.post("/:type", checkAuth, async (req, res) => {
         })
       );
     } else {
-      users.push({ name: username, score, userId });
+      users.push({ name: displayName, score, userId });
 
       await sendDiscordLog(
-        getRandomMessage(FIRST_ENTRY_MESSAGES, {
+        getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
           user: req.user.username,
           type,
           score,
@@ -110,7 +112,7 @@ router.post("/:type", checkAuth, async (req, res) => {
       previousLeader !== username
     ) {
       await sendDiscordLog(
-        getRandomMessage(FIRST_PLACE_MESSAGES, {
+        getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
           user: username,
           previousLeader,
           type,

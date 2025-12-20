@@ -3,7 +3,7 @@ import { useState } from "react";
 
 import { IoIosAdd } from "react-icons/io";
 
-import addPoints from "../../utils/addPoints";
+import { addPoints } from "../../utils/requests";
 
 const AddPoints = ({ setTops, selectDefault, options }) => {
   const [isOpen, setIsOpen] = useState(false);

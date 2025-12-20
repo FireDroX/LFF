@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
 
-import currentTop from "../../utils/currentTop";
+import { currentTop } from "../../utils/requests";
 import { formatTop, filterPointOptions } from "../../utils/functions";
 import { WEEKLY_OPTIONS as pointOptions } from "../../utils/pointOptions";
 
 import AddPoints from "../../components/AddPoints/AddPoints";
 import Leaderboard from "../../components/Leaderboard/Leaderboard";
 
-const Weekly = ({ isLogged, flags }) => {
+const Weekly = ({ isLogged, flags, currentUser }) => {
   const [tops, setTops] = useState({
     crystaux: { users: [] },
+    pvp: { users: [] },
     iscoin: { users: [] },
   });
 
@@ -17,23 +18,25 @@ const Weekly = ({ isLogged, flags }) => {
   const filteredPointOptions = filterPointOptions(pointOptions, flags);
 
   useEffect(() => {
-    // Charger crystaux
-    // Charger iscoin
-    Promise.all([currentTop("crystaux"), currentTop("iscoin")]).then(
-      ([crystauxData, iscoinData]) => {
-        setTops({
-          crystaux: formatTop(
-            crystauxData.users,
-            crystauxData.start,
-            crystauxData.end
-          ),
-          iscoin: formatTop(iscoinData.users, iscoinData.start, iscoinData.end),
-        });
-      }
-    );
+    // Charger crystaux, pvp et iscoin
+    Promise.all([
+      currentTop("crystaux"),
+      currentTop("pvp"),
+      currentTop("iscoin"),
+    ]).then(([crystauxData, pvpData, iscoinData]) => {
+      setTops({
+        crystaux: formatTop(
+          crystauxData.users,
+          crystauxData.start,
+          crystauxData.end
+        ),
+        pvp: formatTop(pvpData.users, pvpData.start, pvpData.end),
+        iscoin: formatTop(iscoinData.users, iscoinData.start, iscoinData.end),
+      });
+    });
   }, []);
 
-  const keys = ["crystaux", "iscoin"];
+  const keys = ["crystaux", "pvp", "iscoin"];
 
   return (
     <section className="App">
@@ -56,6 +59,7 @@ const Weekly = ({ isLogged, flags }) => {
             start={tops[k]?.start}
             end={tops[k]?.end}
             requiredAmount={pointOptions[k].requiredAmount}
+            currentUser={currentUser}
           />
         ))}
       </div>

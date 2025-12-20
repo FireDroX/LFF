@@ -1,70 +1,222 @@
-# LFF
+# 🏝️ LFF – Classements Minecraft & Discord Integration
 
-> Leaderboard & Points pour la communauté
+## 🔍 Présentation
 
-## 📋 Table des matières
+**LFF** est une plateforme web connectée à un serveur Minecraft et à Discord permettant de gérer et afficher des classements dynamiques :
+💎 Crystaux, ⚔️ PVP, 🪙 IsCoin, 🥚 Dragon Egg, 🔷 Beacon et 🧽 Sponge.
 
-1. [Description](#description)
-2. [Fonctionnalités](#fonctionnalités)
-3. [Technologies](#technologies)
-4. [Utilisation](#utilisation)
-5. [Contribuer](#contribuer)
-6. [Contact](#contact)
+Les utilisateurs peuvent se connecter via Discord pour :
 
----
+- Ajouter ou retirer leurs points selon leurs rôles
+- Consulter les classements hebdomadaires
+- Visualiser l’historique de chaque type de classement
 
-## 🚀 Description
-
-LFF est une application full-stack légère qui permet de gérer un **classement de points** pour les membres d’une communauté.
-On peut :
-
-- Voir un **tableau de classement** des utilisateurs triés par score.
-- « Ajouter » des points pour un utilisateur (via un composant d’ajout).
-- Séparer visuellement les utilisateurs ayant **50 points ou plus** des autres avec une barre de séparation.
-- Afficher une période (date de début / fin) sur cette barre (ex : `(10/26 00h00)`) pour indiquer la période en cours.
+Les administrateurs disposent d’un **dashboard** dédié pour modifier les scores, lancer de nouveaux classements et surveiller l’activité.
 
 ---
 
-## 🧩 Fonctionnalités
+## ⚙️ Fonctionnalités principales
 
-- Affichage dynamique du classement (`top.users`) trié par score.
-- Icônes trophée pour les 3 premiers.
-- Formatage des scores (par ex. avec des espaces).
-- Barre de séparation « 50 pts mini » (ou personnalisable) pour distinguer deux groupes.
-- Composant d’ajout de points pour les utilisateurs connectés (`isLogged`).
-- Mise à jour partielle de l’état : seule la clé `users` est remplacée lorsque de nouveaux points sont ajoutés.
-- Période visible via `start` / `end`, formatée pour l’affichage.
+### 🔸 Côté utilisateur
+
+#### 🧑‍💻 Connexion & Profil
+
+- 🔐 **Connexion sécurisée via Discord OAuth2**
+- 📊 **Profil utilisateur avec graphique QuickChart** affichant :
+
+  - Total de chaque type de points
+  - Progression semaine par semaine
+  - Classement actuel
+
+- 🖼️ **Avatar & pseudo Discord automatiquement synchronisés**
+
+#### 🏆 Classements & Historique
+
+- Visualisation en temps réel des classements :
+
+  - Crystaux
+  - PVP
+  - IsCoin
+  - Dragon Egg
+  - Beacon
+  - Sponge
+
+- Historique complet par type de classement
+- Page dédiée aux tops hebdomadaires / mensuels
+
+#### ➕ Modification des points
+
+Selon leur rôle Discord, les utilisateurs peuvent :
+
+- Ajouter des points
+- Retirer des points
+- Voir en direct leur score mis à jour
+
+Avec des **messages dynamiques contextualisés** (messages.js).
 
 ---
 
-## 🛠️ Technologies
+### 🔸 **Côté administrateur**
 
-- **Frontend** : React (JSX, CSS)
-- **Icons** : react-icons
-- **Backend / API** : Express (dossier `api/express`)
-- **Déploiement** : Peut être hébergé sur Render.com ou autre (voir lien du repo)
-- **Language principale** : JavaScript
-- **Styles** : CSS
+#### 🛠️ Dashboard
+
+- Gestion de tous les tops (activation, démarrage, fermeture)
+- Édition manuelle des scores
+- Visualisation détaillée de chaque utilisateur
+- Audit trail :
+
+  - Qui modifie ?
+  - Quand ?
+  - Quel type ?
+
+#### 🔐 Permissions avancées
+
+Basé sur les rôles Discord :
+
+| Rôle          | Permissions                                |
+| ------------- | ------------------------------------------ |
+| `ROLE_GANG`   | Modifier crystaux, pvp                     |
+| `ROLE_ISLAND` | Modifier iscoin, dragonegg, beacon, sponge |
+| `ROLE_STAFF`  | Accès complet (ignore les restrictions)    |
+
+#### 🔔 Logs automatiques Discord
+
+Chaque modification déclenche un log :
+
+- Ajout de points
+- Suppression de points
+- Création d’un classement
+- Fermeture d’un classement
+- Anomalies détectées
 
 ---
 
-## 🎮 Utilisation
+## 💬 Commandes Discord
 
-- Connecte-toi (ou tu peux activer la propriété `isLogged` manuellement pour test).
-- Ajoute des points via le bouton « Ajouter » (le bouton est actif quand `points > 0`).
-- Le tableau se mettra à jour : seule la partie `users` de l’état global est remplacée, ce qui permet de ne pas écraser `start` / `end`.
-- Le composant `Leaderboard` :
+### `/leaderboard`
 
-  ```jsx
-  <Leaderboard
-    top={topCrystaux.users}
-    start={topCrystaux.start}
-    end={topCrystaux.end}
-    requiredAmount={topCrystaux.requiredAmount}
-  />
-  ```
+Affiche le classement du type sélectionné.
 
-- Le format de la date dans la barre de séparation est raccourci : ex : `(10/26 00h00)`.
+### `/points option:<add/remove> type:<...> amount:<nombre>`
+
+Permet aux utilisateurs (selon rôle) de :
+
+- Ajouter des points
+- Retirer des points
+
+Exemple :
+
+```
+/points option:add type:crystaux amount:50
+```
+
+### `/uptime`
+
+Affiche le temps de fonctionnement du bot.
+
+### `/help`
+
+Affiche la liste des commandes disponibles.
+
+### `/history type:<...>`
+
+Consulter les anciens classements et naviguer entre les semaines
+
+---
+
+## 🌐 Site Web
+
+### Pages principales :
+
+#### 🏆 Classements
+
+Visualisation en temps réel, filtrable par catégorie.
+
+#### 👤 Profil
+
+Contient :
+
+- Votre avatar Discord
+- Vos scores cumulés
+- Votre classement global
+- Un **graphique QuickChart** généré automatiquement
+
+#### 📚 Historique
+
+Liste de tous les tops terminés, consultables individuellement.
+
+#### 🔧 Dashboard (Admin uniquement)
+
+Gestion complète :
+
+- Modifier les scores d’un utilisateur
+- Lancer / terminer un classement
+- Vérifier les logs
+- Surveiller les événements récents
+
+---
+
+## 🧩 Partie technique
+
+### **Stack :**
+
+- **Backend :** Node.js + Express.js
+- **Base de données :** Supabase (PostgreSQL)
+- **Frontend :** React.js
+- **Auth :** Discord OAuth2
+- **Graphiques :** QuickChart
+- **Hébergement :** Render + Supabase
+
+### **Système des interactions Discord**
+
+- Commands via API Discord (sans discord.js)
+- Signature vérifiée via `verifyKeyMiddleware`
+- Gestion 100% manuelle des réponses
+
+---
+
+## 🚀 Installation
+
+```bash
+# Clone du projet
+git clone https://github.com/FireDroX/LFF.git
+cd LFF
+
+# Installation des dépendances
+npm install
+
+# Lancement du serveur backend
+npm run dev
+
+# Install des commandes du bot discord
+npm run register
+
+# Lancement du frontend
+cd ./client
+npm run start
+```
+
+Crée un fichier `.env` :
+
+```env
+PORT=Celui que vous voulez
+
+DISCORD_CLIENT_ID=...
+DISCORD_CLIENT_TOKEN=...
+DISCORD_CLIENT_SECRET=...
+DISCORD_CLIENT_PUBLIC_KEY...
+
+DISCORD_GUILD_ID=...
+DISCORD_ROLE_ISLAND=...
+DISCORD_ROLE_GANG=...
+DISCORD_ROLE_STAFF=...
+DISCORD_LOG_CHANNEL_ID=...
+
+FRONTEND_URL=...
+
+SUPABASE_URL=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
 
 ---
 
@@ -82,11 +234,11 @@ Merci de respecter la structure du code, les conventions (naming, mise en forme)
 
 ---
 
-## 📬 Contact
+## 👑 Crédits
 
-Pour toute question ou suggestion :
+Développé avec ❤️ par **FireDroX**
+Intégration Discord et API Supabase par la communauté LFF.
 
-- GitHub : [FireDroX](https://github.com/FireDroX)
-- Projet hébergé : [lff.onrender.com](https://lff.onrender.com)
-
----
+🔗 GitHub : [https://github.com/FireDroX](https://github.com/FireDroX)
+<br/>
+🌐 Site : [https://lff.onrender.com](https://lff.onrender.com)

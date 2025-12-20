@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import currentTop from "../../utils/currentTop";
+import { currentTop } from "../../utils/requests";
 import { formatTop, filterPointOptions } from "../../utils/functions";
 import { ISVALUE_OPTIONS as pointOptions } from "../../utils/pointOptions";
 

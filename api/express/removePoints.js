@@ -3,7 +3,7 @@ const { createClient } = require("@supabase/supabase-js");
 
 const checkAuth = require("../../utils/checkAuth");
 const sendDiscordLog = require("../../utils/sendDiscordLog");
-const { getRandomMessage, REMOVE_MESSAGES } = require("../../utils/messages");
+const { getRandomMessage, MESSAGE_SETS } = require("../../utils/messages");
 
 const router = express.Router();
 
@@ -88,7 +88,7 @@ router.delete("/:type", checkAuth, async (req, res) => {
     );
 
     await sendDiscordLog(
-      getRandomMessage(REMOVE_MESSAGES, {
+      getRandomMessage(MESSAGE_SETS.REMOVE, {
         user: req.user.username,
         type,
       })
