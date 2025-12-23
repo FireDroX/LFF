@@ -7,7 +7,7 @@ import { WEEKLY_OPTIONS as pointOptions } from "../../utils/pointOptions";
 import AddPoints from "../../components/AddPoints/AddPoints";
 import Leaderboard from "../../components/Leaderboard/Leaderboard";
 
-const Weekly = ({ isLogged, flags }) => {
+const Weekly = ({ isLogged, flags, currentUser }) => {
   const [tops, setTops] = useState({
     crystaux: { users: [] },
     pvp: { users: [] },
@@ -59,6 +59,7 @@ const Weekly = ({ isLogged, flags }) => {
             start={tops[k]?.start}
             end={tops[k]?.end}
             requiredAmount={pointOptions[k].requiredAmount}
+            currentUser={currentUser}
           />
         ))}
       </div>

@@ -30,6 +30,7 @@ router.get("/", checkAuth, async (req, res) => {
     const user = {
       id: discordID,
       global_name,
+      nick: req.user.nick,
       avatar,
       flags: req.user.flags,
       isAdmin: req.user.isAdmin,

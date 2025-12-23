@@ -2,7 +2,14 @@ import "./Leaderboard.css";
 import { FaTrophy } from "react-icons/fa";
 import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
 
-const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
+const Leaderboard = ({
+  title,
+  top,
+  start,
+  end,
+  requiredAmount,
+  currentUser,
+}) => {
   // On trie les joueurs par score décroissant
   const sorted = Array.isArray(top)
     ? [...top].sort((a, b) => b.score - a.score)
@@ -13,6 +20,11 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
     (player) => player.score < requiredAmount
   );
 
+  // Find the current user's position
+  const userPosition = currentUser
+    ? sorted.findIndex((u) => u.userId === currentUser) + 1
+    : 0;
+
   const startFormatted = formatDateShort(start);
   const endFormatted = formatDateShort(end);
 
@@ -21,7 +33,7 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
       <h5 style={{ color: "var(--text85)" }}>{title}</h5>
       <ul className="lff-classement">
         {Array.isArray(sorted) &&
-          sorted.flatMap(({ score, name }, index) => {
+          sorted.slice(0, 5).flatMap(({ score, name }, index) => {
             const items = [];
             if (separationIndex === index) {
               items.push(
@@ -61,6 +73,27 @@ const Leaderboard = ({ title, top, start, end, requiredAmount }) => {
               : ""}
           </span>
         </li>
+        {userPosition > 0 && (
+          <li key={"player-current"}>
+            <span className="lff-classement-top">
+              {userPosition === 1 ? (
+                <FaTrophy color="#FFD700" />
+              ) : userPosition === 2 ? (
+                <FaTrophy color="#C0C0C0" />
+              ) : userPosition === 3 ? (
+                <FaTrophy color="#CD7F32" />
+              ) : (
+                userPosition
+              )}
+            </span>
+            <span className="lff-classement-score">
+              {formatNumberWithSpaces(sorted[userPosition - 1]?.score)}
+            </span>
+            <span className="lff-classement-name">
+              {sorted[userPosition - 1]?.name}
+            </span>
+          </li>
+        )}
       </ul>
     </div>
   );

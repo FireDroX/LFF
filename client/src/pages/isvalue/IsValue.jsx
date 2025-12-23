@@ -7,7 +7,7 @@ import { ISVALUE_OPTIONS as pointOptions } from "../../utils/pointOptions";
 import AddPoints from "../../components/AddPoints/AddPoints";
 import Leaderboard from "../../components/Leaderboard/Leaderboard";
 
-const IsValue = ({ isLogged, flags }) => {
+const IsValue = ({ isLogged, flags, currentUser }) => {
   const [tops, setTops] = useState({
     dragonEgg: { users: [] },
     beacon: { users: [] },
@@ -52,6 +52,7 @@ const IsValue = ({ isLogged, flags }) => {
               </>
             }
             top={tops[k]?.users}
+            currentUser={currentUser}
           />
         ))}
       </div>

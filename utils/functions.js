@@ -20,10 +20,11 @@ export function buildHistoryEmbed(history, page, type) {
   const medals = ["🥇", "🥈", "🥉"];
 
   const formattedUsers = (top.users || [])
+    .sort((a, b) => b.score - a.score)
     .slice(0, 10)
     .map(
       (u, i) =>
-        `> - ${i <= 2 ? medals[i] : `**#${i + 1}**`} **${
+        `> - ${i <= 2 ? medals[i] : `**#${i + 1}**`} — **${
           u.score
         }** — ${u.name.slice(0, 18)}`
     )

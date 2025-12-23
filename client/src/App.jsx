@@ -28,9 +28,21 @@ const DynamicPage = ({ isLogged, data }) => {
     case "dashboard":
       return <Dashboard isLogged={isLogged} isAdmin={data?.isAdmin} />;
     case "isvalue":
-      return <IsValue isLogged={isLogged} flags={data?.flags} />;
+      return (
+        <IsValue
+          isLogged={isLogged}
+          flags={data?.flags}
+          currentUser={data?.id}
+        />
+      );
     default:
-      return <Weekly isLogged={isLogged} flags={data?.flags} />;
+      return (
+        <Weekly
+          isLogged={isLogged}
+          flags={data?.flags}
+          currentUser={data?.id}
+        />
+      );
   }
 };
 

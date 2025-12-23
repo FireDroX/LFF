@@ -52,7 +52,7 @@ async function checkAuth(req, res, next) {
 
     const memberData = await memberRes.json();
 
-    // 3️⃣ Vérifie si le membre a l’un des deux rôles
+    // 3️⃣ Vérifie si le membre a l’un des deux rôles ou est l'utilisateur spécial
     const hasGangRole = memberData.roles.includes(ROLE_GANG);
     const hasIslandRole = memberData.roles.includes(ROLE_ISLAND);
     const hasStaffRole = memberData.roles.includes(ROLE_STAFF);
@@ -74,6 +74,7 @@ async function checkAuth(req, res, next) {
     req.user = {
       id: userData.id,
       username: userData.global_name || userData.username,
+      nick: memberData.nick,
       avatar: userData.avatar,
       flags,
       isAdmin: hasStaffRole,

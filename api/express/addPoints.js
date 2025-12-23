@@ -34,6 +34,8 @@ router.post("/:type", checkAuth, async (req, res) => {
   try {
     const score = req.body.score;
     const username = req.user.username;
+    const nick = req.user.nick;
+    const displayName = nick || username;
     const userId = req.user.id;
 
     if (!username || typeof score !== "number") {
@@ -57,28 +59,31 @@ router.post("/:type", checkAuth, async (req, res) => {
     let users = currentTop.users || [];
     // ✅ Top 1 avant modification
     const previousSorted = [...users].sort((a, b) => b.score - a.score);
-    const previousLeader = previousSorted[0]?.name || null;
+    const previousLeader = {
+      id: previousSorted[0]?.userId || null,
+      name: previousSorted[0]?.name || null,
+    };
 
-    let totalScore;
-    const userIndex = users.findIndex((u) => u.name === username);
+    const userIndex = users.findIndex((u) => u.userId === userId);
 
     if (userIndex >= 0) {
       users[userIndex].score += score;
+      users[userIndex].name = displayName; // Update name to use nickname if available
 
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.ADD, {
-          user: req.user.username,
+          user: displayName,
           score,
           type,
           total: users[userIndex].score,
         })
       );
     } else {
-      users.push({ name: username, score, userId });
+      users.push({ name: displayName, score, userId });
 
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
-          user: req.user.username,
+          user: displayName,
           type,
           score,
         })
@@ -100,18 +105,18 @@ router.post("/:type", checkAuth, async (req, res) => {
     const sorted = users.sort((a, b) => b.score - a.score);
 
     // ✅ Top 1 après modification
-    const newLeader = sorted[0]?.name || null;
+    const newLeader = sorted[0]?.userId || null;
 
     // ✅ Notification prise de première place
     if (
-      newLeader === username &&
+      newLeader === userId &&
       previousLeader &&
-      previousLeader !== username
+      previousLeader.id !== userId
     ) {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
-          user: username,
-          previousLeader,
+          user: displayName,
+          previousLeader: previousLeader.name,
           type,
         })
       );
