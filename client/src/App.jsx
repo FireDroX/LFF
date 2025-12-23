@@ -11,7 +11,6 @@ const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Profile = lazy(() => import("./pages/profile/Profile"));
 
-const DynamicPage = ({ isLogged, data, currentUser }) => {
 const DynamicPage = ({ isLogged, data }) => {
   const [page, setPage] = useState(null);
   const location = useLocation();
@@ -29,9 +28,21 @@ const DynamicPage = ({ isLogged, data }) => {
     case "dashboard":
       return <Dashboard isLogged={isLogged} isAdmin={data?.isAdmin} />;
     case "isvalue":
-      return <IsValue isLogged={isLogged} flags={data?.flags} />;
+      return (
+        <IsValue
+          isLogged={isLogged}
+          flags={data?.flags}
+          currentUser={data?.id}
+        />
+      );
     default:
-      return <Weekly isLogged={isLogged} flags={data?.flags} />;
+      return (
+        <Weekly
+          isLogged={isLogged}
+          flags={data?.flags}
+          currentUser={data?.id}
+        />
+      );
   }
 };
 
@@ -87,7 +98,6 @@ function App() {
               <DynamicPage
                 isLogged={userInfos.isLogged}
                 data={userInfos.data}
-                currentUser={userInfos.data}
               />
             </Suspense>
           }

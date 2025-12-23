@@ -50,11 +50,10 @@ export const formatTop = (users, start, end, type) => {
   if (!Array.isArray(users)) return { users: [], start, end, type };
 
   const sorted = users.sort((a, b) => b.score - a.score);
-  const top5 = sorted.slice(0, 5);
 
   const filled = [
-    ...(top5 || []),
-    ...Array(5 - (top5?.length || 0))
+    ...(sorted || []),
+    ...Array(sorted?.length > 5 ? 0 : 5 - sorted?.length)
       .fill()
       .map(() => ({ score: 0, name: "Nobody" })),
   ];
