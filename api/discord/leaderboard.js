@@ -66,7 +66,6 @@ module.exports = async function leaderboard(req, res) {
           {
             title: `📊 Leaderboard — ${type}`,
             description: top5.join("\n") + positionMessage,
-            description: top5.join("\n"),
             color: parseInt("9b59b6", 16),
             footer: {
               text: period,
