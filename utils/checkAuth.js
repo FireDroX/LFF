@@ -56,24 +56,17 @@ async function checkAuth(req, res, next) {
     const hasGangRole = memberData.roles.includes(ROLE_GANG);
     const hasIslandRole = memberData.roles.includes(ROLE_ISLAND);
     const hasStaffRole = memberData.roles.includes(ROLE_STAFF);
-    const isSpecialUser = userData.id === '1167539277064843437';
 
-    // Aucun des rôles requis et pas utilisateur spécial
-    if (!hasGangRole && !hasIslandRole && !isSpecialUser) {
+    // Aucun des rôles requis
+    if (!hasGangRole && !hasIslandRole) {
       return res
         .status(403)
         .json({ error: "User does not have a required Discord role" });
     }
 
-    // 4️⃣ Définition des flags selon les rôles ou tout pour utilisateur spécial
+    // 4️⃣ Définition des flags selon les rôles
     let flags = [];
 
-    if (isSpecialUser) {
-      flags = ["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"];
-    } else {
-      if (hasGangRole) flags.push("crystaux", "pvp");
-      if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
-    }
     if (hasGangRole) flags.push("crystaux", "pvp");
     if (hasIslandRole) flags.push("iscoin", "dragonegg", "beacon", "sponge");
 
