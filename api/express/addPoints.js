@@ -34,6 +34,8 @@ router.post("/:type", checkAuth, async (req, res) => {
   try {
     const score = req.body.score;
     const username = req.user.username;
+    const nick = req.user.nick;
+    const displayName = nick || username;
     const userId = req.user.id;
 
     if (!username || typeof score !== "number") {
@@ -64,6 +66,7 @@ router.post("/:type", checkAuth, async (req, res) => {
 
     if (userIndex >= 0) {
       users[userIndex].score += score;
+      users[userIndex].name = displayName; // Update name to use nickname if available
 
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.ADD, {
@@ -74,7 +77,7 @@ router.post("/:type", checkAuth, async (req, res) => {
         })
       );
     } else {
-      users.push({ name: username, score, userId });
+      users.push({ name: displayName, score, userId });
 
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {

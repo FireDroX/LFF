@@ -33,6 +33,7 @@ const buildInitialFormsState = () =>
     return acc;
   }, {});
 
+const Dashboard = ({ isLogged, isAdmin, currentUser }) => {
 const Dashboard = ({ isLogged, isAdmin }) => {
   const isStaff = isLogged && isAdmin;
 

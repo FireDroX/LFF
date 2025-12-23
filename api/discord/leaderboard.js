@@ -26,6 +26,10 @@ module.exports = async function leaderboard(req, res) {
 
     const medals = ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"];
 
+    // Find the requesting user's position
+    const userId = interaction.member.user.id;
+    const userPosition = users.findIndex((u) => u.userId === userId) + 1; // +1 for 1-based index
+
     for (let i = 0; i < 5; i++) {
       const user = users[i];
 
@@ -36,6 +40,13 @@ module.exports = async function leaderboard(req, res) {
       } else {
         top5.push(`> - ${medals[i]} **0** — Nobody`);
       }
+    }
+
+    // Add user's position if they are in the leaderboard
+    let positionMessage = "";
+    if (userPosition > 0 && userPosition <= users.length) {
+      const userScore = users[userPosition - 1].score;
+      positionMessage = `\n> Votre position : **${userPosition}** — **${userScore}** pts`;
     }
 
     // Dates formatées
@@ -54,6 +65,7 @@ module.exports = async function leaderboard(req, res) {
         embeds: [
           {
             title: `📊 Leaderboard — ${type}`,
+            description: top5.join("\n") + positionMessage,
             description: top5.join("\n"),
             color: parseInt("9b59b6", 16),
             footer: {

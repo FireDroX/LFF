@@ -11,6 +11,7 @@ const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Profile = lazy(() => import("./pages/profile/Profile"));
 
+const DynamicPage = ({ isLogged, data, currentUser }) => {
 const DynamicPage = ({ isLogged, data }) => {
   const [page, setPage] = useState(null);
   const location = useLocation();
@@ -86,6 +87,7 @@ function App() {
               <DynamicPage
                 isLogged={userInfos.isLogged}
                 data={userInfos.data}
+                currentUser={userInfos.data}
               />
             </Suspense>
           }
