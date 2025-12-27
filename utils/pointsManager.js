@@ -89,6 +89,7 @@ async function modifyPoints({ username, userId, type, amount }) {
 
   if (index >= 0) {
     users[index].score += amount;
+    users[index].name = username;
     finalScore = users[index].score;
   } else {
     finalScore = amount;
