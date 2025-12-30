@@ -59,10 +59,12 @@ router.post("/:type", checkAuth, async (req, res) => {
     let users = currentTop.users || [];
     // ✅ Top 1 avant modification
     const previousSorted = [...users].sort((a, b) => b.score - a.score);
-    const previousLeader = {
-      id: previousSorted[0]?.userId || null,
-      name: previousSorted[0]?.name || null,
-    };
+    const previousLeader = previousSorted[0]
+      ? {
+          id: previousSorted[0].userId,
+          name: previousSorted[0].name,
+        }
+      : null;
 
     const userIndex = users.findIndex((u) => u.userId === userId);
 
@@ -108,11 +110,7 @@ router.post("/:type", checkAuth, async (req, res) => {
     const newLeader = sorted[0]?.userId || null;
 
     // ✅ Notification prise de première place
-    if (
-      newLeader === userId &&
-      previousLeader &&
-      previousLeader.id !== userId
-    ) {
+    if (newLeader === userId && previousLeader?.id !== userId) {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
           user: displayName,
