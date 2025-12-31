@@ -47,7 +47,7 @@ module.exports = async function interactionsHandler(req, res) {
 
     // Select menu ticket
     if (data.custom_id === "ticket_reason_select") {
-      return require("./ticket/create")(req, res);
+      return require("./tickets/create")(req, res);
     }
   }
 };
