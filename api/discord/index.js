@@ -11,6 +11,7 @@ for (const cmd of commands) {
     return res.send({
       type: 4,
       data: {
+        flags: 64,
         content: `⚠️ Commande "${cmd.name}" ignorée : fichier manquant.`,
       },
     });
@@ -31,7 +32,7 @@ module.exports = async function interactionsHandler(req, res) {
     if (!handler) {
       return res.send({
         type: 4,
-        data: { content: "❌ Commande inconnue." },
+        data: { flags: 64, content: "❌ Commande inconnue." },
       });
     }
 
