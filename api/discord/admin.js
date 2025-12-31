@@ -1,9 +1,11 @@
-module.exports = async function setupTickets(req, res) {
+module.exports = async function admin(req, res) {
   const interaction = req.body;
 
   // Verifie les perms admin
-  const member = interaction.member;
-  if (member.permissions && !member.permissions.includes("ADMINISTRATOR")) {
+  const permissions = BigInt(interaction.member.permissions);
+  const ADMIN = 1n << 3n; // ADMINISTRATOR bit
+
+  if ((permissions & ADMIN) !== ADMIN) {
     return res.send({
       type: 4,
       data: {
@@ -13,6 +15,13 @@ module.exports = async function setupTickets(req, res) {
     });
   }
 
+  // Vérifie la subcommand ticket
+  const subcommand = interaction.data.options?.[0];
+
+  if (!subcommand || subcommand.name !== "ticket") setupTicket(req, res);
+};
+
+async function setupTicket(req, res) {
   // Message embed par default pour les tickets
   const ticketEmbedMessage = {
     type: 4,
@@ -75,4 +84,4 @@ module.exports = async function setupTickets(req, res) {
   };
 
   return res.send(ticketEmbedMessage);
-};
+}

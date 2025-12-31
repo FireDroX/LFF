@@ -96,10 +96,17 @@ const commands = [
     ],
   },
 
-  // setup Tickets
+  // admin commands
   {
-    name: "setup-tickets",
-    description: "Configurer le système de tickets (Admin seulement)",
+    name: "admin",
+    description: "Commandes administrateurs",
+    options: [
+      {
+        type: 1, // Subcommand
+        name: "ticket",
+        description: "Configurer le système de tickets",
+      },
+    ],
   },
 ];
 
