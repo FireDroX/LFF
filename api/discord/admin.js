@@ -15,13 +15,17 @@ module.exports = async function admin(req, res) {
     });
   }
 
+  console.log("test 1");
+
   // Vérifie la subcommand ticket
   const subcommand = interaction.data.options?.[0];
 
-  if (!subcommand || subcommand.name !== "ticket") setupTicket(req, res);
+  if (subcommand && subcommand.name === "ticket") setupTicket(req, res);
 };
 
 async function setupTicket(req, res) {
+  console.log("test 2");
+
   // Message embed par default pour les tickets
   const ticketEmbedMessage = {
     type: 4,
