@@ -40,6 +40,14 @@ module.exports = async function interactionsHandler(req, res) {
 
   // Interactions Boutons (Ex: history pagination)
   if (type === 3) {
-    return require("./history_pages")(req, res);
+    // Pagination historique
+    if (data.custom_id?.startsWith("history:")) {
+      return require("./history_pages")(req, res);
+    }
+
+    // Select menu ticket
+    if (data.custom_id === "ticket_reason_select") {
+      return require("./ticket/create")(req, res);
+    }
   }
 };
