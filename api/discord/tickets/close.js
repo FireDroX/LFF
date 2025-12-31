@@ -1,11 +1,10 @@
 const DISCORD_API = "https://discord.com/api";
-const BOT_TOKEN = process.env.BOT_TOKEN;
+const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 module.exports = async function closeTicket(req, res) {
   const interaction = req.body;
 
   const channelId = interaction.channel_id;
-  const guildId = interaction.guild_id;
 
   // Sécurité
   if (!interaction.member || !channelId) {
