@@ -49,5 +49,10 @@ module.exports = async function interactionsHandler(req, res) {
     if (data.custom_id === "ticket_reason_select") {
       return require("./tickets/create")(req, res);
     }
+
+    // Salon ticket - fermer
+    if (data.custom_id === "ticket_close") {
+      return require("./tickets/close")(req, res);
+    }
   }
 };

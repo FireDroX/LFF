@@ -53,6 +53,9 @@ module.exports = async function createTicket(req, res) {
     },
     body: JSON.stringify({
       name: channelName,
+      topic: `Ticket de <@${userId}> ouvert le <t:${Math.floor(
+        Date.now() / 1000
+      )}:F>`,
       type: 0,
       parent_id: CATEGORY_ID,
       permission_overwrites: [

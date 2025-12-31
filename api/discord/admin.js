@@ -18,7 +18,9 @@ module.exports = async function admin(req, res) {
   // Vérifie la subcommand ticket
   const subcommand = interaction.data.options?.[0];
 
-  if (subcommand && subcommand.name === "ticket") setupTicket(req, res);
+  if (subcommand && subcommand.name === "ticket") {
+    return setupTicket(req, res);
+  }
 };
 
 async function setupTicket(req, res) {
