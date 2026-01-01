@@ -39,38 +39,27 @@ module.exports = async function interactionsHandler(req, res) {
     return handler(req, res);
   }
 
-  // Interactions Boutons (Ex: history pagination)
+  // Interaction composant (bouton, select menu)
   if (type === 3) {
     const id = data.custom_id;
 
-    // Pagination historique
+    const handlers = {
+      ticket_reason_select: "./tickets/create",
+      ticket_close_confirm: "./tickets/confirm",
+      ticket_delete_confirm: "./tickets/confirm",
+      ticket_close: "./tickets/close",
+      ticket_cancel: "./tickets/cancel",
+      ticket_reopen: "./tickets/reopen",
+      ticket_delete: "./tickets/delete",
+    };
+
+    // Cas spéciaux (prefix)
     if (id?.startsWith("history:")) {
       return require("./history_pages")(req, res);
     }
 
-    // Select menu ticket
-    if (id === "ticket_reason_select") {
-      return require("./tickets/create")(req, res);
-    }
-
-    // Confirmation ticket (fermer/supprimer)
-    if (id === "ticket_close_confirm" || id === "ticket_delete_confirm") {
-      return require("./tickets/confirm")(req, res);
-    }
-
-    // Salon ticket - fermer
-    if (id === "ticket_close") {
-      return require("./tickets/close")(req, res);
-    }
-
-    // Salon ticket - annuler
-    if (id === "ticket_cancel") {
-      return require("./tickets/cancel")(req, res);
-    }
-
-    // Salon ticket - reouvrir
-    if (id === "ticket_reopen") {
-      return require("./tickets/reopen")(req, res);
+    if (handlers[id]) {
+      return require(handlers[id])(req, res);
     }
   }
 };
