@@ -9,6 +9,24 @@ const ROLE_MAP = {
   ile_nalyd: "1442638982717378761",
 };
 
+const FIELDS_MAP = {
+  gang_lff: {
+    name: "💎 Rejoindre le Gang LFF",
+    value:
+      "- Nombre de TFARM / semaine : \n- Activité (temps de jeu par jour/semaine) : \n- Pourquoi nous rejoindre ?",
+  },
+  ile_firedrox: {
+    name: "🏝️ Rejoindre l'île de FireDroX",
+    value:
+      "- Prestige et Pioche (fortune) :  \n- Nombre d'heures de minage / semaine : \n- Pourquoi nous rejoindre ?",
+  },
+  ile_nalyd: {
+    name: "🏝️ Rejoindre l'île de Nalyd_40",
+    value:
+      "- Prestige et Pioche (fortune) :  \n- Nombre d'heures de minage / semaine : \n- Pourquoi nous rejoindre ?",
+  },
+};
+
 module.exports = async function createTicket(req, res) {
   const interaction = req.body;
 
@@ -89,6 +107,25 @@ module.exports = async function createTicket(req, res) {
     },
     body: JSON.stringify({
       content: `<@${userId}> bienvenue dans ton ticket !`,
+      embeds: [
+        {
+          title: "📢 Recrutement – Présentation Obligatoire 📢",
+          description:
+            "Si vous souhaitez nous rejoindre, merci de copier-coller le formulaire ci-dessous et de remplir les informations manquantes en ticket :",
+          color: parseInt("9b59b6", 16),
+          fields: [
+            {
+              name: "📝 Informations Générales",
+              value:
+                "- Ton pseudo Minecraft: \n- Ton grade actuel: \n- Date d'arrivée sur SkyOfSKill: ",
+            },
+            {
+              name: FIELDS_MAP[choice].name,
+              value: FIELDS_MAP[choice].value,
+            },
+          ],
+        },
+      ],
       components: [
         {
           type: 1,
