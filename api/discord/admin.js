@@ -30,12 +30,12 @@ async function setupTicket(req, res) {
     data: {
       embeds: [
         {
-          title: "🎫 Recrutement – Gang LFF 💎",
+          title: "🎫 Recrutement",
           description: "Dépose ta candidature en ouvrant un ticket !",
           color: parseInt("9b59b6", 16), // Couleur embed
           fields: [
             {
-              name: "🎫 Clique sur le bouton ci-dessous pour ouvrir ton ticket !",
+              name: "Clique sur un des boutons ci-dessous pour ouvrir ton ticket !",
               value:
                 "Un membre du staff viendra rapidement t’accompagner dans ta candidature.",
             },
