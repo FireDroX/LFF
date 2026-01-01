@@ -11,6 +11,8 @@ module.exports = async function points(req, res) {
 
   const userId = member?.user?.id;
   const username = member?.user?.global_name || member?.user?.username;
+  const nick = member?.user?.nick;
+  const displayName = nick || username;
 
   if (!userId || !username) {
     return res.send({
@@ -25,7 +27,7 @@ module.exports = async function points(req, res) {
   const finalAmount = option === "remove" ? -Math.abs(amount) : amount;
 
   const result = await modifyPoints({
-    username,
+    displayName,
     userId,
     type,
     amount: finalAmount,
@@ -41,7 +43,7 @@ module.exports = async function points(req, res) {
   // ✅ suppression de la ligne → message REMOVE_MESSAGES
   if (result.deleted) {
     const msg = getRandomMessage(MESSAGE_SETS.REMOVE, {
-      user: username,
+      user: displayName,
       type,
     });
 
@@ -59,7 +61,7 @@ module.exports = async function points(req, res) {
   const message = getRandomMessage(
     option === "add" ? MESSAGE_SETS.ADD : MESSAGE_SETS.REMOVE_SINGLE,
     {
-      user: username,
+      user: displayName,
       score: amount,
       type,
       total,

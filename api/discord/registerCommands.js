@@ -95,6 +95,19 @@ const commands = [
       },
     ],
   },
+
+  // admin commands
+  {
+    name: "admin",
+    description: "Commandes administrateurs",
+    options: [
+      {
+        type: 1, // Subcommand
+        name: "ticket",
+        description: "Configurer le système de tickets",
+      },
+    ],
+  },
 ];
 
 /**

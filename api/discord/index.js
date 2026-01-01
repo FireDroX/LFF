@@ -11,6 +11,7 @@ for (const cmd of commands) {
     return res.send({
       type: 4,
       data: {
+        flags: 64,
         content: `⚠️ Commande "${cmd.name}" ignorée : fichier manquant.`,
       },
     });
@@ -31,15 +32,34 @@ module.exports = async function interactionsHandler(req, res) {
     if (!handler) {
       return res.send({
         type: 4,
-        data: { content: "❌ Commande inconnue." },
+        data: { flags: 64, content: "❌ Commande inconnue." },
       });
     }
 
     return handler(req, res);
   }
 
-  // Interactions Boutons (Ex: history pagination)
+  // Interaction composant (bouton, select menu)
   if (type === 3) {
-    return require("./history_pages")(req, res);
+    const id = data.custom_id;
+
+    const handlers = {
+      ticket_reason_select: "./tickets/create",
+      ticket_close_confirm: "./tickets/confirm",
+      ticket_delete_confirm: "./tickets/confirm",
+      ticket_close: "./tickets/close",
+      ticket_cancel: "./tickets/cancel",
+      ticket_reopen: "./tickets/reopen",
+      ticket_delete: "./tickets/delete",
+    };
+
+    // Cas spéciaux (prefix)
+    if (id?.startsWith("history:")) {
+      return require("./history_pages")(req, res);
+    }
+
+    if (handlers[id]) {
+      return require(handlers[id])(req, res);
+    }
   }
 };
