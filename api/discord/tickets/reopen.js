@@ -30,6 +30,17 @@ module.exports = async function reopenTicket(req, res) {
 
   const channel = await channelRes.json();
 
+  // Si le salon est deja reouvert
+  if (channel.name.startsWith("ticket-")) {
+    return res.send({
+      type: 4,
+      data: {
+        flags: 64,
+        content: "❌ Ce ticket est déjà ouvert.",
+      },
+    });
+  }
+
   /* =========================
      2️⃣ Récupérer l'ID user
      depuis le nom du salon
@@ -123,12 +134,6 @@ module.exports = async function reopenTicket(req, res) {
                 style: 4,
                 label: "Supprimer",
                 custom_id: "ticket_delete_confirm",
-              },
-              {
-                type: 2,
-                style: 2,
-                label: "Enregistrer",
-                custom_id: "ticket_save",
               },
             ],
           },

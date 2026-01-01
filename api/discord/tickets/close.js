@@ -26,6 +26,17 @@ module.exports = async function closeTicket(req, res) {
 
   const channel = await channelRes.json();
 
+  // Si le salon est deja fermer
+  if (channel.name.startsWith("fermé-")) {
+    return res.send({
+      type: 4,
+      data: {
+        flags: 64,
+        content: "❌ Ce ticket est déjà fermé.",
+      },
+    });
+  }
+
   /* =========================
      2️⃣ Bloquer la visibilité
      - tout le monde
