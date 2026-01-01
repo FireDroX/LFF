@@ -31,11 +31,11 @@ module.exports = async function deleteTicket(req, res) {
   /* =========================
      3️⃣ Extraire owner & reason
   ========================== */
-  const ownerMatch = channel.topic?.match(/<@(\d{17,19})>/);
-  const ownerId = ownerMatch?.[1] ?? "Inconnu";
+  const ownerMatch = channel.name?.match(/(\d{17,19})/);
+  const ownerId = ownerMatch ? ownerMatch[1] : "Inconnu";
 
   const reasonMatch = channel.topic?.match(/reason:(\w+)/);
-  const reason = reasonMatch?.[1] ?? "inconnue";
+  const reason = reasonMatch ? reasonMatch[1] : "Non spécifiée";
 
   /* =========================
      4️⃣ Génération HTML
@@ -47,11 +47,66 @@ module.exports = async function deleteTicket(req, res) {
 <meta charset="UTF-8">
 <title>Ticket ${channel.name}</title>
 <style>
-body { font-family: Arial, sans-serif; background:#2c2f33; color:#fff; }
-.message { margin-bottom:15px; }
-.author { font-weight:bold; color:#7289da; }
-.time { font-size:12px; color:#aaa; }
-.content { margin-left:10px; }
+body {
+  background: #313338;
+  color: #dbdee1;
+  font-family: "gg sans", "Segoe UI", Arial, sans-serif;
+  padding: 20px;
+}
+
+.message {
+  display: flex;
+  margin-bottom: 16px;
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 12px;
+}
+
+.content {
+  max-width: 800px;
+}
+
+.author {
+  font-weight: 600;
+  color: #f2f3f5;
+}
+
+.time {
+  font-size: 12px;
+  color: #949ba4;
+  margin-left: 6px;
+}
+
+.text {
+  margin-top: 4px;
+  white-space: pre-wrap;
+}
+
+.embed {
+  background: #2b2d31;
+  border-left: 4px solid #5865f2;
+  padding: 8px;
+  margin-top: 8px;
+  border-radius: 4px;
+}
+
+.embed-title {
+  font-weight: 600;
+}
+
+.embed-description {
+  margin-top: 4px;
+}
+
+.attachment img {
+  max-width: 400px;
+  border-radius: 4px;
+  margin-top: 8px;
+}
 </style>
 </head>
 <body>
@@ -61,15 +116,65 @@ body { font-family: Arial, sans-serif; background:#2c2f33; color:#fff; }
 <hr>
 ${messages
   .reverse()
-  .map(
-    (m) => `
+  .map((m) => {
+    const avatar = m.author.avatar
+      ? `https://cdn.discordapp.com/avatars/${m.author.id}/${m.author.avatar}.png`
+      : `https://cdn.discordapp.com/embed/avatars/0.png`;
+
+    return `
   <div class="message">
-    <div class="author">${m.author.username} (${m.author.id})</div>
-    <div class="time">${new Date(m.timestamp).toLocaleString()}</div>
-    <div class="content">${escapeHtml(m.content)}</div>
+    <img class="avatar" src="${avatar}">
+    <div class="content">
+      <div>
+        <span class="author">${m.author.username}</span>
+        <span class="time">${new Date(m.timestamp).toLocaleString()}</span>
+      </div>
+
+      ${m.content ? `<div class="text">${escapeHtml(m.content)}</div>` : ""}
+
+      ${m.embeds
+        .map(
+          (e) => `
+        <div class="embed">
+          ${
+            e.title
+              ? `<div class="embed-title">${escapeHtml(e.title)}</div>`
+              : ""
+          }
+          ${
+            e.description
+              ? `<div class="embed-description">${escapeHtml(
+                  e.description
+                )}</div>`
+              : ""
+          }
+          ${
+            e.image?.url
+              ? `<img src="${e.image.url}" style="max-width:400px;">`
+              : ""
+          }
+        </div>
+      `
+        )
+        .join("")}
+
+      ${m.attachments
+        .map(
+          (a) => `
+        <div class="attachment">
+          ${
+            a.content_type?.startsWith("image/")
+              ? `<img src="${a.url}">`
+              : `<a href="${a.url}" target="_blank">${a.filename}</a>`
+          }
+        </div>
+      `
+        )
+        .join("")}
+    </div>
   </div>
-`
-  )
+  `;
+  })
   .join("")}
 </body>
 </html>`;
