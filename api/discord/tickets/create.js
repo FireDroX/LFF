@@ -55,7 +55,7 @@ module.exports = async function createTicket(req, res) {
       name: channelName,
       topic: `Ticket de <@${userId}> ouvert le <t:${Math.floor(
         Date.now() / 1000
-      )}:F>`,
+      )}:F>\nreason:${choice}`,
       type: 0,
       parent_id: CATEGORY_ID,
       permission_overwrites: [
@@ -97,19 +97,13 @@ module.exports = async function createTicket(req, res) {
               type: 2,
               style: 1,
               label: "Fermer",
-              custom_id: "ticket_close",
+              custom_id: "ticket_close_confirm",
             },
             {
               type: 2,
               style: 4,
               label: "Supprimer",
-              custom_id: "ticket_delete",
-            },
-            {
-              type: 2,
-              style: 2,
-              label: "Enregistrer",
-              custom_id: "ticket_save",
+              custom_id: "ticket_delete_confirm",
             },
           ],
         },

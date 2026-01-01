@@ -47,7 +47,9 @@ module.exports = async function closeTicket(req, res) {
     body: JSON.stringify({
       name: `fermé-${userId}`,
       permission_overwrites: overwrites,
-      topic: `Ticket de <@${userId}> fermé le <t:${closedAt}:F>`,
+      topic: `Ticket de <@${userId}> fermé le <t:${closedAt}:F>\n${
+        channel.topic?.match(/reason:\w+/)?.[0] ?? ""
+      }`,
     }),
   });
 
@@ -57,8 +59,21 @@ module.exports = async function closeTicket(req, res) {
   return res.send({
     type: 4,
     data: {
-      flags: 64,
-      content: "🔒 Le ticket a été fermé avec succès.",
+      content:
+        "🔒 **Ticket fermé**\nClique sur le bouton ci-dessous pour le réouvrir.",
+      components: [
+        {
+          type: 1,
+          components: [
+            {
+              type: 2,
+              style: 3,
+              label: "🔓 Réouvrir",
+              custom_id: "ticket_reopen",
+            },
+          ],
+        },
+      ],
     },
   });
 };
