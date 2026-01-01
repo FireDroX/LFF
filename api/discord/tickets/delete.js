@@ -77,21 +77,28 @@ ${messages
   /* =========================
      5️⃣ Envoi HTML au log
   ========================== */
+  const form = new FormData();
+
+  form.append(
+    "payload_json",
+    JSON.stringify({
+      content: `📄 Archivage du ticket **${channel.name}** (raison: ${reason})`,
+    })
+  );
+
+  form.append(
+    "files[0]",
+    new Blob([html], { type: "text/html" }),
+    `${channel.name}.html`
+  );
+
   await fetch(`${DISCORD_API}/channels/${LOG_CHANNEL_ID}/messages`, {
     method: "POST",
     headers: {
       Authorization: `Bot ${BOT_TOKEN}`,
-      "Content-Type": "application/json",
+      // ❌ PAS de Content-Type ici
     },
-    body: JSON.stringify({
-      content: `📄 Archivage du ticket **${channel.name}** (raison: ${reason})`,
-      files: [
-        {
-          filename: `${channel.name}.html`,
-          content: Buffer.from(html).toString("base64"),
-        },
-      ],
-    }),
+    body: form,
   });
 
   /* =========================
