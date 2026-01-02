@@ -1,7 +1,13 @@
+const path = require("path");
+const fs = require("fs");
+
 const DISCORD_API = "https://discord.com/api";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 const LOG_CHANNEL_ID = "1237544228276404408";
+
+const cssPath = path.join(__dirname, "style.css");
+const css = fs.readFileSync(cssPath, "utf8");
 
 module.exports = async function deleteTicket(req, res) {
   const interaction = req.body;
@@ -46,68 +52,7 @@ module.exports = async function deleteTicket(req, res) {
 <head>
 <meta charset="UTF-8">
 <title>Ticket ${channel.name}</title>
-<style>
-body {
-  background: #313338;
-  color: #dbdee1;
-  font-family: "gg sans", "Segoe UI", Arial, sans-serif;
-  padding: 20px;
-}
-
-.message {
-  display: flex;
-  margin-bottom: 16px;
-}
-
-.avatar {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  margin-right: 12px;
-}
-
-.content {
-  max-width: 800px;
-}
-
-.author {
-  font-weight: 600;
-  color: #f2f3f5;
-}
-
-.time {
-  font-size: 12px;
-  color: #949ba4;
-  margin-left: 6px;
-}
-
-.text {
-  margin-top: 4px;
-  white-space: pre-wrap;
-}
-
-.embed {
-  background: #2b2d31;
-  border-left: 4px solid #5865f2;
-  padding: 8px;
-  margin-top: 8px;
-  border-radius: 4px;
-}
-
-.embed-title {
-  font-weight: 600;
-}
-
-.embed-description {
-  margin-top: 4px;
-}
-
-.attachment img {
-  max-width: 400px;
-  border-radius: 4px;
-  margin-top: 8px;
-}
-</style>
+<style>${css}</style>
 </head>
 <body>
 <h1>Ticket ${channel.name}</h1>
@@ -122,58 +67,109 @@ ${messages
       : `https://cdn.discordapp.com/embed/avatars/0.png`;
 
     return `
-  <div class="message">
-    <img class="avatar" src="${avatar}">
-    <div class="content">
-      <div>
-        <span class="author">${m.author.username}</span>
-        <span class="time">${new Date(m.timestamp).toLocaleString()}</span>
-      </div>
-
-      ${m.content ? `<div class="text">${escapeHtml(m.content)}</div>` : ""}
-
-      ${m.embeds
-        .map(
-          (e) => `
-        <div class="embed">
-          ${
-            e.title
-              ? `<div class="embed-title">${escapeHtml(e.title)}</div>`
-              : ""
-          }
-          ${
-            e.description
-              ? `<div class="embed-description">${escapeHtml(
-                  e.description
-                )}</div>`
-              : ""
-          }
-          ${
-            e.image?.url
-              ? `<img src="${e.image.url}" style="max-width:400px;">`
-              : ""
-          }
-        </div>
-      `
-        )
-        .join("")}
-
-      ${m.attachments
-        .map(
-          (a) => `
-        <div class="attachment">
-          ${
-            a.content_type?.startsWith("image/")
-              ? `<img src="${a.url}">`
-              : `<a href="${a.url}" target="_blank">${a.filename}</a>`
-          }
-        </div>
-      `
-        )
-        .join("")}
+<div class="message">
+  <img class="avatar" src="${avatar}">
+  <div class="content">
+    <div class="header">
+      <span class="author">${escapeHtml(m.author.username)}</span>
+      <span class="time">${new Date(m.timestamp).toLocaleString()}</span>
     </div>
+
+    ${m.content ? `<div class="text">${escapeHtml(m.content)}</div>` : ""}
+
+    ${m.embeds
+      .map(
+        (e) => `
+      <div class="embed" style="--embed-color:#${(e.color ?? 0x5865f2).toString(
+        16
+      )}">
+        ${
+          e.author
+            ? `
+          <div class="embed-author">
+            ${e.author.icon_url ? `<img src="${e.author.icon_url}">` : ""}
+            ${escapeHtml(e.author.name)}
+          </div>`
+            : ""
+        }
+
+        ${
+          e.title ? `<div class="embed-title">${escapeHtml(e.title)}</div>` : ""
+        }
+        ${
+          e.description
+            ? `<div class="embed-description">${escapeHtml(
+                e.description
+              )}</div>`
+            : ""
+        }
+
+        ${
+          e.fields?.length
+            ? `
+          <div class="embed-fields">
+            ${e.fields
+              .map(
+                (f) => `
+              <div class="embed-field">
+                <div class="embed-field-name">${escapeHtml(f.name)}</div>
+                <div>${escapeHtml(f.value)}</div>
+              </div>
+            `
+              )
+              .join("")}
+          </div>`
+            : ""
+        }
+
+        ${
+          e.thumbnail?.url
+            ? `
+          <div class="embed-thumb">
+            <img src="${e.thumbnail.url}">
+          </div>`
+            : ""
+        }
+
+        ${
+          e.image?.url
+            ? `
+          <div class="embed-image">
+            <img src="${e.image.url}">
+          </div>`
+            : ""
+        }
+
+        ${
+          e.footer
+            ? `
+          <div class="embed-footer">
+            ${e.footer.icon_url ? `<img src="${e.footer.icon_url}">` : ""}
+            ${escapeHtml(e.footer.text)}
+            ${e.timestamp ? `• ${new Date(e.timestamp).toLocaleString()}` : ""}
+          </div>`
+            : ""
+        }
+      </div>
+    `
+      )
+      .join("")}
+
+    ${m.attachments
+      .map(
+        (a) => `
+      <div class="attachment">
+        ${
+          a.content_type?.startsWith("image/")
+            ? `<img src="${a.url}">`
+            : `<a href="${a.url}" target="_blank">${escapeHtml(a.filename)}</a>`
+        }
+      </div>
+    `
+      )
+      .join("")}
   </div>
-  `;
+</div>`;
   })
   .join("")}
 </body>
