@@ -213,11 +213,14 @@ ${messages
   /* =========================
      7️⃣ Réponse interaction
   ========================== */
+  const authorName =
+    interaction.member?.nick ?? interaction.member?.user?.username ?? "Inconnu";
+
   return res.send({
     type: 4,
     data: {
       flags: 64,
-      content: "🗑️ Ticket supprimé et archivé avec succès.",
+      content: `🗑️ Ticket supprimé par <@${interaction.member.user.id}> (\`${authorName}\`) et archivé avec succès.`,
     },
   });
 };
