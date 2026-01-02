@@ -183,7 +183,7 @@ ${messages
   form.append(
     "payload_json",
     JSON.stringify({
-      content: `📄 Archivage du ticket **${channel.name}** (raison: ${reason})`,
+      content: `📄 Archivage du ticket **${channel.name}** par <@${interaction.member.user.id}> (\`${authorName}\`) (raison: ${reason})`,
     })
   );
 
