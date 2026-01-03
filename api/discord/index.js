@@ -8,13 +8,9 @@ for (const cmd of commands) {
   try {
     commandHandlers[cmd.name] = require(path.join(__dirname, cmd.name));
   } catch (err) {
-    return res.send({
-      type: 4,
-      data: {
-        flags: 64,
-        content: `⚠️ Commande "${cmd.name}" ignorée : fichier manquant.`,
-      },
-    });
+    return console.error(
+      `⚠️ Commande "${cmd.name}" ignorée : fichier manquant.`
+    );
   }
 }
 module.exports = async function interactionsHandler(req, res) {
