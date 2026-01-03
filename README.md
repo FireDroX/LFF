@@ -156,6 +156,115 @@ Gestion complète :
 
 ---
 
+## 🎫 Système de tickets Discord (Recrutement & Support)
+
+LFF intègre désormais un **système de tickets Discord avancé**, entièrement géré via l’API Discord (sans discord.js), permettant une gestion propre, sécurisée et automatisée des demandes utilisateurs.
+
+### 🔓 Ouverture de ticket
+
+- Les utilisateurs ouvrent un ticket via un **menu déroulant (Select Menu)**.
+- Chaque choix correspond à une **raison spécifique** :
+
+  - 💎 Rejoindre le Gang LFF
+  - 🏝️ Rejoindre l’île de FireDroX
+
+Lors de la création :
+
+- Un **salon privé** est automatiquement créé
+- Le salon est placé dans une **catégorie dédiée**
+- Les **permissions** sont configurées dynamiquement :
+
+  - accès au membre
+  - accès au rôle concerné (gang / île)
+  - accès staff
+
+- Un **message par défaut interactif** est envoyé dans le ticket
+
+🔒 **Anti double ticket** :
+Un utilisateur ne peut pas ouvrir plusieurs tickets en même temps pour la même raison.
+
+---
+
+### 🔁 Réouverture de ticket
+
+- Un ticket fermé peut être **réouvert via un bouton**
+- Les permissions sont restaurées automatiquement
+- Le topic du salon est mis à jour en conservant :
+
+  - le propriétaire
+  - la raison initiale
+  - l’historique des dates (ouvert / fermé / rouvert)
+
+---
+
+### 🔒 Fermeture de ticket
+
+- Un bouton **Fermer** déclenche une **confirmation**
+- Une fois confirmé :
+
+  - les permissions sont retirées à tous les membres
+  - le salon est renommé (`fermé-<id>`)
+  - le topic est mis à jour avec la date de fermeture
+
+---
+
+### 🗑️ Suppression & Archivage
+
+Avant suppression :
+
+- Le ticket est **automatiquement archivé**
+- Tous les messages sont exportés en **HTML 100 % fidèle à Discord**
+
+L’export inclut :
+
+- messages texte
+- embeds complets (titre, description, fields, footer, couleurs…)
+- avatars
+- horodatage
+- mise en forme identique à Discord (dark mode)
+
+📄 Le fichier HTML est envoyé dans un **salon de logs dédié**.
+
+---
+
+### 📂 Export HTML (Transcript)
+
+- Export **autonome** (aucune dépendance externe)
+- CSS Discord-like intégré
+- Compatible hors ligne
+- Lisible et partageable
+
+Idéal pour :
+
+- archivage staff
+- modération
+- historique de recrutement
+
+---
+
+### 🧠 Architecture technique du système de tickets
+
+- Gestion **100 % API Discord**
+- Interactions :
+
+  - Slash commands
+  - Select menus
+  - Buttons
+
+- Routing propre des interactions (`custom_id`)
+- Séparation claire :
+
+  - `tickets/create.js`
+  - `tickets/close.js`
+  - `tickets/reopen.js`
+  - `tickets/delete.js`
+  - `tickets/confirm.js`
+
+- Utilisation de `fetch` natif
+- Aucune dépendance à `discord.js`
+
+---
+
 ## 🧩 Partie technique
 
 ### **Stack :**
