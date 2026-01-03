@@ -1,4 +1,5 @@
 const setupTicket = require("../tickets/setupTicket");
+const updateTicketReason = require("../tickets/updateTicketReason");
 
 module.exports = async function admin(req, res) {
   const interaction = req.body;
