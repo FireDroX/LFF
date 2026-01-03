@@ -178,6 +178,9 @@ ${messages
   /* =========================
      5️⃣ Envoi HTML au log
   ========================== */
+  const authorName =
+    interaction.member?.nick ?? interaction.member?.user?.username ?? "Inconnu";
+
   const form = new FormData();
 
   form.append(
@@ -213,9 +216,6 @@ ${messages
   /* =========================
      7️⃣ Réponse interaction
   ========================== */
-  const authorName =
-    interaction.member?.nick ?? interaction.member?.user?.username ?? "Inconnu";
-
   return res.send({
     type: 4,
     data: {

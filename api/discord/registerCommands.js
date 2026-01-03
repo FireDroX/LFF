@@ -102,9 +102,43 @@ const commands = [
     description: "Commandes administrateurs",
     options: [
       {
-        type: 1, // Subcommand
+        type: 2, // Subcommand Group
         name: "ticket",
-        description: "Configurer le système de tickets",
+        description: "Gestion du système de tickets",
+        options: [
+          {
+            type: 1, // Subcommand
+            name: "setup",
+            description: "Configurer le système de tickets",
+          },
+          {
+            type: 1, // Subcommand
+            name: "updatereason",
+            description: "Mettre à jour une raison de ticket",
+            options: [
+              {
+                type: 3, // STRING
+                name: "reason",
+                description: "Raison du ticket à mettre à jour",
+                required: true,
+                choices: [
+                  {
+                    name: "Gang LFF",
+                    value: "gang_lff",
+                  },
+                  {
+                    name: "Île FireDroX",
+                    value: "ile_firedrox",
+                  },
+                  {
+                    name: "Île Nalyd_40",
+                    value: "ile_nalyd",
+                  },
+                ],
+              },
+            ],
+          },
+        ],
       },
     ],
   },
