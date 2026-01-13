@@ -11,7 +11,7 @@ module.exports = async function points(req, res) {
 
   const userId = member?.user?.id;
   const username = member?.user?.global_name || member?.user?.username;
-  const nick = member?.user?.nick;
+  const nick = member?.nick;
   const displayName = nick || username;
 
   if (!userId || !username) {
