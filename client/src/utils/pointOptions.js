@@ -13,14 +13,14 @@ export const WEEKLY_OPTIONS = {
     label: "Crystaux",
     format: (p) =>
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 100)} Crystaux`,
-    requiredAmount: 100,
+    requiredAmount: 75,
     icon: crystaux,
   },
   pvp: {
     multiplier: 1,
     label: "PVP",
     format: (p) => `${formatNumberWithSpaces(p)} pts`,
-    requiredAmount: 100,
+    requiredAmount: 0,
     icon: pvp,
   },
   iscoin: {
