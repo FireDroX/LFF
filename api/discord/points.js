@@ -27,7 +27,7 @@ module.exports = async function points(req, res) {
   const finalAmount = option === "remove" ? -Math.abs(amount) : amount;
 
   const result = await modifyPoints({
-    displayName,
+    username: displayName,
     userId,
     type,
     amount: finalAmount,
