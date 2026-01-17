@@ -13,7 +13,7 @@ export const WEEKLY_OPTIONS = {
     label: "Crystaux",
     format: (p) =>
       `${formatNumberWithSpaces(p)} = ${compactNumber(p * 100)} Crystaux`,
-    requiredAmount: 75,
+    requiredAmount: 50,
     icon: crystaux,
   },
   pvp: {
