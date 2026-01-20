@@ -17,7 +17,7 @@ const Leaderboard = ({
 
   // Trouver la position où les scores passent en dessous de `requiredAmount` (50 ou 1000)
   const separationIndex = sorted.findIndex(
-    (player) => player.score < requiredAmount
+    (player) => player.score < requiredAmount,
   );
 
   // Find the current user's position
@@ -29,71 +29,115 @@ const Leaderboard = ({
   const endFormatted = formatDateShort(end);
 
   return (
-    <div>
-      <h5 style={{ color: "var(--text85)" }}>{title}</h5>
+    <div className="lff-leaderboard">
+      <div className="lff-header">
+        <div className="lff-header-left">
+          <h5 className="lff-header-title">{title}</h5>
+        </div>
+
+        <span className="lff-header-min">
+          {requiredAmount > 0
+            ? `MIN ${formatNumberWithSpaces(requiredAmount)} PTS`
+            : "NO MIN"}
+        </span>
+      </div>
       <ul className="lff-classement">
         {Array.isArray(sorted) &&
-          sorted.slice(0, 5).flatMap(({ score, name }, index) => {
+          sorted.slice(0, 3).flatMap(({ score, name }, index) => {
+            const maxScore = sorted.length > 0 ? sorted[0].score : 1;
+            const currentUserData =
+              userPosition > 0
+                ? {
+                    name: sorted[userPosition - 1]?.name,
+                    score: sorted[userPosition - 1]?.score,
+                    position: userPosition,
+                  }
+                : {
+                    name: "You",
+                    score: 0,
+                    position: "??",
+                  };
+
             const items = [];
-            if (separationIndex === index) {
-              items.push(
-                <li key={`separator-${index}`} className="lff-separator">
-                  <span className="lff-separator-text">
-                    {requiredAmount} pts mini
+
+            items.push(
+              <li key={`player-${index}`} className="lff-player">
+                <div className="lff-row">
+                  <span
+                    className="lff-classement-top"
+                    style={{
+                      color:
+                        index === 0
+                          ? "#FFD700"
+                          : index === 1
+                            ? "#C0C0C0"
+                            : "#CD7F32",
+                    }}
+                  >
+                    0{index + 1}
                   </span>
-                </li>
+
+                  <span className="lff-classement-name">{name}</span>
+
+                  <span className="lff-classement-score">
+                    {formatNumberWithSpaces(score)}
+                  </span>
+                </div>
+
+                <div className="lff-progress-bar">
+                  <div
+                    className="lff-progress-bar-fill"
+                    style={{
+                      width: `${(score / maxScore) * 100}%`,
+                    }}
+                  />
+                </div>
+              </li>,
+            );
+
+            if (index === 2) {
+              items.push(
+                <li
+                  key="player-current"
+                  className="lff-player lff-current-user"
+                >
+                  <div className="lff-row">
+                    <span
+                      className="lff-classement-top"
+                      style={{
+                        color: "var(--text35)",
+                      }}
+                    >
+                      {String(currentUserData.position).padStart(2, "0")}
+                    </span>
+
+                    <span className="lff-classement-name">
+                      {currentUserData.name}
+                    </span>
+
+                    <span className="lff-classement-score">
+                      {formatNumberWithSpaces(currentUserData.score)}
+                    </span>
+                  </div>
+
+                  <div className="lff-progress-bar">
+                    <div
+                      className="lff-progress-bar-fill"
+                      style={{
+                        width: `${
+                          currentUserData.score > 0
+                            ? (currentUserData.score / maxScore) * 100
+                            : 0
+                        }%`,
+                      }}
+                    />
+                  </div>
+                </li>,
               );
             }
-            items.push(
-              <li key={`player-${index}`}>
-                <span className="lff-classement-top">
-                  {index === 0 ? (
-                    <FaTrophy color="#FFD700" />
-                  ) : index === 1 ? (
-                    <FaTrophy color="#C0C0C0" />
-                  ) : index === 2 ? (
-                    <FaTrophy color="#CD7F32" />
-                  ) : (
-                    index + 1
-                  )}
-                </span>
-                <span className="lff-classement-score">
-                  {formatNumberWithSpaces(score)}
-                </span>
-                <span className="lff-classement-name">{name}</span>
-              </li>
-            );
+
             return items;
           })}
-
-        <li key="dates" className="lff-separator">
-          <span className="lff-separator-text">
-            {startFormatted && endFormatted
-              ? `${startFormatted} - ${endFormatted}`
-              : ""}
-          </span>
-        </li>
-        {userPosition > 0 && (
-          <li key={"player-current"}>
-            <span className="lff-classement-top">
-              {userPosition === 1 ? (
-                <FaTrophy color="#FFD700" />
-              ) : userPosition === 2 ? (
-                <FaTrophy color="#C0C0C0" />
-              ) : userPosition === 3 ? (
-                <FaTrophy color="#CD7F32" />
-              ) : (
-                userPosition
-              )}
-            </span>
-            <span className="lff-classement-score">
-              {formatNumberWithSpaces(sorted[userPosition - 1]?.score)}
-            </span>
-            <span className="lff-classement-name">
-              {sorted[userPosition - 1]?.name}
-            </span>
-          </li>
-        )}
       </ul>
     </div>
   );

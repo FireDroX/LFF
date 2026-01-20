@@ -3,12 +3,11 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 import { TbLogin2 } from "react-icons/tb";
-import { IoIosArrowDown, IoIosColorPalette } from "react-icons/io";
+import { IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { CgTrash, CgProfile } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
-import { GiTwoCoins } from "react-icons/gi";
 
 import RemovePoints from "../RemovePoints/RemovePoints";
 import History from "../History/History";
@@ -24,10 +23,9 @@ const Navbar = ({ userData }) => {
   const server = p.toLowerCase();
 
   const [theme, setTheme] = useState(
-    window.localStorage.getItem("theme") || "Dark"
+    window.localStorage.getItem("theme") || "Dark",
   );
 
-  const [isOpen, setIsOpen] = useState(false);
   const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
 
@@ -50,120 +48,121 @@ const Navbar = ({ userData }) => {
     }
   };
 
+  const gangFlags = ["crystaux", "pvp"];
+  const islandFlags = ["iscoin", "dragonegg", "beacon", "sponge"];
+
+  const hasGangFlags = gangFlags.every((flag) =>
+    userData?.flags.includes(flag),
+  );
+  const hasIslandFlags = islandFlags.every((flag) =>
+    userData?.flags.includes(flag),
+  );
+
+  let userLabel = "Visitor";
+
+  if (userData?.isAdmin) {
+    userLabel = "Admin";
+  } else if (hasGangFlags && hasIslandFlags) {
+    userLabel = "LFF Player";
+  } else if (hasGangFlags) {
+    userLabel = "Gang Player";
+  } else if (hasIslandFlags) {
+    userLabel = "Island Player";
+  }
+
   return (
     <>
       <div className="navbar">
         <div className="navbar-connection">
-          <div
-            className="navbar-user-dropdown"
-            onClick={() => setIsOpen((prev) => !prev)}
-          >
-            <div className="LFF-img">
-              <img src={favicon} alt="LFF" />
-            </div>
+          <div className="LFF-img">
+            <img src={favicon} alt="LFF" />
             Gang LFF
-            <IoIosArrowDown />
-            {isOpen && (
-              <ul className="dropdown-menu-navbar">
-                {[
-                  // --- PROFIL ---
-                  userData && {
-                    label: "Profile",
-                    icon: <CgProfile />,
-                    action: () => navigate("?p=Profile"),
-                    borderBottom: true,
-                  },
+          </div>
+          <div className="navbar-user-dropdown">
+            <ul className="navbar-menu">
+              {[
+                // --- PROFIL ---
+                userData && {
+                  label: "Profile",
+                  icon: <CgProfile />,
+                  action: () => navigate("?p=Profile"),
+                },
 
-                  // --- CLASSEMENTS ---
-                  ...[
-                    { path: "Weekly", icon: <MdLeaderboard /> },
-                    { path: "IsValue", icon: <GiTwoCoins /> },
-                  ]
-                    .filter(({ path }) => path.toLowerCase() !== server)
-                    .map(({ path, icon }) => ({
-                      label: path,
-                      icon,
-                      action: () => navigate(`?p=${path}`),
-                    })),
+                // --- CLASSEMENTS ---
+                {
+                  label: "Leaderboards",
+                  icon: <MdLeaderboard />,
+                  action: () => navigate("?p=Leaderboards"),
+                },
 
-                  // --- HISTORY ---
-                  {
-                    label: "History",
-                    icon: <FaHistory />,
-                    action: () => setHistoryModal((prev) => !prev),
-                    borderTop: true,
-                  },
+                // --- HISTORY ---
+                {
+                  label: "History",
+                  icon: <FaHistory />,
+                  action: () => setHistoryModal((prev) => !prev),
+                },
 
-                  // --- THEME ---
-                  {
-                    label: `${theme === "Dark" ? "Light" : "Dark"} Theme`,
-                    icon: <IoIosColorPalette />,
-                    action: handleThemeChange,
-                  },
+                // --- THEME ---
+                {
+                  label: `${theme === "Dark" ? "Light" : "Dark"} Theme`,
+                  icon: <IoIosColorPalette />,
+                  action: handleThemeChange,
+                },
 
-                  // --- ADMIN DASHBOARD ---
-                  userData?.isAdmin && {
-                    label: "Dashboard",
-                    icon: <MdAdminPanelSettings />,
-                    action: () => navigate("?p=Dashboard"),
-                    borderTop: true,
-                  },
+                // --- ADMIN DASHBOARD ---
+                userData?.isAdmin && {
+                  label: "Dashboard",
+                  icon: <MdAdminPanelSettings />,
+                  action: () => navigate("?p=Dashboard"),
+                },
 
-                  // --- DELETE POINTS ---
-                  userData && {
-                    label: "Delete Points",
-                    icon: <CgTrash />,
-                    action: () => setRemoveModal((prev) => !prev),
-                    color: "#ff5252",
-                    borderTop: true,
-                  },
+                // --- DELETE POINTS ---
+                userData && {
+                  label: "Delete Points",
+                  icon: <CgTrash />,
+                  action: () => setRemoveModal((prev) => !prev),
+                  color: "#ff5252",
+                },
 
-                  // --- DISCONNECT ---
-                  userData && {
-                    label: "Disconnect",
-                    icon: <VscDebugDisconnect />,
-                    action: handleDisconnect,
-                    color: "#a70000",
-                  },
-                ]
-                  .filter(Boolean) // enlève les 'false' ou undefined
-                  .map(
-                    (
-                      { label, icon, action, borderTop, borderBottom, color },
-                      i
-                    ) => (
-                      <li
-                        key={i}
-                        className="dropdown-item"
-                        onClick={action}
-                        style={{
-                          ...(borderTop && {
-                            borderTop: "1px solid var(--accent35)",
-                          }),
-                          ...(borderBottom && {
-                            borderBottom: "1px solid var(--accent35)",
-                          }),
-                          ...(color && { color }),
-                        }}
-                      >
-                        {icon}
-                        <span>{label}</span>
-                      </li>
-                    )
-                  )}
-              </ul>
-            )}
+                // --- DISCONNECT ---
+                userData && {
+                  label: "Disconnect",
+                  icon: <VscDebugDisconnect />,
+                  action: handleDisconnect,
+                  color: "#a70000",
+                },
+              ]
+                .filter(Boolean) // enlève les 'false' ou undefined
+                .map(({ label, icon, action, color }, i) => (
+                  <li
+                    key={i}
+                    className="dropdown-item"
+                    onClick={action}
+                    style={{
+                      ...(color && { color }),
+                    }}
+                  >
+                    {icon}
+                    <span>{label}</span>
+                  </li>
+                ))}
+            </ul>
           </div>
           {userData ? (
-            <div>
+            <div className="lff-navbar-footer">
               <img
                 className="navbar-pic"
                 src={`https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`}
                 alt={userData.global_name}
               />
+              <div className="lff-navbar-user">
+                <h5>{userData.global_name}</h5>
+                <small style={{ fontSize: "0.8rem" }}>{userLabel}</small>
+              </div>
             </div>
           ) : (
             <a
+              className="lff-navbar-footer"
               id="login"
               href={
                 process.env.NODE_ENV === "production"

@@ -1,5 +1,5 @@
 .add-points-container {
-  position: absolute;
+  position: fixed;
   bottom: 0.6rem;
   right: 0.6rem;
   width: 3rem;

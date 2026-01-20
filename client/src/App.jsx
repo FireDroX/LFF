@@ -6,8 +6,7 @@ import { getMe, getToken } from "./utils/requests";
 
 import Navbar from "./components/Navbar/Navbar";
 
-const Weekly = lazy(() => import("./pages/weekly/Weekly"));
-const IsValue = lazy(() => import("./pages/isvalue/IsValue"));
+const MainTops = lazy(() => import("./pages/maintops/MainTops"));
 const Dashboard = lazy(() => import("./pages/dashboard/Dashboard"));
 const Profile = lazy(() => import("./pages/profile/Profile"));
 
@@ -27,17 +26,9 @@ const DynamicPage = ({ isLogged, data }) => {
       return <Profile isLogged={isLogged} data={data} />;
     case "dashboard":
       return <Dashboard isLogged={isLogged} isAdmin={data?.isAdmin} />;
-    case "isvalue":
-      return (
-        <IsValue
-          isLogged={isLogged}
-          flags={data?.flags}
-          currentUser={data?.id}
-        />
-      );
     default:
       return (
-        <Weekly
+        <MainTops
           isLogged={isLogged}
           flags={data?.flags}
           currentUser={data?.id}

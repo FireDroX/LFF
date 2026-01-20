@@ -2,13 +2,21 @@ import { useEffect, useState } from "react";
 
 import { currentTop } from "../../utils/requests";
 import { formatTop, filterPointOptions } from "../../utils/functions";
-import { ISVALUE_OPTIONS as pointOptions } from "../../utils/pointOptions";
+import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../../utils/pointOptions";
 
 import AddPoints from "../../components/AddPoints/AddPoints";
 import Leaderboard from "../../components/Leaderboard/Leaderboard";
 
-const IsValue = ({ isLogged, flags, currentUser }) => {
+const pointOptions = {
+  ...WEEKLY_OPTIONS,
+  ...ISVALUE_OPTIONS,
+};
+
+const MainTops = ({ isLogged, flags, currentUser }) => {
   const [tops, setTops] = useState({
+    crystaux: { users: [] },
+    pvp: { users: [] },
+    iscoin: { users: [] },
     dragonEgg: { users: [] },
     beacon: { users: [] },
     sponge: { users: [] },
@@ -18,40 +26,56 @@ const IsValue = ({ isLogged, flags, currentUser }) => {
   const filteredPointOptions = filterPointOptions(pointOptions, flags);
 
   useEffect(() => {
-    // Charger dragon_egg, beacon et sponge tops
+    // Charger crystaux, pvp et iscoin
     Promise.all([
+      currentTop("crystaux"),
+      currentTop("pvp"),
+      currentTop("iscoin"),
       currentTop("dragonegg"),
       currentTop("beacon"),
       currentTop("sponge"),
-    ]).then(([dragonEggData, beaconData, spongeData]) => {
-      setTops({
-        dragonegg: formatTop(dragonEggData.users),
-        beacon: formatTop(beaconData.users),
-        sponge: formatTop(spongeData.users),
-      });
-    });
+    ]).then(
+      ([
+        crystauxData,
+        pvpData,
+        iscoinData,
+        dragonEggData,
+        beaconData,
+        spongeData,
+      ]) => {
+        setTops({
+          crystaux: formatTop(crystauxData.users),
+          pvp: formatTop(pvpData.users),
+          iscoin: formatTop(iscoinData.users),
+          dragonegg: formatTop(dragonEggData.users),
+          beacon: formatTop(beaconData.users),
+          sponge: formatTop(spongeData.users),
+        });
+      },
+    );
   }, []);
 
-  const keys = ["dragonegg", "beacon", "sponge"];
+  const keys = ["crystaux", "pvp", "iscoin", "dragonegg", "beacon", "sponge"];
 
   return (
     <section className="App">
       <div className="lff-classements-container">
-        {/* Classement Dragon Egg, Beacon et Sponge */}
+        {/* Classement Crystaux et IsCoin */}
         {keys.map((k) => (
           <Leaderboard
             key={k}
             title={
               <>
-                {pointOptions[k].label}{" "}
                 <img
                   className="lff-classements-icon"
                   src={pointOptions[k].icon}
                   alt={pointOptions[k].label}
                 />
+                {pointOptions[k].label}
               </>
             }
             top={tops[k]?.users}
+            requiredAmount={pointOptions[k].requiredAmount}
             currentUser={currentUser}
           />
         ))}
@@ -69,4 +93,4 @@ const IsValue = ({ isLogged, flags, currentUser }) => {
   );
 };
 
-export default IsValue;
+export default MainTops;
