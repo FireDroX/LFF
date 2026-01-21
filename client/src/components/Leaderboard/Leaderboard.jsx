@@ -1,18 +1,17 @@
 import "./Leaderboard.css";
 import { formatNumberWithSpaces } from "../../utils/functions";
 
-const Leaderboard = ({
-  title,
-  top,
-  start,
-  end,
-  requiredAmount,
-  currentUser,
-}) => {
+const DEFAULT_TOP = [
+  { userId: null, name: "No Data", score: 0 },
+  { userId: null, name: "No Data", score: 0 },
+  { userId: null, name: "No Data", score: 0 },
+];
+
+const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
   // On trie les joueurs par score décroissant
-  const sorted = Array.isArray(top)
-    ? [...top].sort((a, b) => b.score - a.score)
-    : [];
+  const safeTop = Array.isArray(top) && top.length > 0 ? top : DEFAULT_TOP;
+
+  const sorted = [...safeTop].sort((a, b) => b.score - a.score);
 
   // Find the current user's position
   const userPosition = currentUser

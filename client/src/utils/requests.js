@@ -1,158 +1,89 @@
 const { defaultURL } = require("./defaultURL");
 
-export const currentTop = async (type) => {
-  const result = await fetch(defaultURL + "/leaderboard/current/" + type, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const resultJson = await result.json();
-
-  if (!result.ok) {
-    throw new Error(
-      resultJson?.error || "Failed to fetch current top leaderboard"
-    );
-  }
-
-  return resultJson;
-};
-
-export const addPoints = async (score, selected) => {
-  const result = await fetch(defaultURL + "/points/add/" + selected, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${localStorage.getItem(
-        "token_type"
-      )} ${localStorage.getItem("access_token")}`,
-    },
-    body: JSON.stringify({
-      score,
-    }),
-  });
-
-  const resultJson = await result.json();
-
-  if (!result.ok) {
-    throw new Error(resultJson?.error || "Failed to add points");
-  }
-
-  return resultJson;
-};
-
-export const updatePoints = async (type, payload) => {
-  const response = await fetch(
-    `${defaultURL}/leaderboards/update/${type.toLowerCase()}`,
-    {
-      method: "PATCH",
+const apiFetch = async (url, options = {}) => {
+  try {
+    const response = await fetch(defaultURL + url, {
       headers: {
         "Content-Type": "application/json",
-        Authorization: `${localStorage.getItem(
-          "token_type"
-        )} ${localStorage.getItem("access_token")}`,
+        ...(options.headers || {}),
       },
-      body: JSON.stringify(payload),
+      ...options,
+    });
+
+    const text = await response.text();
+    const data = text ? JSON.parse(text) : null;
+
+    if (!response.ok) {
+      throw new Error(data?.error || "API error");
     }
-  );
 
-  const resultJson = await response.json();
+    return data;
+  } catch (error) {
+    if (error instanceof SyntaxError) {
+      throw new Error("Invalid server response");
+    }
 
-  if (!response.ok) {
-    throw new Error(resultJson?.error || "Staff update failed");
+    if (error instanceof TypeError) {
+      // fetch failed → serveur down / CORS / DNS
+      throw new Error("Server unreachable");
+    }
+
+    throw error;
   }
-
-  return resultJson;
 };
 
-export const removePoints = async (path) => {
-  const result = await fetch(defaultURL + "/points/remove/" + path, {
+export const currentTop = (type) => apiFetch(`/leaderboard/current/${type}`);
+
+export const addPoints = (score, selected) =>
+  apiFetch(`/points/add/${selected}`, {
+    method: "POST",
+    headers: {
+      Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("access_token")}`,
+    },
+    body: JSON.stringify({ score }),
+  });
+
+export const updatePoints = (type, payload) =>
+  apiFetch(`/leaderboards/update/${type.toLowerCase()}`, {
+    method: "PATCH",
+    headers: {
+      Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("access_token")}`,
+    },
+    body: JSON.stringify(payload),
+  });
+
+export const removePoints = (path) =>
+  apiFetch(`/points/remove/${path}`, {
     method: "DELETE",
     headers: {
-      "Content-Type": "application/json",
-      Authorization: `${localStorage.getItem(
-        "token_type"
-      )} ${localStorage.getItem("access_token")}`,
+      Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("access_token")}`,
     },
   });
 
-  const resultJson = await result.json();
-
-  if (!result.ok) {
-    throw new Error(resultJson?.error || "Points removal failed");
-  }
-
-  return resultJson;
-};
-
-export const getMe = async (tokenType, accessToken) => {
-  const result = await fetch(defaultURL + "/get/me", {
+export const getMe = (tokenType, accessToken) =>
+  apiFetch("/get/me", {
     headers: {
-      authorization: `${tokenType} ${accessToken}`,
+      Authorization: `${tokenType} ${accessToken}`,
     },
   });
-
-  const resultJson = await result.json();
-
-  if (!result.ok) {
-    throw new Error(resultJson?.error || "Failed to fetch user data");
-  }
-
-  return resultJson;
-};
 
 export const getToken = async (code) => {
-  const result = await fetch(defaultURL + "/get/token", {
+  const result = await apiFetch("/get/token", {
     method: "POST",
     body: JSON.stringify({ code }),
-    headers: {
-      "Content-Type": "application/json",
-    },
   });
 
-  const resultJson = await result.json();
+  window.localStorage.setItem("access_token", result.access_token);
+  window.localStorage.setItem("token_type", result.token_type);
 
-  if (!result.ok) {
-    throw new Error(resultJson?.error || "Failed to fetch token");
-  }
-
-  window.localStorage.setItem("access_token", resultJson.access_token);
-  window.localStorage.setItem("token_type", resultJson.token_type);
-  return resultJson;
+  return result;
 };
 
-export const historyTops = async () => {
-  const result = await fetch(defaultURL + "/leaderboard/history", {
+export const historyTops = () => apiFetch("/leaderboard/history");
+
+export const profile = () =>
+  apiFetch("/profile", {
     headers: {
-      "Content-Type": "application/json",
+      Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("access_token")}`,
     },
   });
-
-  const resultJson = await result.json();
-
-  if (!result.ok) {
-    throw new Error(resultJson?.error || "Failed to fetch history tops");
-  }
-  return resultJson;
-};
-
-export const profile = async () => {
-  const result = await fetch(defaultURL + "/profile", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `${localStorage.getItem(
-        "token_type"
-      )} ${localStorage.getItem("access_token")}`,
-    },
-  });
-
-  const resultJson = await result.json();
-
-  if (!result.ok) {
-    throw new Error(resultJson?.error || "Failed to add points");
-  }
-
-  return resultJson;
-};
