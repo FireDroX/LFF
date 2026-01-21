@@ -76,7 +76,7 @@ const Navbar = ({ userData }) => {
         <div className="navbar-connection">
           <div className="LFF-img">
             <img src={favicon} alt="LFF" />
-            Gang LFF
+            <span>Gang LFF</span>
           </div>
           <div className="navbar-user-dropdown">
             <ul className="navbar-menu">
@@ -149,7 +149,7 @@ const Navbar = ({ userData }) => {
             </ul>
           </div>
           {userData ? (
-            <div className="lff-navbar-footer">
+            <div className="lff-navbar-connected">
               <img
                 className="navbar-pic"
                 src={`https://cdn.discordapp.com/avatars/${userData.id}/${userData.avatar}.png`}
@@ -171,7 +171,7 @@ const Navbar = ({ userData }) => {
               }
             >
               <TbLogin2 />
-              Discord Login
+              <span>Discord Login</span>
             </a>
           )}
         </div>

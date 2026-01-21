@@ -17,8 +17,8 @@ body {
 
 @media (max-width: 625px) {
   .App {
-    width: calc(100% - 8rem);
-    margin-left: 8rem;
+    width: calc(100% - 2.5rem);
+    margin-left: 2.5rem;
   }
 }
 
@@ -81,12 +81,12 @@ small {
 
 .lff-classements-container,
 .spinner-container {
-  padding-top: 3rem;
+  padding: 3rem 2rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
   flex-wrap: wrap;
 }
 

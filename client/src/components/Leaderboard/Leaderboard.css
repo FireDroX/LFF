@@ -1,16 +1,17 @@
 .lff-leaderboard {
-  padding: 0.3rem 3rem 1.5rem 3rem;
   border: 1px solid var(--accent15);
   background-color: var(--accent5);
+  border-radius: 16px;
 }
 
 .lff-header {
+  padding: 1rem 3rem 1rem 3rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 20rem;
-  padding: 0.75rem 0rem;
-  margin-bottom: 0.5rem;
+  background-color: var(--accent15);
+  border-radius: 16px 16px 0 0;
 }
 
 .lff-header-left {
@@ -39,13 +40,13 @@
 }
 
 .lff-classement {
+  padding-inline: 2rem;
   display: flex;
   flex-direction: column;
-  width: 100%;
+  align-items: center;
+  justify-content: center;
+  width: 22rem;
   list-style: none;
-  padding: 0;
-  margin: 0;
-  gap: 0.75rem;
 }
 
 .lff-separator {
@@ -53,26 +54,14 @@
   width: 100%;
   text-align: center;
   margin: 12px 0;
-  border-top: 2px solid var(--text40);
-}
-
-.lff-separator-text {
-  width: max-content;
-  position: absolute;
-  top: -12px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: var(--bg);
-  color: var(--text60);
-  font-size: 0.9rem;
-  padding: 0 8px;
+  border-top: 1px dashed var(--accent55);
 }
 
 .lff-player {
   display: flex;
   flex-direction: column;
   width: 100%;
-  gap: 0.35rem;
+  padding: 0.5rem 1rem;
 }
 
 .lff-row {
@@ -94,6 +83,7 @@
   white-space: nowrap;
   text-overflow: ellipsis;
   color: var(--text85);
+  text-align: left;
 }
 
 .lff-classement-score {
@@ -111,7 +101,7 @@
 
 .lff-progress-bar {
   width: 100%;
-  height: 4px;
+  height: 6px;
   background-color: rgba(255, 255, 255, 0.15);
   border-radius: 8px;
   overflow: hidden;
@@ -125,9 +115,8 @@
 }
 
 .lff-current-user {
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
-  border-top: 1px dashed var(--accent55);
+  background-color: var(--accent10);
+  border-radius: 16px;
 }
 
 .lff-current-user .lff-classement-name {
@@ -135,16 +124,15 @@
 }
 
 @media (max-width: 625px) {
-  .lff-leaderboard {
-    padding: 0.5rem 1rem 1.5rem 1rem;
-  }
-
   .lff-header {
-    width: 15rem;
-    padding: 0.75rem 0.5rem;
+    width: 16rem;
   }
 
-  .lff-classement-score {
-    width: 3.5rem;
+  .lff-classement {
+    width: 18rem;
   }
+
+  /* .lff-classement-score {
+    width: 3.5rem;
+  } */
 }

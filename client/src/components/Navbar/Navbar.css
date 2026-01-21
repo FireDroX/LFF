@@ -20,7 +20,7 @@
   gap: 1rem;
 }
 
-.navbar-connection > a,
+.lff-navbar-footer,
 .navbar-connection > div > p {
   background: var(--accent35);
   color: var(--text85);
@@ -32,10 +32,11 @@
   gap: 0.6rem;
   transition: all 0.3s;
   border: none;
+  line-height: auto;
 }
 
-.navbar-connection > a:hover,
-.navbar-connection > a:focus,
+.lff-navbar-footer:hover,
+.lff-navbar-footer:focus,
 .navbar-connection > div > p:hover,
 .navbar-connection > div > p:focus {
   cursor: pointer;
@@ -103,7 +104,7 @@
   border-radius: 4px;
 }
 
-.lff-navbar-footer {
+.lff-navbar-connected {
   position: absolute;
   bottom: 32px;
 }
@@ -134,12 +135,12 @@
   }
 
   .navbar {
-    width: 8rem;
+    width: 2.5rem;
   }
 
   .navbar-pic {
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .dropdown-item svg {
@@ -147,14 +148,16 @@
     height: 16px;
   }
 
-  .dropdown-item span {
-    max-width: 5rem;
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+  .LFF-img span,
+  .dropdown-item span,
+  .lff-navbar-user,
+  .lff-navbar-footer span,
+  .lff-navbar-connected span {
+    display: none;
   }
 
-  .lff-navbar-user h5 {
-    max-width: 4rem;
+  .lff-navbar-footer {
+    padding: 0.4rem 0.4rem;
+    border-radius: 50%;
   }
 }

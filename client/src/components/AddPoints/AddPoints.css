@@ -12,6 +12,7 @@
   background-color: var(--accent35);
   cursor: pointer;
   transition: all ease 0.3s;
+  box-shadow: 0 8px 32px var(--accent20);
 }
 
 .add-points-container:hover,

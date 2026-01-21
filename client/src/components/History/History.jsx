@@ -43,7 +43,7 @@ const History = ({ closeModal }) => {
           const end = formatDateShort(top.end_date);
 
           return (
-            <ul className="lff-classement" key={top.id}>
+            <ul className="lff-history" key={top.id}>
               {sorted.slice(0, 5).map(({ score, name }, index) => (
                 <li key={index}>
                   <span className="lff-classement-top">

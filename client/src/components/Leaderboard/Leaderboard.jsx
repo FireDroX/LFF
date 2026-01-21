@@ -1,6 +1,5 @@
 import "./Leaderboard.css";
-import { FaTrophy } from "react-icons/fa";
-import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
+import { formatNumberWithSpaces } from "../../utils/functions";
 
 const Leaderboard = ({
   title,
@@ -15,18 +14,10 @@ const Leaderboard = ({
     ? [...top].sort((a, b) => b.score - a.score)
     : [];
 
-  // Trouver la position où les scores passent en dessous de `requiredAmount` (50 ou 1000)
-  const separationIndex = sorted.findIndex(
-    (player) => player.score < requiredAmount,
-  );
-
   // Find the current user's position
   const userPosition = currentUser
     ? sorted.findIndex((u) => u.userId === currentUser) + 1
     : 0;
-
-  const startFormatted = formatDateShort(start);
-  const endFormatted = formatDateShort(end);
 
   return (
     <div className="lff-leaderboard">
@@ -72,6 +63,12 @@ const Leaderboard = ({
                           : index === 1
                             ? "#C0C0C0"
                             : "#CD7F32",
+                      textShadow:
+                        index === 0
+                          ? "0 0 10px #ffd90088"
+                          : index === 1
+                            ? "0 0 10px #c0c0c088"
+                            : "0 0 10px #cd7f3288",
                     }}
                   >
                     0{index + 1}
@@ -96,6 +93,7 @@ const Leaderboard = ({
             );
 
             if (index === 2) {
+              items.push(<li key="separator" className="lff-separator" />);
               items.push(
                 <li
                   key="player-current"

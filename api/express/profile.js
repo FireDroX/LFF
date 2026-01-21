@@ -5,12 +5,12 @@ const router = express.Router();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 // 💰 Poids de conversion des points en "money"
 const VALUE_WEIGHTS = {
-  crystaux: 1_000_000_000, // 1B
+  crystaux: 2_000_000_000, // 2B (environ 3 crystaux par cr blanc)
   pvp: 500_000_000, // 500M
   iscoin: 2_000_000, // 2M
   dragonegg: 1_500_000_000, // 1.5B
