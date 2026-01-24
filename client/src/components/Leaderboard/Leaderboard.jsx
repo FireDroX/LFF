@@ -115,7 +115,9 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
                     </span>
 
                     <span className="lff-classement-score">
-                      {formatNumberWithSpaces(currentUserData.score)}
+                      {typeof currentUserData.score === "string"
+                        ? currentUserData.score
+                        : formatNumberWithSpaces(currentUserData.score)}
                     </span>
                   </div>
 
