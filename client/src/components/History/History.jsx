@@ -37,13 +37,13 @@ const History = ({ closeModal }) => {
       ) : (
         tops.map((top) => {
           const sorted = [...(top.users || [])].sort(
-            (a, b) => b.score - a.score
+            (a, b) => b.score - a.score,
           );
           const start = formatDateShort(top.start_date);
           const end = formatDateShort(top.end_date);
 
           return (
-            <ul className="lff-classement" key={top.id}>
+            <ul className="lff-history" key={top.id}>
               {sorted.slice(0, 5).map(({ score, name }, index) => (
                 <li key={index}>
                   <span className="lff-classement-top">
@@ -57,10 +57,12 @@ const History = ({ closeModal }) => {
                       index + 1
                     )}
                   </span>
+                  {" - "}
+                  <span className="lff-classement-name">{name}</span>
+                  {" - "}
                   <span className="lff-classement-score">
                     {formatNumberWithSpaces(score)}
                   </span>
-                  <span className="lff-classement-name">{name}</span>
                 </li>
               ))}
 

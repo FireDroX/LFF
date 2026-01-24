@@ -1,11 +1,11 @@
-import "./Dashboard.css";
+import "./styles/Dashboard.css";
 import { useCallback, useEffect, useState } from "react";
 
-import Dropdown from "../../components/Dropdown/Dropdown.jsx";
+import Dropdown from "../components/Dropdown/Dropdown.jsx";
 
-import { currentTop, updatePoints } from "../../utils/requests.js";
-import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../../utils/pointOptions";
-import { formatNumberWithSpaces, formatDateShort } from "../../utils/functions";
+import { currentTop, updatePoints } from "../utils/requests.js";
+import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../utils/pointOptions.js";
+import { formatNumberWithSpaces, formatDateShort } from "../utils/functions.js";
 
 const STAFF_TYPES = [
   "crystaux",
@@ -72,8 +72,8 @@ const Dashboard = ({ isLogged, isAdmin }) => {
           .catch((err) => {
             console.error(`Failed to load leaderboard ${type}`, err);
             return [type, null];
-          })
-      )
+          }),
+      ),
     )
       .then((entries) => {
         const mapped = {};
@@ -91,7 +91,7 @@ const Dashboard = ({ isLogged, isAdmin }) => {
         setError(
           hasFailure
             ? "Certaines données n'ont pas pu être chargées. Réessayez."
-            : ""
+            : "",
         );
       })
       .catch((err) => {
@@ -123,7 +123,7 @@ const Dashboard = ({ isLogged, isAdmin }) => {
     if (value.startsWith("id:")) {
       const id = value.slice(3);
       selectedUser = users.find(
-        (user) => user.userId && String(user.userId) === id
+        (user) => user.userId && String(user.userId) === id,
       );
     } else if (value.startsWith("idx:")) {
       const index = Number(value.slice(4));
@@ -154,7 +154,7 @@ const Dashboard = ({ isLogged, isAdmin }) => {
 
     if (!form.username && !form.userId) {
       setError(
-        "Un nom d'utilisateur ou un identifiant Discord est requis pour continuer."
+        "Un nom d'utilisateur ou un identifiant Discord est requis pour continuer.",
       );
       return;
     }
@@ -185,7 +185,7 @@ const Dashboard = ({ isLogged, isAdmin }) => {
     } catch (err) {
       console.error("Staff update failed", err);
       setError(
-        err?.message || "Impossible de mettre à jour le classement. Réessayez."
+        err?.message || "Impossible de mettre à jour le classement. Réessayez.",
       );
     } finally {
       setSubmitting(null);
