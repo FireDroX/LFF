@@ -6,10 +6,6 @@ const EMOJIS_TYPES = {
   dragonegg: "<:dragon_egg:1435590827723460628>",
   beacon: "<:beacon:1435590833276452874>",
   sponge: "<:sponge:1435590830772719717>",
-
-  // ===== PAGES =====
-  weekly: ":moneybag:",
-  isvalue: ":island:",
 };
 
 // ✅ Messages pour ajout standard

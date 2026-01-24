@@ -52,14 +52,6 @@ export const updatePoints = (type, payload) =>
     body: JSON.stringify(payload),
   });
 
-export const removePoints = (path) =>
-  apiFetch(`/points/remove/${path}`, {
-    method: "DELETE",
-    headers: {
-      Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("access_token")}`,
-    },
-  });
-
 export const getMe = (tokenType, accessToken) =>
   apiFetch("/get/me", {
     headers: {
