@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 
-import { currentTop } from "../../utils/requests";
-import { formatTop, filterPointOptions } from "../../utils/functions";
-import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../../utils/pointOptions";
+import { currentTop } from "../utils/requests";
+import { formatTop, filterPointOptions } from "../utils/functions";
+import { WEEKLY_OPTIONS, ISVALUE_OPTIONS } from "../utils/pointOptions";
 
-import AddPoints from "../../components/AddPoints/AddPoints";
-import Leaderboard from "../../components/Leaderboard/Leaderboard";
+import AddPoints from "../components/AddPoints/AddPoints";
+import Leaderboard from "../components/Leaderboard/Leaderboard";
 
 const pointOptions = {
   ...WEEKLY_OPTIONS,

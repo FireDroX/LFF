@@ -76,7 +76,9 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
                   <span className="lff-classement-name">{name}</span>
 
                   <span className="lff-classement-score">
-                    {formatNumberWithSpaces(score)}
+                    {typeof score === "string"
+                      ? score
+                      : formatNumberWithSpaces(score)}
                   </span>
                 </div>
 

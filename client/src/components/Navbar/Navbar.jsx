@@ -8,6 +8,7 @@ import { VscDebugDisconnect } from "react-icons/vsc";
 import { CgTrash, CgProfile } from "react-icons/cg";
 import { FaHistory } from "react-icons/fa";
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
+import { SlPresent } from "react-icons/sl";
 
 import RemovePoints from "../RemovePoints/RemovePoints";
 import History from "../History/History";
@@ -93,6 +94,13 @@ const Navbar = ({ userData }) => {
                   label: "Leaderboards",
                   icon: <MdLeaderboard />,
                   action: () => navigate("?p=Leaderboards"),
+                },
+
+                // -- REWARDS ---
+                {
+                  label: "Rewards",
+                  icon: <SlPresent />,
+                  action: () => navigate("?p=Rewards"),
                 },
 
                 // --- HISTORY ---

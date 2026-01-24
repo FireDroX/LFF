@@ -1,10 +1,10 @@
-import "./Profile.css";
+import "./styles/Profile.css";
 import { useState, useEffect } from "react";
 
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { GiTwoCoins } from "react-icons/gi";
 
-import { profile } from "../../utils/requests";
+import { profile } from "../utils/requests";
 
 const Profile = ({ isLogged, data }) => {
   const [totals, setTotals] = useState({
@@ -113,7 +113,7 @@ const Profile = ({ isLogged, data }) => {
             <img
               className="profile-chart"
               src={`https://quickchart.io/chart?width=450&height=250&c=${encodeURIComponent(
-                JSON.stringify(chartConfig)
+                JSON.stringify(chartConfig),
               )}`}
               alt="User stats"
             />
