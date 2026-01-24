@@ -3,11 +3,11 @@ const { defaultURL } = require("./defaultURL");
 const apiFetch = async (url, options = {}) => {
   try {
     const response = await fetch(defaultURL + url, {
+      ...options,
       headers: {
         "Content-Type": "application/json",
         ...(options.headers || {}),
       },
-      ...options,
     });
 
     const text = await response.text();
@@ -47,6 +47,7 @@ export const updatePoints = (type, payload) =>
   apiFetch(`/leaderboards/update/${type.toLowerCase()}`, {
     method: "PATCH",
     headers: {
+      "Content-Type": "application/json",
       Authorization: `${localStorage.getItem("token_type")} ${localStorage.getItem("access_token")}`,
     },
     body: JSON.stringify(payload),
