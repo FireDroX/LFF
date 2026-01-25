@@ -9,7 +9,7 @@ const router = express.Router();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 const VALID_TYPES = [
@@ -55,14 +55,14 @@ router.patch("/:type", checkAuth, async (req, res) => {
       .select("*")
       .eq("type", type)
       .or(
-        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`
+        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`,
       )
       .single();
 
     if (error || !currentTop) {
       console.error(
         `Staff adjustment failed: top not found for type ${type}`,
-        error
+        error,
       );
       return res
         .status(500)
@@ -82,7 +82,7 @@ router.patch("/:type", checkAuth, async (req, res) => {
     if (userIndex === -1 && trimmedName) {
       const lowerName = trimmedName.toLowerCase();
       userIndex = findIndexBy(
-        (u) => typeof u.name === "string" && u.name.toLowerCase() === lowerName
+        (u) => typeof u.name === "string" && u.name.toLowerCase() === lowerName,
       );
     }
 
@@ -149,7 +149,7 @@ router.patch("/:type", checkAuth, async (req, res) => {
         score: Math.abs(scoreDelta),
         type,
         total: newTotal,
-      }
+      },
     );
     await sendDiscordLog(logMessage);
 

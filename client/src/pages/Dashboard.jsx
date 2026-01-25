@@ -164,7 +164,7 @@ const Dashboard = ({ isLogged, isAdmin }) => {
       setError("");
 
       const payload = {
-        delta: direction === "add" ? amount : -amount,
+        delta: direction === "add" ? amount : -Math.abs(amount),
         username: form.username || undefined,
         userId: form.userId ? String(form.userId) : undefined,
       };
@@ -359,7 +359,10 @@ const Dashboard = ({ isLogged, isAdmin }) => {
                         value={form.points}
                         onChange={(event) =>
                           updateForm(type, {
-                            points: event.target.value,
+                            points:
+                              event.target.value === ""
+                                ? ""
+                                : Number(event.target.value),
                           })
                         }
                       />
