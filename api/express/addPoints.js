@@ -9,7 +9,7 @@ const router = express.Router();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 /**
@@ -23,7 +23,7 @@ router.post("/:type", checkAuth, async (req, res) => {
   // Vérification du type demandé
   if (
     !["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(
-      type
+      type,
     )
   ) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
@@ -47,7 +47,7 @@ router.post("/:type", checkAuth, async (req, res) => {
       .select("*")
       .eq("type", type)
       .or(
-        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`
+        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`,
       )
       .single();
 
@@ -78,7 +78,7 @@ router.post("/:type", checkAuth, async (req, res) => {
           score,
           type,
           total: users[userIndex].score,
-        })
+        }),
       );
     } else {
       users.push({ name: displayName, score, userId });
@@ -88,7 +88,7 @@ router.post("/:type", checkAuth, async (req, res) => {
           user: displayName,
           type,
           score,
-        })
+        }),
       );
     }
 
@@ -110,13 +110,17 @@ router.post("/:type", checkAuth, async (req, res) => {
     const newLeader = sorted[0]?.userId || null;
 
     // ✅ Notification prise de première place
-    if (newLeader === userId && previousLeader?.id !== userId) {
+    if (
+      newLeader === userId &&
+      previousLeader &&
+      previousLeader.id !== userId
+    ) {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
           user: displayName,
           previousLeader: previousLeader.name,
           type,
-        })
+        }),
       );
     }
 
