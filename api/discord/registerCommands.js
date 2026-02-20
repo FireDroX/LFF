@@ -96,6 +96,12 @@ const commands = [
     ],
   },
 
+  // isvalue
+  {
+    name: "isvalue",
+    description: "Calcul la valeur de l'ile, retourne les pourcentages des points des joueurs",
+  },
+
   // admin commands
   {
     name: "admin",
