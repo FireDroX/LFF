@@ -1,4 +1,5 @@
 const fetch = require("node-fetch");
+const { compactNumber } = require("../../utils/functions");
 
 module.exports = async function isvalue(req, res) {
   try {
@@ -27,9 +28,9 @@ module.exports = async function isvalue(req, res) {
 
     // Pondération des scores
     const weights = {
-      dragonegg: 100,
-      beacon: 10,
-      sponge: 1,
+      dragonegg: 100000,
+      beacon: 10000,
+      sponge: 1000,
     };
 
     // Fusionner tous les utilisateurs dans un objet global
@@ -68,7 +69,7 @@ module.exports = async function isvalue(req, res) {
     const embedDescription = leaderboard
       .map((user, index) => {
         const percent = ((user.totalScore / totalPoints) * 100).toFixed(1); // 1 chiffre après la virgule
-        return `${index + 1}. **${user.name}** — ${user.totalScore} pts (${percent}%)`;
+        return `${index + 1}. **${user.name}** — ${percent}% (${compactNumber(user.totalScore)} pts)`;
       })
       .join("\n");
 
@@ -79,11 +80,14 @@ module.exports = async function isvalue(req, res) {
         content: "✅ Classement global calculé.",
         embeds: [
           {
-            title: "Leaderboard Global",
+            title: "Classement joueur de l'ile",
             description: embedDescription,
+            footer: {
+              text: `Total des points : ${compactNumber(totalPoints)}`,
+            },
+            color: parseInt("9b59b6", 16), // Couleur embed
           },
         ],
-        color: parseInt("9b59b6", 16), // Couleur embed
       },
     });
   } catch (error) {
