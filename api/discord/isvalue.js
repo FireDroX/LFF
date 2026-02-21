@@ -66,10 +66,14 @@ module.exports = async function isvalue(req, res) {
       0,
     );
 
+    const medals = ["🥇", "🥈", "🥉"];
+
     const embedDescription = leaderboard
       .map((user, index) => {
-        const percent = ((user.totalScore / totalPoints) * 100).toFixed(1); // 1 chiffre après la virgule
-        return `${index + 1}. **${user.name}** — ${percent}% (${compactNumber(user.totalScore)} pts)`;
+        const percent = ((user.totalScore / totalPoints) * 100).toFixed(1);
+        const medal = medals[index] ?? `\`${index + 1}.\``;
+
+        return `${medal} **${user.name}** — ${percent}% (${compactNumber(user.totalScore)} pts)`;
       })
       .join("\n");
 
@@ -77,10 +81,9 @@ module.exports = async function isvalue(req, res) {
     return res.send({
       type: 4,
       data: {
-        content: "✅ Classement global calculé.",
         embeds: [
           {
-            title: "Classement joueur de l'ile",
+            title: "Part des joueurs dans l'ile",
             description: embedDescription,
             footer: {
               text: `Total des points : ${compactNumber(totalPoints)}`,
