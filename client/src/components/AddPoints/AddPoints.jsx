@@ -4,6 +4,7 @@ import { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
 
 import { addPoints } from "../../utils/requests";
+import { formatTop } from "../../utils/functions";
 
 const AddPoints = ({ setTops, selectDefault, options }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -51,14 +52,19 @@ const AddPoints = ({ setTops, selectDefault, options }) => {
             onClick={() => {
               if (points > 0) {
                 addPoints(points, selected.toLowerCase()).then((newTop) => {
+                  const formattedTop = formatTop(
+                    newTop.users,
+                    newTop.start,
+                    newTop.end,
+                    newTop.type,
+                  );
+
                   setTops((prev) => ({
                     ...prev,
-                    [selected.toLowerCase()]: {
-                      ...prev[selected.toLowerCase()],
-                      users: newTop.users,
-                    },
+                    [selected.toLowerCase()]: formattedTop,
                   }));
                 });
+
                 setPoints(0);
                 setIsOpen(false);
               }
