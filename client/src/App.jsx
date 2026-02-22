@@ -34,7 +34,7 @@ const DynamicPage = ({ isLogged, data }) => {
         <MainTops
           isLogged={isLogged}
           flags={data?.flags}
-          currentUser={data?.id}
+          currentUser={parseInt(data?.id) || 0}
         />
       );
   }

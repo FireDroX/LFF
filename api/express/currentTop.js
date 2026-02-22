@@ -8,7 +8,7 @@ const router = express.Router();
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 /**
@@ -65,7 +65,7 @@ function makeParisDate(year, month, day, hour = 0, min = 0, sec = 0, ms = 0) {
   // Créons une Date UTC correspondant à year-month-day hour:min:sec (mais ce Date UTC représente l'instant
   // year-month-day hour:min:sec *en UTC* — on doit ensuite soustraire l'offset Paris pour obtenir l'instant réel).
   const utcCandidate = new Date(
-    Date.UTC(year, month - 1, day, hour, min, sec, ms)
+    Date.UTC(year, month - 1, day, hour, min, sec, ms),
   );
 
   // calculer si CET/CEST pour cette date Paris : on veut l'offset Paris pour CET/CEST.
@@ -75,7 +75,7 @@ function makeParisDate(year, month, day, hour = 0, min = 0, sec = 0, ms = 0) {
   // Simpler and reliable: check DST for the instant that would be the Paris local time if offset=60 and if offset=120.
   const candidateIfOffset60 = new Date(utcCandidate.getTime() + 60 * 60 * 1000);
   const candidateIfOffset120 = new Date(
-    utcCandidate.getTime() + 120 * 60 * 1000
+    utcCandidate.getTime() + 120 * 60 * 1000,
   );
 
   // Determine which offset yields consistent DST decision:
@@ -113,37 +113,38 @@ function formatDateShort(isoString) {
 router.get("/:type", async (req, res) => {
   const { type } = req.params;
 
-  if (!["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(type)) {
+  if (
+    !["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(
+      type,
+    )
+  ) {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 
   const nowUtc = new Date(); // instant actuel UTC
 
-  // Recherche du top courant (comparaison en UTC). IMPORTANT: dates entourées de quotes pour Supabase filter
-  let { data: currentTop, error } = await supabase
-    .from("tops")
-    .select("*")
-    .eq("type", type)
-    .or(
-      `and(start_date.lte.'${nowUtc.toISOString()}',end_date.gte.'${nowUtc.toISOString()}'),and(start_date.is.null,end_date.is.null)`
-    )
-    .single();
+  const { data: currentTop, error } = await supabase.rpc(
+    "get_current_leaderboard",
+    {
+      p_type: type,
+    },
+  );
 
-  if (error || !currentTop) {
+  if (error || !currentTop || currentTop.length === 0) {
     console.log(`Aucun top trouvé pour '${type}', création en cours...`);
 
     // dernier top terminé
-    const { data: previousTop } = await supabase
-      .from("tops")
-      .select("*")
-      .eq("type", type)
-      .lt("end_date", nowUtc.toISOString())
-      .order("end_date", { ascending: false })
-      .limit(1)
-      .single();
+    const { data: previousTop } = await supabase.rpc("get_last_leaderboard", {
+      p_type: type,
+    });
 
-    if (previousTop && previousTop.users?.length > 0) {
-      const sorted = previousTop.users.sort((a, b) => b.score - a.score);
+    if (previousTop && previousTop.length > 0) {
+      const users = previousTop.map((row) => ({
+        userId: row.user_id,
+        name: row.name,
+        score: row.score,
+      }));
+      const sorted = users.sort((a, b) => b.score - a.score);
       const podium = [
         sorted[0] && `> - 🥇 **${sorted[0].name}** — ${sorted[0].score} pts`,
         sorted[1] && `> - 🥈 **${sorted[1].name}** — ${sorted[1].score} pts`,
@@ -156,7 +157,7 @@ router.get("/:type", async (req, res) => {
           start: formatDateShort(previousTop.start_date),
           end: formatDateShort(previousTop.end_date),
           podium,
-        })
+        }),
       );
     }
 
@@ -178,8 +179,8 @@ router.get("/:type", async (req, res) => {
         0,
         0,
         0,
-        0
-      )
+        0,
+      ),
     );
     startParis.setUTCDate(nowParis.getUTCDate() - day); // reculer au dimanche
     // assure 00:00
@@ -194,8 +195,8 @@ router.get("/:type", async (req, res) => {
         0,
         0,
         0,
-        0
-      )
+        0,
+      ),
     );
     endParis.setUTCDate(startParis.getUTCDate() + 6);
     endParis.setUTCHours(23, 59, 59, 999);
@@ -208,7 +209,7 @@ router.get("/:type", async (req, res) => {
       0,
       0,
       0,
-      0
+      0,
     );
     const endUTC = makeParisDate(
       endParis.getUTCFullYear(),
@@ -217,7 +218,7 @@ router.get("/:type", async (req, res) => {
       23,
       59,
       59,
-      999
+      999,
     );
 
     // insertion dans Supabase (stockage UTC)
@@ -227,7 +228,6 @@ router.get("/:type", async (req, res) => {
         {
           start_date: startUTC.toISOString(),
           end_date: endUTC.toISOString(),
-          users: [],
           type,
         },
       ])
@@ -246,19 +246,25 @@ router.get("/:type", async (req, res) => {
         type,
         start: formatDateShort(newTop.start_date),
         end: formatDateShort(newTop.end_date),
-      })
+      }),
     );
 
     currentTop = newTop;
   }
 
   // tri et réponse
-  const sorted = (currentTop.users || []).sort((a, b) => b.score - a.score);
   res.json({
-    users: sorted,
-    start: currentTop.start_date,
-    end: currentTop.end_date,
-    type: currentTop.type,
+    users: currentTop
+      .filter((row) => row.user_id !== null)
+      .map((row) => ({
+        userId: row.user_id,
+        name: row.name,
+        score: row.score,
+        rank: row.rank,
+      })),
+    start: currentTop[0]?.start_date ?? null,
+    end: currentTop[0]?.end_date ?? null,
+    type,
   });
 });
 

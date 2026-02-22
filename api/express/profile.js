@@ -21,8 +21,20 @@ const VALUE_WEIGHTS = {
 router.get("/", checkAuth, async (req, res) => {
   const { id } = req.user;
 
-  // Récupère les scores dans chaque top
-  const { data: tops } = await supabase.from("tops").select("type, users");
+  const { data, error } = await supabase
+    .from("top_rankings")
+    .select(
+      `
+      score,
+      tops ( type )
+    `,
+    )
+    .eq("user_id", id);
+
+  if (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erreur récupération scores" });
+  }
 
   const totals = {
     crystaux: 0,
@@ -33,17 +45,16 @@ router.get("/", checkAuth, async (req, res) => {
     sponge: 0,
   };
 
-  for (const top of tops || []) {
-    const player = top.users?.find((u) => u.userId === id);
-    if (player) {
-      const weight = VALUE_WEIGHTS[top.type] || 1;
-      totals[top.type] += player.score * weight;
+  for (const row of data || []) {
+    const type = row.tops?.type;
+    const weight = VALUE_WEIGHTS[type] || 1;
+
+    if (type) {
+      totals[type] += row.score * weight;
     }
   }
 
-  res.json({
-    totals,
-  });
+  res.json({ totals });
 });
 
 module.exports = router;

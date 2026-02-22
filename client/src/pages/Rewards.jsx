@@ -17,8 +17,8 @@ const makeTokenUsers = (type) => [
 
 const makePermanentUsers = () =>
   Array.from({ length: 3 }, () => ({
-    name: "Classement permanant",
-    score: "ISLAND",
+    name: "Part du dividende (en %)",
+    score: "ISVALUE",
   }));
 
 const CATEGORY_CONFIG = {
@@ -41,8 +41,8 @@ const buildTops = () =>
               users: [
                 ...makePermanentUsers(),
                 {
-                  name: "Stats de participation",
-                  score: "STATS",
+                  name: "Répartition des Tokens",
+                  score: "TOKENS",
                   userId: "debug",
                 },
               ],

@@ -14,13 +14,18 @@ const supabase = createClient(
 
 /**
  * Route : /points/add/:type
- * Exemple : /points/add/crystaux, /iscoin, /dragonegg, /beacon ou /sponge
+ * Exemple :
+ * /points/add/crystaux
+ * /points/add/iscoin
+ * /points/add/dragonegg
+ * /points/add/beacon
+ * /points/add/sponge
+ * /points/add/pvp
  */
 
 router.post("/:type", checkAuth, async (req, res) => {
   const { type } = req.params;
 
-  // Vérification du type demandé
   if (
     !["crystaux", "iscoin", "dragonegg", "beacon", "sponge", "pvp"].includes(
       type,
@@ -29,60 +34,72 @@ router.post("/:type", checkAuth, async (req, res) => {
     return res.status(400).json({ error: "Invalid leaderboard type" });
   }
 
-  const now = new Date();
+  const { score } = req.body;
+  const userId = req.user.id;
+  const displayName = req.user.nick || req.user.username;
+
+  if (typeof score !== "number") {
+    return res.status(400).json({ error: "Score must be a number" });
+  }
 
   try {
-    const score = req.body.score;
-    const username = req.user.username;
-    const nick = req.user.nick;
-    const displayName = nick || username;
-    const userId = req.user.id;
+    const nowUtc = new Date().toISOString();
 
-    if (!username || typeof score !== "number") {
-      return res.status(400).json({ error: "username and points required" });
-    }
-
-    let { data: currentTop, error } = await supabase
+    // 🔹 1️⃣ Récupérer le top actif
+    let { data: currentTop, error: topError } = await supabase
       .from("tops")
       .select("*")
       .eq("type", type)
       .or(
-        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`,
+        `and(start_date.lte.'${nowUtc}',end_date.gte.'${nowUtc}'),and(start_date.is.null,end_date.is.null)`,
       )
       .single();
 
-    if (error) {
-      console.log("Aucun top trouvé.");
-      return res.status(500).json({ error: "Aucun top trouvé." });
+    if (topError || !currentTop) {
+      return res.status(404).json({ error: "No active leaderboard found" });
     }
 
-    let users = currentTop.users || [];
-    // ✅ Top 1 avant modification
-    const previousSorted = [...users].sort((a, b) => b.score - a.score);
-    const previousLeader = previousSorted[0]
-      ? {
-          id: previousSorted[0].userId,
-          name: previousSorted[0].name,
-        }
-      : null;
+    // 🔹 2️⃣ Leader AVANT update
+    const { data: beforeLeaderboard } = await supabase.rpc(
+      "get_current_leaderboard",
+      { p_type: type },
+    );
 
-    const userIndex = users.findIndex((u) => u.userId === userId);
+    const previousLeader = beforeLeaderboard?.[0] || null;
 
-    if (userIndex >= 0) {
-      users[userIndex].score += score;
-      users[userIndex].name = displayName; // Update name to use nickname if available
+    const userWasInLeaderboard = beforeLeaderboard?.some(
+      (u) => u.user_id === userId,
+    );
 
-      await sendDiscordLog(
-        getRandomMessage(MESSAGE_SETS.ADD, {
-          user: displayName,
-          score,
-          type,
-          total: users[userIndex].score,
-        }),
-      );
-    } else {
-      users.push({ name: displayName, score, userId });
+    // 🔹 3️⃣ Incrément atomique côté DB
+    const { data: newScore, error: incrementError } = await supabase.rpc(
+      "increment_score",
+      {
+        p_top_id: currentTop.id,
+        p_user_id: userId,
+        p_score: score,
+        p_name: displayName,
+      },
+    );
 
+    if (incrementError) {
+      console.error("increment_score error:", incrementError);
+      return res.status(500).json({ error: "Score update failed" });
+    }
+
+    // 🔹 4️⃣ Leader APRÈS update
+    const { data: updatedLeaderboard } = await supabase.rpc(
+      "get_current_leaderboard",
+      { p_type: type },
+    );
+
+    const newLeader = updatedLeaderboard?.[0] || null;
+
+    // ===========================
+    // 🔥 DISCORD LOGS
+    // ===========================
+
+    if (!userWasInLeaderboard) {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
           user: displayName,
@@ -90,30 +107,23 @@ router.post("/:type", checkAuth, async (req, res) => {
           score,
         }),
       );
+    } else {
+      await sendDiscordLog(
+        getRandomMessage(MESSAGE_SETS.ADD, {
+          user: displayName,
+          score,
+          type,
+          total: newScore,
+        }),
+      );
     }
 
-    const { error: updateError } = await supabase
-      .from("tops")
-      .update({ users })
-      .eq("id", currentTop.id);
-
-    if (updateError) {
-      console.error("Erreur update top:", updateError);
-      return res
-        .status(500)
-        .json({ error: "Impossible de mettre à jour le classement" });
-    }
-
-    const sorted = users.sort((a, b) => b.score - a.score);
-
-    // ✅ Top 1 après modification
-    const newLeader = sorted[0]?.userId || null;
-
-    // ✅ Notification prise de première place
+    // 🔥 Notification prise de première place
     if (
-      newLeader === userId &&
+      newLeader &&
       previousLeader &&
-      previousLeader.id !== userId
+      newLeader.user_id === userId &&
+      previousLeader.user_id !== userId
     ) {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
@@ -124,23 +134,20 @@ router.post("/:type", checkAuth, async (req, res) => {
       );
     }
 
-    const top5 = sorted.slice(0, 5);
-
-    const filled = [
-      ...top5,
-      ...Array(5 - top5.length)
-        .fill()
-        .map(() => ({ score: 0, name: "Nobody" })),
-    ];
-
+    // 🔹 5️⃣ Réponse API
     res.json({
-      users: filled,
-      start: currentTop.start_date,
-      end: currentTop.end_date,
-      type: currentTop.type,
+      users: updatedLeaderboard.map((row) => ({
+        userId: row.user_id,
+        name: row.name,
+        score: row.score,
+        rank: row.rank,
+      })),
+      start: updatedLeaderboard[0]?.start_date ?? null,
+      end: updatedLeaderboard[0]?.end_date ?? null,
+      type,
     });
   } catch (err) {
-    console.error("Error in /points/add", err);
+    console.error("Error in /points/add:", err);
     res.status(500).json({ error: "Internal Server Error" });
   }
 });

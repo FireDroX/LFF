@@ -23,7 +23,6 @@ Les administrateurs disposent d’un **dashboard** dédié pour modifier les sco
 
 - 🔐 **Connexion sécurisée via Discord OAuth2**
 - 📊 **Profil utilisateur avec graphique QuickChart** affichant :
-
   - Total de chaque type de points
   - Progression semaine par semaine
   - Classement actuel
@@ -33,7 +32,6 @@ Les administrateurs disposent d’un **dashboard** dédié pour modifier les sco
 #### 🏆 Classements & Historique
 
 - Visualisation en temps réel des classements :
-
   - Crystaux
   - PVP
   - IsCoin
@@ -64,7 +62,6 @@ Avec des **messages dynamiques contextualisés** (messages.js).
 - Édition manuelle des scores
 - Visualisation détaillée de chaque utilisateur
 - Audit trail :
-
   - Qui modifie ?
   - Quand ?
   - Quel type ?
@@ -122,6 +119,10 @@ Affiche la liste des commandes disponibles.
 
 Consulter les anciens classements et naviguer entre les semaines
 
+### `/isvalue`
+
+Classement des joueurs de l'île
+
 ---
 
 ## 🌐 Site Web
@@ -164,7 +165,6 @@ LFF intègre désormais un **système de tickets Discord avancé**, entièrement
 
 - Les utilisateurs ouvrent un ticket via un **menu déroulant (Select Menu)**.
 - Chaque choix correspond à une **raison spécifique** :
-
   - 💎 Rejoindre le Gang LFF
   - 🏝️ Rejoindre l’île de FireDroX
 
@@ -173,7 +173,6 @@ Lors de la création :
 - Un **salon privé** est automatiquement créé
 - Le salon est placé dans une **catégorie dédiée**
 - Les **permissions** sont configurées dynamiquement :
-
   - accès au membre
   - accès au rôle concerné (gang / île)
   - accès staff
@@ -190,7 +189,6 @@ Un utilisateur ne peut pas ouvrir plusieurs tickets en même temps pour la même
 - Un ticket fermé peut être **réouvert via un bouton**
 - Les permissions sont restaurées automatiquement
 - Le topic du salon est mis à jour en conservant :
-
   - le propriétaire
   - la raison initiale
   - l’historique des dates (ouvert / fermé / rouvert)
@@ -201,7 +199,6 @@ Un utilisateur ne peut pas ouvrir plusieurs tickets en même temps pour la même
 
 - Un bouton **Fermer** déclenche une **confirmation**
 - Une fois confirmé :
-
   - les permissions sont retirées à tous les membres
   - le salon est renommé (`fermé-<id>`)
   - le topic est mis à jour avec la date de fermeture
@@ -246,14 +243,12 @@ Idéal pour :
 
 - Gestion **100 % API Discord**
 - Interactions :
-
   - Slash commands
   - Select menus
   - Buttons
 
 - Routing propre des interactions (`custom_id`)
 - Séparation claire :
-
   - `tickets/create.js`
   - `tickets/close.js`
   - `tickets/reopen.js`
