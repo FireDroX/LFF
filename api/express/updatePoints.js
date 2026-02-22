@@ -32,132 +32,85 @@ router.patch("/:type", checkAuth, async (req, res) => {
       return res.status(400).json({ error: "Invalid leaderboard type" });
     }
 
-    const { delta, username, userId } = req.body || {};
-
+    const { delta, userId, username } = req.body || {};
     const scoreDelta = Number(delta);
+
     if (!Number.isFinite(scoreDelta) || scoreDelta === 0) {
       return res
         .status(400)
         .json({ error: "A non-zero numeric delta is required" });
     }
 
-    const trimmedName = typeof username === "string" ? username.trim() : "";
-    if (!trimmedName && !userId) {
-      return res
-        .status(400)
-        .json({ error: "Target username or userId is required" });
+    if (!userId) {
+      return res.status(400).json({ error: "userId is required" });
     }
 
-    const now = new Date();
+    const now = new Date().toISOString();
 
-    let { data: currentTop, error } = await supabase
+    // 🔹 1️⃣ Récupérer le top actif
+    const { data: currentTop, error: topError } = await supabase
       .from("tops")
       .select("*")
       .eq("type", type)
       .or(
-        `and(start_date.lte.${now.toISOString()},end_date.gte.${now.toISOString()}),and(start_date.is.null,end_date.is.null)`,
+        `and(start_date.lte.${now},end_date.gte.${now}),and(start_date.is.null,end_date.is.null)`,
       )
       .single();
 
-    if (error || !currentTop) {
-      console.error(
-        `Staff adjustment failed: top not found for type ${type}`,
-        error,
-      );
+    if (topError || !currentTop) {
       return res
         .status(500)
         .json({ error: "Impossible de récupérer le classement." });
     }
 
-    const users = Array.isArray(currentTop.users) ? [...currentTop.users] : [];
+    // 🔹 2️⃣ Ajustement atomique
+    const { data: newTotal, error: adjustError } = await supabase.rpc(
+      "staff_adjust_score",
+      {
+        p_top_id: currentTop.id,
+        p_user_id: userId,
+        p_delta: scoreDelta,
+        p_name: username || "Unknown",
+      },
+    );
 
-    const findIndexBy = (predicate) => {
-      const index = users.findIndex(predicate);
-      return index >= 0 ? index : -1;
-    };
-
-    let userIndex =
-      userId != null ? findIndexBy((u) => u.userId === userId) : -1;
-
-    if (userIndex === -1 && trimmedName) {
-      const lowerName = trimmedName.toLowerCase();
-      userIndex = findIndexBy(
-        (u) => typeof u.name === "string" && u.name.toLowerCase() === lowerName,
-      );
-    }
-
-    let logTargetName = trimmedName;
-    let newTotal = scoreDelta;
-
-    if (userIndex === -1) {
-      if (scoreDelta < 0) {
-        return res.status(400).json({
-          error: "Cannot remove points from a user who has no score yet",
-        });
-      }
-
-      const newEntry = {
-        name: trimmedName,
-        score: scoreDelta,
-        userId: userId || null,
-      };
-
-      users.push(newEntry);
-      logTargetName = trimmedName;
-      newTotal = newEntry.score;
-    } else {
-      const previousScore = Number(users[userIndex].score) || 0;
-      const updatedScore = previousScore + scoreDelta;
-
-      if (trimmedName) {
-        users[userIndex].name = trimmedName;
-      }
-      if (userId) {
-        users[userIndex].userId = userId;
-      }
-
-      logTargetName = users[userIndex].name || trimmedName;
-
-      if (updatedScore <= 0) {
-        users.splice(userIndex, 1);
-        newTotal = 0;
-      } else {
-        users[userIndex].score = updatedScore;
-        newTotal = updatedScore;
-      }
-    }
-
-    const { error: updateError } = await supabase
-      .from("tops")
-      .update({ users })
-      .eq("id", currentTop.id);
-
-    if (updateError) {
-      console.error("Erreur update classement staff:", updateError);
+    if (adjustError) {
+      console.error("Staff adjust error:", adjustError);
       return res
         .status(500)
         .json({ error: "Impossible de mettre à jour le classement" });
     }
 
-    const sortedUsers = [...users].sort((a, b) => b.score - a.score);
+    // 🔹 3️⃣ Récupérer leaderboard mis à jour
+    const { data: leaderboard } = await supabase.rpc(
+      "get_current_leaderboard",
+      { p_type: type },
+    );
 
+    // 🔹 4️⃣ Log Discord
     const logMessage = getRandomMessage(
       scoreDelta > 0 ? MESSAGE_SETS.STAFF_ADD : MESSAGE_SETS.STAFF_REMOVE,
       {
         staff: req.user.username,
-        target: logTargetName || "Unknown",
+        target: username || userId,
         score: Math.abs(scoreDelta),
         type,
         total: newTotal,
       },
     );
+
     await sendDiscordLog(logMessage);
 
     return res.json({
-      users: sortedUsers,
-      start: currentTop.start_date,
-      end: currentTop.end_date,
-      type: currentTop.type,
+      users: leaderboard.map((row) => ({
+        userId: row.user_id,
+        name: row.name,
+        score: row.score,
+        rank: row.rank,
+      })),
+      start: leaderboard[0]?.start_date ?? null,
+      end: leaderboard[0]?.end_date ?? null,
+      type,
     });
   } catch (err) {
     console.error("Error in staff leaderboard adjustment:", err);
