@@ -35,7 +35,7 @@ router.post("/:type", checkAuth, async (req, res) => {
   }
 
   const { score } = req.body;
-  const userId = req.user.id;
+  const userId = parseInt(req.user.id);
   const displayName = req.user.nick || req.user.username;
 
   if (typeof score !== "number") {
