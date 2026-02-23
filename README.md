@@ -346,3 +346,5 @@ Intégration Discord et API Supabase par la communauté LFF.
 🔗 GitHub : [https://github.com/FireDroX](https://github.com/FireDroX)
 <br/>
 🌐 Site : [https://lff.onrender.com](https://lff.onrender.com)
+
+![Cron job status](https://api.cron-job.org/jobs/7306941/256cac1ece4ded35/status-5.svg)
