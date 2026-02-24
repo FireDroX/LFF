@@ -34,11 +34,11 @@ const DynamicPage = ({ isLogged, data }) => {
         <MainTops
           isLogged={isLogged}
           flags={data?.flags}
-          currentUser={parseInt(data?.id) || 0}
+          currentUser={data?.id}
         />
       );
   }
-};
+};  
 
 function App() {
   const access_token = window.localStorage.getItem("access_token");
