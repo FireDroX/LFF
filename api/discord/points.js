@@ -65,10 +65,26 @@ module.exports = async function points(req, res) {
       score: amount,
       type,
       total,
-    }
+    },
   );
 
-  await sendDiscordLog(message);
+  if (!result.userWasInLeaderboard) {
+    await sendDiscordLog(MESSAGE_SETS.FIRST_ENTRY, {
+      user: displayName,
+      type,
+      score: amount,
+    });
+  } else {
+    await sendDiscordLog(message);
+  }
+
+  if (result.isFirstPlace) {
+    await sendDiscordLog(MESSAGE_SETS.FIRST_PLACE, {
+      user: displayName,
+      previousLeader: result.previousLeader?.name || "inconnu",
+      type,
+    });
+  }
 
   return res.send({
     type: 4,
