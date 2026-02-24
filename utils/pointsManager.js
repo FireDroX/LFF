@@ -34,6 +34,7 @@ async function getUserRoles(userId) {
 async function modifyPoints({ username, userId, type, amount }) {
   // 1️⃣ Récupération des rôles du membre
   const member = await getUserRoles(userId);
+  const scoreDelta = Number(amount);
 
   if (!member) {
     return { error: "Impossible de récupérer vos rôles Discord." };
@@ -96,11 +97,11 @@ async function modifyPoints({ username, userId, type, amount }) {
 
   // 🔹 3️⃣ Incrément atomique côté DB
   const { data: newScore, error: incrementError } = await supabase.rpc(
-    "increment_score",
+    "staff_adjust_score",
     {
       p_top_id: currentTop.id,
       p_user_id: userId,
-      p_score: amount,
+      p_delta: scoreDelta,
       p_name: username,
     },
   );
@@ -130,7 +131,7 @@ async function modifyPoints({ username, userId, type, amount }) {
   }
 
   // 4️⃣ Suppression si score <= 0
-  if (newScore?.score <= 0) {
+  if (newScore <= 0) {
     return {
       deleted: true,
     };
@@ -138,7 +139,7 @@ async function modifyPoints({ username, userId, type, amount }) {
 
   return {
     success: true,
-    total: newScore?.score || 0,
+    total: newScore,
     isFirstPlace,
     previousLeader,
     userWasInLeaderboard,

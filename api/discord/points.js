@@ -9,7 +9,7 @@ module.exports = async function points(req, res) {
   const type = data.options.find((o) => o.name === "type")?.value;
   const amount = data.options.find((o) => o.name === "amount")?.value;
 
-  const userId = member?.user?.id;
+  const userId = parseInt(member?.user?.id);
   const username = member?.user?.global_name || member?.user?.username;
   const nick = member?.nick;
   const displayName = nick || username;
