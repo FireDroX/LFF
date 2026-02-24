@@ -58,7 +58,7 @@ module.exports = async function points(req, res) {
   // Récupérer le score total depuis Supabase
   const total = result.total ?? null;
 
-  let message = getRandomMessage(
+  const message = getRandomMessage(
     option === "add" ? MESSAGE_SETS.ADD : MESSAGE_SETS.REMOVE_SINGLE,
     {
       user: displayName,
@@ -68,24 +68,27 @@ module.exports = async function points(req, res) {
     },
   );
 
+  await sendDiscordLog(message);
+
   if (!result.userWasInLeaderboard) {
-    message = getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
-      user: displayName,
-      type,
-      score: amount,
-    });
-  } else {
+    await sendDiscordLog(
+      getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
+        user: displayName,
+        type,
+        score: amount,
+      }),
+    );
   }
 
   if (result.isFirstPlace) {
-    message = getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
-      user: displayName,
-      previousLeader: result.previousLeader?.name || "inconnu",
-      type,
-    });
+    await sendDiscordLog(
+      getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
+        user: displayName,
+        previousLeader: result.previousLeader?.name || "inconnu",
+        type,
+      }),
+    );
   }
-
-  await sendDiscordLog(message);
 
   return res.send({
     type: 4,
