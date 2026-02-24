@@ -9,7 +9,7 @@ module.exports = async function points(req, res) {
   const type = data.options.find((o) => o.name === "type")?.value;
   const amount = data.options.find((o) => o.name === "amount")?.value;
 
-  const userId = member?.user?.id;
+  const userId = parseInt(member?.user?.id);
   const username = member?.user?.global_name || member?.user?.username;
   const nick = member?.nick;
   const displayName = nick || username;
@@ -65,10 +65,30 @@ module.exports = async function points(req, res) {
       score: amount,
       type,
       total,
-    }
+    },
   );
 
   await sendDiscordLog(message);
+
+  if (!result.userWasInLeaderboard) {
+    await sendDiscordLog(
+      getRandomMessage(MESSAGE_SETS.FIRST_ENTRY, {
+        user: displayName,
+        type,
+        score: amount,
+      }),
+    );
+  }
+
+  if (result.isFirstPlace) {
+    await sendDiscordLog(
+      getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {
+        user: displayName,
+        previousLeader: result.previousLeader?.name || "inconnu",
+        type,
+      }),
+    );
+  }
 
   return res.send({
     type: 4,

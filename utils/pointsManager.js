@@ -9,7 +9,7 @@ const ROLE_STAFF = process.env.DISCORD_ROLE_STAFF;
 
 const supabase = createClient(
   process.env.SUPABASE_URL,
-  process.env.SUPABASE_SERVICE_ROLE_KEY
+  process.env.SUPABASE_SERVICE_ROLE_KEY,
 );
 
 /**
@@ -20,7 +20,7 @@ async function getUserRoles(userId) {
     `https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userId}`,
     {
       headers: { Authorization: `Bot ${BOT_TOKEN}` },
-    }
+    },
   );
 
   if (!memberRes.ok) return null;
@@ -34,6 +34,7 @@ async function getUserRoles(userId) {
 async function modifyPoints({ username, userId, type, amount }) {
   // 1️⃣ Récupération des rôles du membre
   const member = await getUserRoles(userId);
+  const scoreDelta = Number(amount);
 
   if (!member) {
     return { error: "Impossible de récupérer vos rôles Discord." };
@@ -72,7 +73,7 @@ async function modifyPoints({ username, userId, type, amount }) {
     .select("*")
     .eq("type", type)
     .or(
-      `and(start_date.lte.'${now.toISOString()}',end_date.gte.'${now.toISOString()}'),and(start_date.is.null,end_date.is.null)`
+      `and(start_date.lte.'${now.toISOString()}',end_date.gte.'${now.toISOString()}'),and(start_date.is.null,end_date.is.null)`,
     )
     .single();
 
@@ -82,48 +83,67 @@ async function modifyPoints({ username, userId, type, amount }) {
     };
   }
 
-  let users = currentTop.users || [];
-  let index = users.findIndex((u) => u.userId === userId);
+  // 🔹 2️⃣ Leader AVANT update
+  const { data: beforeLeaderboard } = await supabase.rpc(
+    "get_current_leaderboard",
+    { p_type: type },
+  );
 
-  let finalScore;
+  const previousLeader = beforeLeaderboard?.[0] || null;
 
-  if (index >= 0) {
-    users[index].score += amount;
-    users[index].name = username;
-    finalScore = users[index].score;
-  } else {
-    finalScore = amount;
-    users.push({
-      name: username,
-      userId,
-      score: amount,
-    });
-    index = users.length - 1;
+  const userWasInLeaderboard = beforeLeaderboard?.some(
+    (u) => u.user_id === userId,
+  );
+
+  // 🔹 3️⃣ Incrément atomique côté DB
+  const { data: newScore, error: incrementError } = await supabase.rpc(
+    "staff_adjust_score",
+    {
+      p_top_id: currentTop.id,
+      p_user_id: userId,
+      p_delta: scoreDelta,
+      p_name: username,
+    },
+  );
+
+  if (incrementError) {
+    console.error("increment_score error:", incrementError);
+    return res.status(500).json({ error: "Score update failed" });
+  }
+
+  // 🔹 4️⃣ Leader APRÈS update
+  const { data: updatedLeaderboard } = await supabase.rpc(
+    "get_current_leaderboard",
+    { p_type: type },
+  );
+
+  const newLeader = updatedLeaderboard?.[0] || null;
+
+  let isFirstPlace = false;
+  // 🔥 Notification prise de première place
+  if (
+    newLeader &&
+    previousLeader &&
+    newLeader.user_id === userId &&
+    previousLeader.user_id !== userId
+  ) {
+    isFirstPlace = true;
   }
 
   // 4️⃣ Suppression si score <= 0
-  if (finalScore <= 0) {
-    users = users.filter((u) => u.userId !== userId);
-
-    // Mise à jour BDD
-    await supabase.from("tops").update({ users }).eq("id", currentTop.id);
-
+  if (newScore <= 0) {
     return {
       deleted: true,
     };
   }
 
-  // 5️⃣ Sauvegarde normale
-  const { error: updateError } = await supabase
-    .from("tops")
-    .update({ users })
-    .eq("id", currentTop.id);
-
-  if (updateError) {
-    return { error: "Erreur lors de la mise à jour du classement." };
-  }
-
-  return { success: true, total: finalScore };
+  return {
+    success: true,
+    total: newScore,
+    isFirstPlace,
+    previousLeader,
+    userWasInLeaderboard,
+  };
 }
 
 module.exports = modifyPoints;
