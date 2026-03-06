@@ -154,8 +154,8 @@ router.get("/:type", async (req, res) => {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.END_TOP, {
           type,
-          start: formatDateShort(previousTop.start_date),
-          end: formatDateShort(previousTop.end_date),
+          start: formatDateShort(previousTop[0].start_date),
+          end: formatDateShort(previousTop[0].end_date),
           podium,
         }),
       );
