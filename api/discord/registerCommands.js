@@ -99,7 +99,8 @@ const commands = [
   // isvalue
   {
     name: "isvalue",
-    description: "Calcul la valeur de l'ile, retourne les pourcentages des points des joueurs",
+    description:
+      "Calcul la valeur de l'ile, retourne les pourcentages des points des joueurs",
   },
 
   // admin commands
@@ -136,10 +137,6 @@ const commands = [
                     name: "Île FireDroX",
                     value: "ile_firedrox",
                   },
-                  {
-                    name: "Île Nalyd_40",
-                    value: "ile_nalyd",
-                  },
                 ],
               },
             ],
@@ -165,7 +162,7 @@ async function registerCommands() {
         Authorization: `Bot ${token}`,
       },
       body: JSON.stringify(commands),
-    }
+    },
   );
 
   const data = await res.json().catch(() => null);

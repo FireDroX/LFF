@@ -121,9 +121,9 @@ router.post("/:type", checkAuth, async (req, res) => {
     // 🔥 Notification prise de première place
     if (
       newLeader &&
-      previousLeader &&
       newLeader.user_id === userId &&
-      previousLeader.user_id !== userId
+      ![userId, null].includes(previousLeader.user_id)
+      // previousLeader.user_id !== userId
     ) {
       await sendDiscordLog(
         getRandomMessage(MESSAGE_SETS.FIRST_PLACE, {

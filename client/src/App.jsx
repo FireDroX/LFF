@@ -38,7 +38,7 @@ const DynamicPage = ({ isLogged, data }) => {
         />
       );
   }
-};  
+};
 
 function App() {
   const access_token = window.localStorage.getItem("access_token");

@@ -32,15 +32,6 @@ module.exports = async function setupTicket(req, res) {
               inline: false,
             },
             {
-              name: "🏝️ Rejoindre l'île de Nalyd_40",
-              value:
-                "Intègre l'île de **Nalyd_40** et participe à son aventure.\n" +
-                "• Ambiance chill et organisée\n" +
-                "• Activités régulières\n" +
-                "• Opportunités d'évolution au sein de l'île",
-              inline: false,
-            },
-            {
               name: "📩 Ouverture de ticket",
               value:
                 "Clique sur le menu déroulant ci-dessous et sélectionne la raison correspondant à ta candidature.\n" +
@@ -73,14 +64,6 @@ module.exports = async function setupTicket(req, res) {
                   label: "Rejoindre l'île de FireDroX",
                   value: "ile_firedrox",
                   description: "Candidature île FireDroX",
-                  emoji: {
-                    name: "🏝️",
-                  },
-                },
-                {
-                  label: "Rejoindre l'île de Nalyd_40",
-                  value: "ile_nalyd",
-                  description: "Candidature île Nalyd_40",
                   emoji: {
                     name: "🏝️",
                   },
