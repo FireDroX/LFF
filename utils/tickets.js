@@ -10,6 +10,7 @@ module.exports = {
     gang_lff: {
       name: "💎 Rejoindre le Gang LFF",
       value:
+        "- Orientation PVP ou FARM ? (ou les deux) : \n" +
         "- Nombre de TFARM / semaine : \n" +
         "- Activité (temps de jeu par jour/semaine) : \n" +
         "- Pourquoi nous rejoindre ?",
@@ -18,6 +19,7 @@ module.exports = {
       name: "🏝️ Rejoindre l'île de FireDroX",
       value:
         "- Prestige et Pioche (fortune) :  \n" +
+        "- Networth (items, isvalue, everything): \n" +
         "- Nombre d'heures de minage / semaine : \n" +
         "- Pourquoi nous rejoindre ?",
     },
