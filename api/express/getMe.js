@@ -13,7 +13,7 @@ router.get("/", checkAuth, async (req, res) => {
     }
 
     // ✅ 1. Récupérer les infos Discord
-    const me = await fetch("https://discord.com/api/users/@me", {
+    const me = await fetch("https://discord.com/api/v10/users/@me", {
       headers: { authorization: authString },
     });
 

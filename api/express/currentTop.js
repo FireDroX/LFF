@@ -123,7 +123,7 @@ router.get("/:type", async (req, res) => {
 
   const nowUtc = new Date(); // instant actuel UTC
 
-  const { data: currentTop, error } = await supabase.rpc(
+  let { data: currentTop, error } = await supabase.rpc(
     "get_current_leaderboard",
     {
       p_type: type,
@@ -249,7 +249,7 @@ router.get("/:type", async (req, res) => {
       }),
     );
 
-    currentTop = newTop;
+    currentTop = [newTop];
   }
 
   // tri et réponse

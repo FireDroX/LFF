@@ -4,7 +4,7 @@ const DISCORD_CLIENT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 async function sendDiscordLog(message) {
   try {
     await fetch(
-      `https://discord.com/api/channels/${DISCORD_LOG_CHANNEL_ID}/messages`,
+      `https://discord.com/api/v10/channels/${DISCORD_LOG_CHANNEL_ID}/messages`,
       {
         method: "POST",
         headers: {
@@ -12,7 +12,7 @@ async function sendDiscordLog(message) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ content: message }),
-      }
+      },
     );
   } catch (error) {
     console.error("Failed to send Discord log:", error);
