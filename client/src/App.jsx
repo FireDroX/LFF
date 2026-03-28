@@ -68,8 +68,9 @@ function App() {
     const code = params.get("code");
 
     if (code) {
+      window.history.replaceState({}, document.title, "/");
+
       getToken(code).then(() => (window.location.href = "/"));
-      return;
     }
   }, []);
 
