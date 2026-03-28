@@ -15,7 +15,7 @@ async function checkAuth(req, res, next) {
     }
 
     // 1️⃣ Vérifie le token utilisateur via /users/@me
-    const me = await fetch("https://discord.com/api/users/@me", {
+    const me = await fetch("https://discord.com/api/v10/users/@me", {
       headers: { authorization: authString },
     });
 
@@ -29,12 +29,12 @@ async function checkAuth(req, res, next) {
 
     // 2️⃣ Vérifie que le bot peut récupérer les infos du membre
     const memberRes = await fetch(
-      `https://discord.com/api/guilds/${GUILD_ID}/members/${userData.id}`,
+      `https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userData.id}`,
       {
         headers: {
           Authorization: `Bot ${BOT_TOKEN}`,
         },
-      }
+      },
     );
 
     // Si l'utilisateur n'est pas dans le serveur

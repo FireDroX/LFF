@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const DISCORD_API = "https://discord.com/api";
+const DISCORD_API = "https://discord.com/api/v10";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 const LOG_CHANNEL_ID = "1237544228276404408";
@@ -30,7 +30,7 @@ module.exports = async function deleteTicket(req, res) {
     `${DISCORD_API}/channels/${channelId}/messages?limit=100`,
     {
       headers: { Authorization: `Bot ${BOT_TOKEN}` },
-    }
+    },
   );
   const messages = await messagesRes.json();
 
@@ -81,7 +81,7 @@ ${messages
       .map(
         (e) => `
       <div class="embed" style="--embed-color:#${(e.color ?? 0x5865f2).toString(
-        16
+        16,
       )}">
         ${
           e.author
@@ -99,7 +99,7 @@ ${messages
         ${
           e.description
             ? `<div class="embed-description">${escapeHtml(
-                e.description
+                e.description,
               )}</div>`
             : ""
         }
@@ -115,7 +115,7 @@ ${messages
                 <div class="embed-field-name">${escapeHtml(f.name)}</div>
                 <div>${escapeHtml(f.value)}</div>
               </div>
-            `
+            `,
               )
               .join("")}
           </div>`
@@ -151,7 +151,7 @@ ${messages
             : ""
         }
       </div>
-    `
+    `,
       )
       .join("")}
 
@@ -165,7 +165,7 @@ ${messages
             : `<a href="${a.url}" target="_blank">${escapeHtml(a.filename)}</a>`
         }
       </div>
-    `
+    `,
       )
       .join("")}
   </div>
@@ -187,13 +187,13 @@ ${messages
     "payload_json",
     JSON.stringify({
       content: `📄 Archivage du ticket **${channel.name}** par <@${interaction.member.user.id}> (\`${authorName}\`) (raison: ${reason})`,
-    })
+    }),
   );
 
   form.append(
     "files[0]",
     new Blob([html], { type: "text/html" }),
-    `${channel.name}.html`
+    `${channel.name}.html`,
   );
 
   await fetch(`${DISCORD_API}/channels/${LOG_CHANNEL_ID}/messages`, {

@@ -1,6 +1,6 @@
 const { ROLE_MAP, FIELDS_MAP } = require("../../../utils/tickets");
 
-const DISCORD_API = "https://discord.com/api";
+const DISCORD_API = "https://discord.com/api/v10";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 module.exports = async function updateTicketReason(req, res, reason) {
@@ -72,7 +72,7 @@ module.exports = async function updateTicketReason(req, res, reason) {
       {
         method: "DELETE",
         headers: { Authorization: `Bot ${BOT_TOKEN}` },
-      }
+      },
     );
   }
 
@@ -89,7 +89,7 @@ module.exports = async function updateTicketReason(req, res, reason) {
           allow: "1024",
           type: 0,
         }),
-      }
+      },
     );
   }
 

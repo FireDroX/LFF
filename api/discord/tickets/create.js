@@ -1,6 +1,6 @@
 const { CATEGORY_ID, ROLE_MAP, FIELDS_MAP } = require("../../../utils/tickets");
 
-const DISCORD_API = "https://discord.com/api";
+const DISCORD_API = "https://discord.com/api/v10";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 module.exports = async function createTicket(req, res) {
@@ -25,7 +25,7 @@ module.exports = async function createTicket(req, res) {
   const channels = await channelsRes.json();
 
   const existingTicket = channels.find(
-    (c) => c.parent_id === CATEGORY_ID && c.name === `ticket-${userId}`
+    (c) => c.parent_id === CATEGORY_ID && c.name === `ticket-${userId}`,
   );
 
   if (existingTicket) {
@@ -48,7 +48,7 @@ module.exports = async function createTicket(req, res) {
     body: JSON.stringify({
       name: channelName,
       topic: `Ticket de <@${userId}> ouvert le <t:${Math.floor(
-        Date.now() / 1000
+        Date.now() / 1000,
       )}:F>\nreason:${choice}`,
       type: 0,
       parent_id: CATEGORY_ID,
