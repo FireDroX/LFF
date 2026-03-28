@@ -1,4 +1,4 @@
-const DISCORD_API = "https://discord.com/api/v10";
+const DISCORD_API = "https://discord.com/api";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 const CATEGORY_ID = "1439283006836707429";

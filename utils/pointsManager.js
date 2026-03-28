@@ -17,7 +17,7 @@ const supabase = createClient(
  */
 async function getUserRoles(userId) {
   const memberRes = await fetch(
-    `https://discord.com/api/v10/guilds/${GUILD_ID}/members/${userId}`,
+    `https://discord.com/api/guilds/${GUILD_ID}/members/${userId}`,
     {
       headers: { Authorization: `Bot ${BOT_TOKEN}` },
     },

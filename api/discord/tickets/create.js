@@ -1,6 +1,6 @@
 const { CATEGORY_ID, ROLE_MAP, FIELDS_MAP } = require("../../../utils/tickets");
 
-const DISCORD_API = "https://discord.com/api/v10";
+const DISCORD_API = "https://discord.com/api";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 module.exports = async function createTicket(req, res) {

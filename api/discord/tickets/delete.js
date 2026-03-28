@@ -1,7 +1,7 @@
 const path = require("path");
 const fs = require("fs");
 
-const DISCORD_API = "https://discord.com/api/v10";
+const DISCORD_API = "https://discord.com/api";
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
 
 const LOG_CHANNEL_ID = "1237544228276404408";

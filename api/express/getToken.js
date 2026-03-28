@@ -7,7 +7,7 @@ const router = express.Router();
 router.post("/", async (req, res) => {
   try {
     const tokenResponseData = await fetch(
-      "https://discord.com/api/v10/oauth2/token",
+      "https://discord.com/api/oauth2/token",
       {
         method: "POST",
         body: new URLSearchParams({
