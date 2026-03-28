@@ -11,7 +11,13 @@ const apiFetch = async (url, options = {}) => {
     });
 
     const text = await response.text();
-    const data = text ? JSON.parse(text) : null;
+    let data = null;
+
+    try {
+      data = text ? JSON.parse(text) : null;
+    } catch {
+      throw new Error("Invalid JSON response");
+    }
 
     if (!response.ok) {
       throw new Error(data?.error || "API error");

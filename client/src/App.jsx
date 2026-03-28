@@ -62,7 +62,6 @@ function App() {
     }
   }, [access_token, token_type]);
 
-  // Charger le token de connexion OAuth2 s'il y a un code dans l'URL
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const code = params.get("code");
@@ -70,7 +69,15 @@ function App() {
     if (code) {
       window.history.replaceState({}, document.title, "/");
 
-      getToken(code).then(() => (window.location.href = "/"));
+      getToken(code)
+        .then(() => {
+          window.location.replace("/");
+        })
+        .catch((err) => {
+          console.error("Token error:", err);
+
+          window.location.replace("/");
+        });
     }
   }, []);
 

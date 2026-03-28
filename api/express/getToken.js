@@ -21,7 +21,7 @@ router.post("/", async (req, res) => {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
         },
-      }
+      },
     );
 
     if (!tokenResponseData.ok) {
