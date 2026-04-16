@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const express = require("express");
 
 const checkAuth = require("../../utils/checkAuth");

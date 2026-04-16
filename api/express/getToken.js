@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const express = require("express");
 const { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, FRONTEND_URL } = process.env;
 
