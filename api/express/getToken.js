@@ -1,5 +1,4 @@
 const express = require("express");
-const { DISCORD_CLIENT_ID, DISCORD_CLIENT_SECRET, FRONTEND_URL } = process.env;
 
 const router = express.Router();
 
@@ -10,11 +9,11 @@ router.post("/", async (req, res) => {
       {
         method: "POST",
         body: new URLSearchParams({
-          client_id: DISCORD_CLIENT_ID,
-          client_secret: DISCORD_CLIENT_SECRET,
+          client_id: process.env.DISCORD_CLIENT_ID,
+          client_secret: process.env.DISCORD_CLIENT_SECRET,
           code: req.body.code,
           grant_type: "authorization_code",
-          redirect_uri: FRONTEND_URL,
+          redirect_uri: process.env.FRONTEND_URL,
           scope: "identify",
         }).toString(),
         headers: {
