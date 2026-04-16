@@ -1,5 +1,3 @@
-const fetch = require("node-fetch");
-
 const GUILD_ID = process.env.DISCORD_GUILD_ID;
 const ROLE_ISLAND = process.env.DISCORD_ROLE_ISLAND;
 const ROLE_GANG = process.env.DISCORD_ROLE_GANG;

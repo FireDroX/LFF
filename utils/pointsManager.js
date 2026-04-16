@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const { createClient } = require("@supabase/supabase-js");
 
 const BOT_TOKEN = process.env.DISCORD_CLIENT_TOKEN;
