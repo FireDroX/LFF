@@ -1,4 +1,3 @@
-const fetch = require("node-fetch");
 const { compactNumber } = require("../../utils/functions");
 
 module.exports = async function isvalue(req, res) {

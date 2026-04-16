@@ -1,5 +1,4 @@
 require("dotenv/config");
-const fetch = require("node-fetch");
 
 const appId = process.env.DISCORD_CLIENT_ID;
 const token = process.env.DISCORD_CLIENT_TOKEN;
