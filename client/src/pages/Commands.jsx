@@ -6,6 +6,7 @@ import { getCommands } from "../utils/requests";
 const TYPE_LABELS = {
   3: "texte",
   4: "nombre",
+  6: "membre",
 };
 
 const formatChoices = (option) =>
@@ -13,7 +14,8 @@ const formatChoices = (option) =>
 
 const formatOption = (option) => {
   const value = formatChoices(option) || TYPE_LABELS[option.type] || "valeur";
-  const content = `${option.name}: ${value}`;
+  const content =
+    option.type === 6 ? option.name : `${option.name}: ${value}`;
   return option.required ? `<${content}>` : `[${content}]`;
 };
 

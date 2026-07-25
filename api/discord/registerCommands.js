@@ -102,6 +102,90 @@ const commands = [
       "Calcul la valeur de l'ile, retourne les pourcentages des points des joueurs",
   },
 
+  // profile
+  {
+    name: "profile",
+    description: "Afficher le profil et les classements actuels d'un membre",
+    options: [
+      {
+        name: "membre",
+        type: 6,
+        required: false,
+        description: "Membre à afficher (vous par défaut)",
+      },
+    ],
+  },
+
+  // rank
+  {
+    name: "rank",
+    description: "Afficher le rang d'un membre dans une catégorie",
+    options: [
+      {
+        name: "type",
+        type: 3,
+        required: true,
+        description: "Type de classement",
+        choices: [
+          { name: "crystaux", value: "crystaux" },
+          { name: "pvp", value: "pvp" },
+          { name: "iscoin", value: "iscoin" },
+          { name: "dragonegg", value: "dragonegg" },
+          { name: "beacon", value: "beacon" },
+          { name: "sponge", value: "sponge" },
+        ],
+      },
+      {
+        name: "membre",
+        type: 6,
+        required: false,
+        description: "Membre à afficher (vous par défaut)",
+      },
+    ],
+  },
+
+  // stats
+  {
+    name: "stats",
+    description: "Afficher les statistiques cumulées d'un membre",
+    options: [
+      {
+        name: "membre",
+        type: 6,
+        required: false,
+        description: "Membre à afficher (vous par défaut)",
+      },
+    ],
+  },
+
+  // rewards
+  {
+    name: "rewards",
+    description: "Afficher les récompenses des classements",
+    options: [
+      {
+        name: "type",
+        type: 3,
+        required: false,
+        description: "Catégorie à afficher (toutes par défaut)",
+        choices: [
+          { name: "crystaux", value: "crystaux" },
+          { name: "pvp", value: "pvp" },
+          { name: "iscoin", value: "iscoin" },
+          { name: "dragonegg", value: "dragonegg" },
+          { name: "beacon", value: "beacon" },
+          { name: "sponge", value: "sponge" },
+        ],
+      },
+    ],
+  },
+
+  // website
+  {
+    name: "website",
+    description: "Afficher le lien du site officiel LFF",
+  },
+
   // admin commands
   {
     name: "admin",
