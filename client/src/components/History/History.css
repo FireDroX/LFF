@@ -14,8 +14,7 @@
   box-shadow: 0 1.5rem 5rem rgba(0, 0, 0, 0.35);
 }
 
-.close-btn,
-.removePoints-cancel {
+.close-btn {
   position: absolute;
   top: 0.75rem;
   right: 0.75rem;
@@ -34,8 +33,7 @@
     background 0.2s ease;
 }
 
-.close-btn:hover,
-.removePoints-cancel:hover {
+.close-btn:hover {
   color: var(--text95);
   background: var(--accent15);
 }

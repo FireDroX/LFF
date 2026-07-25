@@ -6,12 +6,11 @@ import { getCurrentRoute, navigateTo } from "../../utils/navigation";
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
-import { CgTrash, CgProfile } from "react-icons/cg";
+import { CgProfile } from "react-icons/cg";
 import { FaHistory, FaTerminal } from "react-icons/fa";
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { SlPresent } from "react-icons/sl";
 
-import RemovePoints from "../RemovePoints/RemovePoints";
 import History from "../History/History";
 
 import favicon from "../../assets/favicon.webp";
@@ -22,7 +21,6 @@ const Navbar = ({ userData }) => {
   );
   const [currentRoute, setCurrentRoute] = useState(getCurrentRoute);
 
-  const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
   const [publicConfig, setPublicConfig] = useState(null);
   const redirectUri =
@@ -156,14 +154,6 @@ const Navbar = ({ userData }) => {
                   action: () => navigateTo("dashboard"),
                 },
 
-                // --- DELETE POINTS ---
-                userData && {
-                  label: "Delete Points",
-                  icon: <CgTrash />,
-                  action: () => setRemoveModal((prev) => !prev),
-                  color: "#ff5252",
-                },
-
                 // --- DISCONNECT ---
                 userData && {
                   label: "Disconnect",
@@ -216,9 +206,6 @@ const Navbar = ({ userData }) => {
           )}
         </div>
       </div>
-      {removeModal && (
-        <RemovePoints closeModal={() => setRemoveModal(false)} />
-      )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>
   );
