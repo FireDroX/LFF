@@ -8,6 +8,7 @@
     "build": "npm --prefix client run build",
     "db:init": "node scripts/initDatabase.js",
     "db:verify": "node scripts/verifyDatabase.js",
+    "db:import-csv": "node scripts/importCsv.js",
     "register": "node api/discord/registerCommands.js"
   },
   "dependencies": {

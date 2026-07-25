@@ -8,6 +8,7 @@ const VALID_TYPES = [
   "sponge",
   "pvp",
 ];
+const PERMANENT_TYPES = new Set(["dragonegg", "beacon", "sponge"]);
 
 function normalizeTop(row) {
   if (!row) return null;
@@ -27,6 +28,9 @@ function normalizeScore(score) {
 }
 
 async function findActiveTop(type, connection = getPool(), lock = false) {
+  const permanentFirst = PERMANENT_TYPES.has(type)
+    ? "(start_date IS NULL AND end_date IS NULL) DESC,"
+    : "";
   const [rows] = await connection.execute(
     `SELECT id, type, start_date, end_date
      FROM tops
@@ -35,7 +39,7 @@ async function findActiveTop(type, connection = getPool(), lock = false) {
          (start_date <= UTC_TIMESTAMP(3) AND end_date >= UTC_TIMESTAMP(3))
          OR (start_date IS NULL AND end_date IS NULL)
        )
-     ORDER BY start_date DESC, id DESC
+     ORDER BY ${permanentFirst} start_date DESC, id DESC
      LIMIT 1${lock ? " FOR UPDATE" : ""}`,
     [type],
   );
