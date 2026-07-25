@@ -2,6 +2,7 @@ const {
   buildHistoryEmbed,
   paginationButtons,
 } = require("../../utils/functions");
+const getPublicUrl = require("../../utils/publicUrl");
 
 module.exports = async function history(req, res) {
   const interaction = req.body;
@@ -11,7 +12,7 @@ module.exports = async function history(req, res) {
 
   try {
     const response = await fetch(
-      `https://lff.onrender.com/leaderboard/history`
+      `${getPublicUrl()}/leaderboard/history`,
     );
 
     if (!response.ok) {

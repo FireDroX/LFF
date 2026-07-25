@@ -1,9 +1,19 @@
 const express = require("express");
+const getPublicUrl = require("../../utils/publicUrl");
 
 const router = express.Router();
 
 router.post("/", async (req, res) => {
   try {
+    const allowedRedirectUris = new Set([
+      getPublicUrl(),
+      "http://localhost:5173",
+      "http://127.0.0.1:5173",
+    ]);
+    const redirectUri = allowedRedirectUris.has(req.body?.redirectUri)
+      ? req.body.redirectUri
+      : getPublicUrl();
+
     const tokenResponseData = await fetch(
       "https://discord.com/api/oauth2/token",
       {
@@ -13,7 +23,7 @@ router.post("/", async (req, res) => {
           client_secret: process.env.DISCORD_CLIENT_SECRET,
           code: req.body.code,
           grant_type: "authorization_code",
-          redirect_uri: process.env.FRONTEND_URL,
+          redirect_uri: redirectUri,
           scope: "identify",
         }).toString(),
         headers: {

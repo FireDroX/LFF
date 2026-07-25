@@ -1,8 +1,8 @@
-const { defaultURL } = require("./defaultURL");
+const apiBaseUrl = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
 
 const apiFetch = async (url, options = {}) => {
   try {
-    const response = await fetch(defaultURL + url, {
+    const response = await fetch(apiBaseUrl + url, {
       ...options,
       headers: {
         "Content-Type": "application/json",
@@ -67,9 +67,12 @@ export const getMe = (tokenType, accessToken) =>
   });
 
 export const getToken = async (code) => {
+  const redirectUri =
+    import.meta.env.VITE_DISCORD_REDIRECT_URI ||
+    (import.meta.env.DEV ? window.location.origin : undefined);
   const result = await apiFetch("/get/token", {
     method: "POST",
-    body: JSON.stringify({ code }),
+    body: JSON.stringify({ code, redirectUri }),
   });
 
   window.localStorage.setItem("access_token", result.access_token);
@@ -79,6 +82,8 @@ export const getToken = async (code) => {
 };
 
 export const historyTops = () => apiFetch("/leaderboard/history");
+
+export const getPublicConfig = () => apiFetch("/config");
 
 export const profile = () =>
   apiFetch("/profile", {

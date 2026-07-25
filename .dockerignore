@@ -1,0 +1,7 @@
+.git
+.env
+node_modules
+client/node_modules
+client/build
+client/dist
+npm-debug.log*

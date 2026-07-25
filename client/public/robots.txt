@@ -2,4 +2,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://lff.onrender.com/sitemap.xml
+Sitemap: https://lff.addrien.fr/sitemap.xml

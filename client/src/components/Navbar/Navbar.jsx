@@ -1,6 +1,6 @@
 import "./Navbar.css";
-import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { getPublicConfig } from "../../utils/requests";
 
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosColorPalette } from "react-icons/io";
@@ -16,12 +16,12 @@ import History from "../History/History";
 import favicon from "../../assets/favicon.webp";
 
 const Navbar = ({ userData }) => {
-  const navigate = useNavigate();
-  const location = useLocation();
-
-  const queryParams = new URLSearchParams(location.search);
-  const p = queryParams.get("p") ?? "weekly";
-  const server = p.toLowerCase();
+  const navigate = (page) => {
+    const url = new URL(window.location.href);
+    url.searchParams.set("p", page);
+    window.history.pushState({}, "", url);
+    window.dispatchEvent(new PopStateEvent("popstate"));
+  };
 
   const [theme, setTheme] = useState(
     window.localStorage.getItem("theme") || "Dark",
@@ -29,6 +29,25 @@ const Navbar = ({ userData }) => {
 
   const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
+  const [publicConfig, setPublicConfig] = useState(null);
+  const redirectUri =
+    import.meta.env.VITE_DISCORD_REDIRECT_URI ||
+    (import.meta.env.DEV
+      ? window.location.origin
+      : publicConfig?.publicUrl || window.location.origin);
+  const discordLoginUrl = new URL("https://discord.com/oauth2/authorize");
+  discordLoginUrl.search = new URLSearchParams({
+    client_id: publicConfig?.discordClientId || "",
+    response_type: "code",
+    redirect_uri: redirectUri,
+    scope: "identify",
+  }).toString();
+
+  useEffect(() => {
+    getPublicConfig()
+      .then(setPublicConfig)
+      .catch((error) => console.error("Public config loading failed:", error));
+  }, []);
 
   const handleDisconnect = () => {
     window.localStorage.clear();
@@ -86,21 +105,21 @@ const Navbar = ({ userData }) => {
                 userData && {
                   label: "Profile",
                   icon: <CgProfile />,
-                  action: () => navigate("?p=Profile"),
+                  action: () => navigate("Profile"),
                 },
 
                 // --- CLASSEMENTS ---
                 {
                   label: "Leaderboards",
                   icon: <MdLeaderboard />,
-                  action: () => navigate("?p=Leaderboards"),
+                  action: () => navigate("Leaderboards"),
                 },
 
                 // -- REWARDS ---
                 {
                   label: "Rewards",
                   icon: <SlPresent />,
-                  action: () => navigate("?p=Rewards"),
+                  action: () => navigate("Rewards"),
                 },
 
                 // --- HISTORY ---
@@ -121,7 +140,7 @@ const Navbar = ({ userData }) => {
                 userData?.isAdmin && {
                   label: "Dashboard",
                   icon: <MdAdminPanelSettings />,
-                  action: () => navigate("?p=Dashboard"),
+                  action: () => navigate("Dashboard"),
                 },
 
                 // --- DELETE POINTS ---
@@ -172,11 +191,7 @@ const Navbar = ({ userData }) => {
             <a
               className="lff-navbar-footer"
               id="login"
-              href={
-                process.env.NODE_ENV === "production"
-                  ? "https://discord.com/oauth2/authorize?client_id=1431388474954748065&response_type=code&redirect_uri=https%3A%2F%2Flff.onrender.com&scope=identify"
-                  : "https://discord.com/oauth2/authorize?client_id=1431388474954748065&response_type=code&redirect_uri=http%3A%2F%2Flocalhost%3A3000&scope=identify"
-              }
+              href={publicConfig ? discordLoginUrl.toString() : undefined}
             >
               <TbLogin2 />
               <span>Discord Login</span>
@@ -185,7 +200,7 @@ const Navbar = ({ userData }) => {
         </div>
       </div>
       {removeModal && (
-        <RemovePoints closeModal={() => setRemoveModal(false)} path={server} />
+        <RemovePoints closeModal={() => setRemoveModal(false)} />
       )}
       {historyModal && <History closeModal={() => setHistoryModal(false)} />}
     </>

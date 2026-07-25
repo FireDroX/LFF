@@ -1,6 +1,5 @@
 import "./App.css";
 import { useState, useEffect, Suspense, lazy } from "react";
-import { Routes, Route, useLocation } from "react-router-dom";
 
 import { getMe, getToken } from "./utils/requests";
 
@@ -12,15 +11,16 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
 
 const DynamicPage = ({ isLogged, data }) => {
-  const [page, setPage] = useState(null);
-  const location = useLocation();
+  const getPage = () =>
+    new URLSearchParams(window.location.search).get("p")?.toLowerCase() ||
+    "weekly";
+  const [page, setPage] = useState(getPage);
 
-  // Get the text after the last 'p?' in the URL
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const p = queryParams.get("p") ?? "weekly";
-    setPage(p.toLowerCase());
-  }, [location]);
+    const handleNavigation = () => setPage(getPage());
+    window.addEventListener("popstate", handleNavigation);
+    return () => window.removeEventListener("popstate", handleNavigation);
+  }, []);
 
   switch (page) {
     case "profile":
@@ -85,19 +85,12 @@ function App() {
   return (
     <>
       <Navbar userData={userInfos.data} />
-      <Routes>
-        <Route
-          path="/*"
-          element={
-            <Suspense fallback={<Loader />}>
-              <DynamicPage
-                isLogged={userInfos.isLogged}
-                data={userInfos.data}
-              />
-            </Suspense>
-          }
+      <Suspense fallback={<Loader />}>
+        <DynamicPage
+          isLogged={userInfos.isLogged}
+          data={userInfos.data}
         />
-      </Routes>
+      </Suspense>
     </>
   );
 }

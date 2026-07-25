@@ -2,9 +2,7 @@ import "./RemovePoints.css";
 
 import { MdCancel } from "react-icons/md";
 
-import { removePoints } from "../../utils/requests";
-
-const RemovePoints = ({ closeModal, path }) => {
+const RemovePoints = ({ closeModal }) => {
   return (
     <div className="modal-overlay" onClick={closeModal}>
       <div className="removePoints-modal" onClick={(e) => e.stopPropagation()}>

@@ -55,7 +55,7 @@ module.exports = async function points(req, res) {
     });
   }
 
-  // Récupérer le score total depuis Supabase
+  // Récupérer le nouveau total depuis MySQL
   const total = result.total ?? null;
 
   const message = getRandomMessage(

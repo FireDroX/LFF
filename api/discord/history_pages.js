@@ -2,6 +2,7 @@ const {
   buildHistoryEmbed,
   paginationButtons,
 } = require("../../utils/functions");
+const getPublicUrl = require("../../utils/publicUrl");
 
 module.exports = function handleHistoryButtons(req, res) {
   const interaction = req.body;
@@ -13,7 +14,7 @@ module.exports = function handleHistoryButtons(req, res) {
 
   const page = parseInt(pageStr, 10);
 
-  fetch("https://lff.onrender.com/leaderboard/history")
+  fetch(`${getPublicUrl()}/leaderboard/history`)
     .then((r) => r.json())
     .then((data) => {
       const history = data.filter((x) => x.type === type);

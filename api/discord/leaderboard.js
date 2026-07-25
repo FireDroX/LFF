@@ -1,4 +1,5 @@
 const { formatReadableDate } = require("../../utils/functions");
+const getPublicUrl = require("../../utils/publicUrl");
 
 module.exports = async function leaderboard(req, res) {
   const interaction = req.body;
@@ -6,7 +7,7 @@ module.exports = async function leaderboard(req, res) {
 
   try {
     const response = await fetch(
-      `https://lff.onrender.com/leaderboard/current/${type}`
+      `${getPublicUrl()}/leaderboard/current/${type}`,
     );
 
     if (!response.ok) {

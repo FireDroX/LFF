@@ -1,12 +1,14 @@
 const { compactNumber } = require("../../utils/functions");
+const getPublicUrl = require("../../utils/publicUrl");
 
 module.exports = async function isvalue(req, res) {
   try {
+    const publicUrl = getPublicUrl();
     // Récupérer les 3 leaderboards
     const [dragoneggResp, beaconResp, spongeResp] = await Promise.all([
-      fetch("https://lff.onrender.com/leaderboard/current/dragonegg"),
-      fetch("https://lff.onrender.com/leaderboard/current/beacon"),
-      fetch("https://lff.onrender.com/leaderboard/current/sponge"),
+      fetch(`${publicUrl}/leaderboard/current/dragonegg`),
+      fetch(`${publicUrl}/leaderboard/current/beacon`),
+      fetch(`${publicUrl}/leaderboard/current/sponge`),
     ]);
 
     if (!dragoneggResp.ok || !beaconResp.ok || !spongeResp.ok) {
