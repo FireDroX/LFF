@@ -46,10 +46,6 @@ function validateClientBuild() {
 }
 
 app.set("trust proxy", 1);
-app.use((_req, res, next) => {
-  res.setHeader("X-LFF-App", "vite-mysql");
-  next();
-});
 
 app.post(
   "/interactions",
@@ -68,7 +64,8 @@ app.use(
   }),
 );
 app.use(express.json());
-app.use(routes);
+app.use("/healthz", require("./api/express/healthz"));
+app.use("/api", routes);
 app.use(
   "/assets",
   express.static(path.join(clientDirectory, "assets"), {

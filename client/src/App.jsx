@@ -2,6 +2,7 @@ import "./App.css";
 import { useState, useEffect, Suspense, lazy } from "react";
 
 import { getMe, getToken } from "./utils/requests";
+import { getCurrentRoute } from "./utils/navigation";
 
 import Navbar from "./components/Navbar/Navbar";
 
@@ -11,13 +12,10 @@ const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
 
 const DynamicPage = ({ isLogged, data }) => {
-  const getPage = () =>
-    new URLSearchParams(window.location.search).get("p")?.toLowerCase() ||
-    "weekly";
-  const [page, setPage] = useState(getPage);
+  const [page, setPage] = useState(getCurrentRoute);
 
   useEffect(() => {
-    const handleNavigation = () => setPage(getPage());
+    const handleNavigation = () => setPage(getCurrentRoute());
     window.addEventListener("popstate", handleNavigation);
     return () => window.removeEventListener("popstate", handleNavigation);
   }, []);
@@ -68,9 +66,9 @@ function App() {
     const code = params.get("code");
 
     if (code) {
-      window.history.replaceState({}, document.title, "/");
+      window.history.replaceState({}, document.title, "/leaderboards");
 
-      getToken(code).then(() => (window.location.href = "/"));
+      getToken(code).then(() => (window.location.href = "/leaderboards"));
     }
   }, []);
 

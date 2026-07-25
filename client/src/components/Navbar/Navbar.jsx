@@ -1,6 +1,7 @@
 import "./Navbar.css";
 import { useEffect, useState } from "react";
 import { getPublicConfig } from "../../utils/requests";
+import { navigateTo } from "../../utils/navigation";
 
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosColorPalette } from "react-icons/io";
@@ -16,13 +17,6 @@ import History from "../History/History";
 import favicon from "../../assets/favicon.webp";
 
 const Navbar = ({ userData }) => {
-  const navigate = (page) => {
-    const url = new URL(window.location.href);
-    url.searchParams.set("p", page);
-    window.history.pushState({}, "", url);
-    window.dispatchEvent(new PopStateEvent("popstate"));
-  };
-
   const [theme, setTheme] = useState(
     window.localStorage.getItem("theme") || "Dark",
   );
@@ -51,7 +45,7 @@ const Navbar = ({ userData }) => {
 
   const handleDisconnect = () => {
     window.localStorage.clear();
-    window.location.href = "/";
+    window.location.href = "/leaderboards";
   };
 
   const handleThemeChange = () => {
@@ -105,21 +99,21 @@ const Navbar = ({ userData }) => {
                 userData && {
                   label: "Profile",
                   icon: <CgProfile />,
-                  action: () => navigate("Profile"),
+                  action: () => navigateTo("profile"),
                 },
 
                 // --- CLASSEMENTS ---
                 {
                   label: "Leaderboards",
                   icon: <MdLeaderboard />,
-                  action: () => navigate("Leaderboards"),
+                  action: () => navigateTo("leaderboards"),
                 },
 
                 // -- REWARDS ---
                 {
                   label: "Rewards",
                   icon: <SlPresent />,
-                  action: () => navigate("Rewards"),
+                  action: () => navigateTo("rewards"),
                 },
 
                 // --- HISTORY ---
@@ -140,7 +134,7 @@ const Navbar = ({ userData }) => {
                 userData?.isAdmin && {
                   label: "Dashboard",
                   icon: <MdAdminPanelSettings />,
-                  action: () => navigate("Dashboard"),
+                  action: () => navigateTo("dashboard"),
                 },
 
                 // --- DELETE POINTS ---

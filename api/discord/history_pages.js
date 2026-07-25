@@ -14,7 +14,7 @@ module.exports = function handleHistoryButtons(req, res) {
 
   const page = parseInt(pageStr, 10);
 
-  fetch(`${getPublicUrl()}/leaderboard/history`)
+  fetch(`${getPublicUrl()}/api/leaderboard/history`)
     .then((r) => r.json())
     .then((data) => {
       const history = data.filter((x) => x.type === type);

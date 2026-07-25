@@ -95,13 +95,22 @@ Dans le portail développeur Discord, ajouter ces URLs de redirection :
 
 ## Routes principales
 
+Pages :
+
+- `/leaderboards`
+- `/profile`
+- `/rewards`
+- `/dashboard`
+
+API :
+
 - `GET /healthz` : état du serveur et de MySQL
-- `GET /config` : configuration publique du client
-- `GET /leaderboard/current/:type`
-- `GET /leaderboard/history`
-- `POST /points/add/:type`
-- `PATCH /leaderboards/update/:type`
-- `GET /profile`
+- `GET /api/config` : configuration publique du client
+- `GET /api/leaderboard/current/:type`
+- `GET /api/leaderboard/history`
+- `POST /api/points/add/:type`
+- `PATCH /api/leaderboards/update/:type`
+- `GET /api/profile`
 - `POST /interactions`
 
 Types disponibles : `crystaux`, `pvp`, `iscoin`, `dragonegg`, `beacon` et

@@ -7,7 +7,7 @@ module.exports = async function leaderboard(req, res) {
 
   try {
     const response = await fetch(
-      `${getPublicUrl()}/leaderboard/current/${type}`,
+      `${getPublicUrl()}/api/leaderboard/current/${type}`,
     );
 
     if (!response.ok) {

@@ -1,8 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://lff.addrien.fr/</loc>
-    <lastmod>2025-11-17</lastmod>
-    <priority>1.5.0</priority>
+    <loc>https://lff.addrien.fr/leaderboards</loc>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://lff.addrien.fr/rewards</loc>
+    <priority>0.7</priority>
   </url>
 </urlset>

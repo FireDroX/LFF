@@ -6,9 +6,9 @@ module.exports = async function isvalue(req, res) {
     const publicUrl = getPublicUrl();
     // Récupérer les 3 leaderboards
     const [dragoneggResp, beaconResp, spongeResp] = await Promise.all([
-      fetch(`${publicUrl}/leaderboard/current/dragonegg`),
-      fetch(`${publicUrl}/leaderboard/current/beacon`),
-      fetch(`${publicUrl}/leaderboard/current/sponge`),
+      fetch(`${publicUrl}/api/leaderboard/current/dragonegg`),
+      fetch(`${publicUrl}/api/leaderboard/current/beacon`),
+      fetch(`${publicUrl}/api/leaderboard/current/sponge`),
     ]);
 
     if (!dragoneggResp.ok || !beaconResp.ok || !spongeResp.ok) {

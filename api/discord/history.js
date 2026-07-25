@@ -12,7 +12,7 @@ module.exports = async function history(req, res) {
 
   try {
     const response = await fetch(
-      `${getPublicUrl()}/leaderboard/history`,
+      `${getPublicUrl()}/api/leaderboard/history`,
     );
 
     if (!response.ok) {

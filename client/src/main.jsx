@@ -1,7 +1,9 @@
 import ReactDOM from "react-dom/client";
 import "./index.css";
 import App from "./App";
+import { normalizeCurrentLocation } from "./utils/navigation";
 
+normalizeCurrentLocation();
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(<App />);
 

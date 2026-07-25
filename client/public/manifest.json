@@ -1,7 +1,7 @@
 {
   "name": "LFF",
   "short_name": "LFF",
-  "start_url": "/",
+  "start_url": "/leaderboards",
   "display": "standalone",
   "background_color": "#0a0d07",
   "theme_color": "#7A4DFF",
