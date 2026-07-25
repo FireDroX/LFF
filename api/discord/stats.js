@@ -39,7 +39,7 @@ module.exports = async function stats(req, res) {
               participations > 0
                 ? `Historique cumulé sur **${participations} participations**.`
                 : "Ce membre ne possède pas encore de statistiques.",
-            color: parseInt("b29a80", 16),
+            color: parseInt("9b59b6", 16),
             fields,
             ...(target.avatarUrl
               ? { thumbnail: { url: target.avatarUrl } }

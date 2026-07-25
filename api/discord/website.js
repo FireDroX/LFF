@@ -15,7 +15,7 @@ module.exports = async function website(_req, res) {
             description:
               "Consulte les classements, ta progression, les récompenses et les commandes du bot.",
             url: publicUrl,
-            color: parseInt("b29a80", 16),
+            color: parseInt("9b59b6", 16),
           },
         ],
         components: [

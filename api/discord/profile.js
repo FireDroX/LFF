@@ -32,7 +32,7 @@ module.exports = async function profile(req, res) {
           {
             title: `👤 Profil de ${target.name}`,
             description: `<@${target.id}> est classé dans **${rankedCategories}/${stats.length}** catégories actives.`,
-            color: parseInt("b29a80", 16),
+            color: parseInt("9b59b6", 16),
             fields,
             ...(target.avatarUrl
               ? { thumbnail: { url: target.avatarUrl } }

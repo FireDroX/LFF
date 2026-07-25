@@ -88,7 +88,7 @@ module.exports = async function createTicket(req, res) {
           title: "📢 Recrutement – Présentation Obligatoire 📢",
           description:
             "Si vous souhaitez nous rejoindre, merci de copier-coller le formulaire ci-dessous et de remplir les informations manquantes en ticket :",
-          color: parseInt("b29a80", 16),
+          color: parseInt("9b59b6", 16),
           fields: [
             {
               name: "📝 Informations Générales",

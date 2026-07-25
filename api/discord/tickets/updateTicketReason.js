@@ -113,7 +113,7 @@ module.exports = async function updateTicketReason(req, res, reason) {
             description:
               "La raison du ticket a été modifiée.\n" +
               "Merci de répondre aux nouvelles questions ci-dessous :",
-            color: parseInt("b29a80", 16),
+            color: parseInt("9b59b6", 16),
             fields: [
               {
                 name: "📝 Informations Générales",

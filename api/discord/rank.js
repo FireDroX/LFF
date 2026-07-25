@@ -34,7 +34,7 @@ module.exports = async function rank(req, res) {
             {
               title: `${CATEGORY_LABELS[type]} — Rang`,
               description: `<@${target.id}> n'est pas encore classé dans cette catégorie.`,
-              color: parseInt("b29a80", 16),
+              color: parseInt("9b59b6", 16),
             },
           ],
         },
@@ -66,7 +66,7 @@ module.exports = async function rank(req, res) {
                 ? `Prochain rang : **${formatNumber(pointsToNext)} points** à gagner`
                 : "🏆 Première place actuelle",
             ].join("\n"),
-            color: parseInt("b29a80", 16),
+            color: parseInt("9b59b6", 16),
             ...(target.avatarUrl
               ? { thumbnail: { url: target.avatarUrl } }
               : {}),

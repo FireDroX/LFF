@@ -15,7 +15,7 @@ module.exports = async function help(req, res) {
         {
           title: "📘 Liste des commandes disponibles",
           description: "Voici toutes les commandes utilisables sur le serveur.",
-          color: parseInt("b29a80", 16),
+          color: parseInt("9b59b6", 16),
           fields: embedFields,
           footer: {
             text: "LFF — Système de commandes",

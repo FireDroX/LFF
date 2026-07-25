@@ -66,7 +66,7 @@ module.exports = async function rewards(req, res) {
             title: "🎁 Récompenses LFF",
             description:
               "Récompenses attribuées aux trois premières places des classements.",
-            color: parseInt("b29a80", 16),
+            color: parseInt("9b59b6", 16),
             fields,
           },
         ],
