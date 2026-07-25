@@ -1,138 +1,276 @@
 .lff-leaderboard {
-  border: 1px solid var(--accent15);
-  background-color: var(--accent5);
-  border-radius: 16px;
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 1rem;
+  background: color-mix(in srgb, var(--bg) 94%, var(--text));
+  box-shadow: 0 1.25rem 4rem rgba(0, 0, 0, 0.12);
+  isolation: isolate;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.lff-leaderboard::after {
+  display: none;
+}
+
+.lff-leaderboard:hover {
+  border-color: var(--accent);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.14);
+  transform: translateY(-3px);
 }
 
 .lff-header {
-  padding: 1rem 3rem 1rem 3rem;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  width: 20rem;
-  background-color: var(--accent15);
-  border-radius: 16px 16px 0 0;
+  width: 100%;
+  min-height: 3.8rem;
+  padding: 0.75rem 1rem;
+  overflow: hidden;
+  border-bottom: 1px solid rgba(123, 123, 123, 0.19);
+  background: color-mix(in srgb, var(--bg) 91%, var(--text));
+}
+
+.lff-header::after {
+  display: none;
 }
 
 .lff-header-left {
   display: flex;
+  min-width: 0;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.6rem;
 }
 
 .lff-header-title {
+  display: flex;
+  min-width: 0;
+  align-items: center;
   margin: 0;
-  font-size: 1rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
-  color: var(--text85);
+  color: var(--text95);
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
 .lff-header-title > img {
-  margin-right: 1rem;
+  margin-right: 0.75rem;
 }
 
 .lff-header-min {
-  font-size: 0.75rem;
+  flex: 0 0 auto;
+  padding: 0.35rem 0.55rem;
+  border: 1px solid rgba(123, 123, 123, 0.25);
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent10);
+  font-size: 0.64rem;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  color: var(--text60);
 }
 
 .lff-classement {
-  padding-inline: 2rem;
   display: flex;
+  width: 100%;
   flex-direction: column;
-  align-items: center;
+  gap: 0.3rem;
+  align-items: stretch;
   justify-content: center;
-  width: 22rem;
+  margin: 0;
+  padding: 0.7rem;
   list-style: none;
 }
 
-.lff-separator {
+.lff-player {
   position: relative;
+  display: flex;
   width: 100%;
-  text-align: center;
-  margin: 12px 0;
-  border-top: 1px dashed var(--accent55);
+  flex-direction: column;
+  gap: 0.35rem;
+  padding: 0.55rem 0.65rem;
+  overflow: hidden;
+  border: 1px solid transparent;
+  border-radius: 13px;
+  background: color-mix(in srgb, var(--bg) 97%, var(--text));
+  transition:
+    background 0.2s ease,
+    border-color 0.2s ease,
+    transform 0.2s ease;
 }
 
-.lff-player {
-  display: flex;
-  flex-direction: column;
-  width: 100%;
-  padding: 0.5rem 1rem;
+.lff-player:hover {
+  border-color: var(--accent35);
+  background: color-mix(in srgb, var(--accent) 7%, transparent);
+  transform: translateY(-1px);
+}
+
+.lff-player--rank-1 {
+  border-color: rgba(255, 210, 87, 0.18);
+  background: linear-gradient(100deg, rgba(255, 210, 87, 0.08), transparent 72%);
+}
+
+.lff-player--rank-2 {
+  background: linear-gradient(100deg, rgba(205, 220, 225, 0.09), transparent 72%);
+}
+
+.lff-player--rank-3 {
+  background: linear-gradient(100deg, rgba(214, 137, 82, 0.09), transparent 72%);
 }
 
 .lff-row {
   display: flex;
-  align-items: center;
   width: 100%;
+  align-items: center;
   gap: 0.75rem;
 }
 
 .lff-classement-top {
   width: 2rem;
-  text-align: center;
-  font-size: 1.2rem;
+  flex: 0 0 2rem;
+  color: var(--text45);
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  text-align: left;
+}
+
+.lff-player--rank-1 .lff-classement-top {
+  color: #ffd45f;
+  text-shadow: 0 0 14px rgba(255, 205, 79, 0.58);
+}
+
+.lff-player--rank-2 .lff-classement-top {
+  color: #dce7eb;
+  text-shadow: 0 0 12px rgba(210, 227, 232, 0.38);
+}
+
+.lff-player--rank-3 .lff-classement-top {
+  color: #d88c57;
+  text-shadow: 0 0 12px rgba(216, 140, 87, 0.38);
 }
 
 .lff-classement-name {
   flex: 1;
   overflow: hidden;
-  white-space: nowrap;
-  text-overflow: ellipsis;
-  color: var(--text85);
+  color: var(--text90);
+  font-size: 0.88rem;
+  font-weight: 600;
   text-align: left;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lff-classement-score {
-  width: 4rem;
-  text-align: right;
-  color: var(--accent);
-}
-
-.lff-classement-score,
-.lff-classement-name {
+  max-width: 6.5rem;
   overflow: hidden;
-  white-space: nowrap;
+  color: var(--accent);
+  font-size: 0.82rem;
+  font-weight: 700;
+  text-align: right;
   text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .lff-progress-bar {
   width: 100%;
-  height: 6px;
-  background-color: rgba(255, 255, 255, 0.15);
-  border-radius: 8px;
+  height: 5px;
   overflow: hidden;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--text) 10%, transparent);
 }
 
 .lff-progress-bar-fill {
+  position: relative;
   height: 100%;
-  background-color: var(--accent55);
-  border-radius: 8px;
-  transition: width 0.6s ease;
+  border-radius: inherit;
+  background: var(--accent);
+  transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.lff-progress-bar-fill::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+  content: "";
+  transform: translateX(-100%);
+  animation: progress-shine 2.8s ease-in-out infinite;
+}
+
+@keyframes progress-shine {
+  55%,
+  100% {
+    transform: translateX(160%);
+  }
+}
+
+.lff-separator {
+  position: relative;
+  width: 100%;
+  height: 0.75rem;
+  margin: 0;
+}
+
+.lff-separator::before {
+  position: absolute;
+  top: 50%;
+  right: 0;
+  left: 0;
+  border-top: 1px dashed var(--line-strong);
+  content: "";
 }
 
 .lff-current-user {
-  background-color: var(--accent10);
-  border-radius: 16px;
+  margin-top: 0.05rem;
+  padding-top: 1.45rem;
+  border-color: var(--line-strong);
+  background:
+    linear-gradient(110deg, var(--accent15), transparent),
+    color-mix(in srgb, var(--bg) 94%, var(--text));
+  box-shadow: inset 3px 0 var(--accent);
+}
+
+.lff-current-user::before {
+  position: absolute;
+  top: 0.35rem;
+  left: 0.65rem;
+  color: var(--accent);
+  content: "VOTRE POSITION";
+  font-size: 0.58rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
 }
 
 .lff-current-user .lff-classement-name {
-  font-weight: 600;
+  color: var(--text95);
+  font-weight: 700;
 }
 
 @media (max-width: 625px) {
   .lff-header {
-    width: 16rem;
+    min-height: 3.6rem;
+    padding: 0.7rem 0.8rem;
+  }
+
+  .lff-header-title {
+    font-size: 0.8rem;
+  }
+
+  .lff-header-title > img {
+    margin-right: 0.45rem;
+  }
+
+  .lff-header-min {
+    font-size: 0.55rem;
   }
 
   .lff-classement {
-    width: 18rem;
+    padding: 0.6rem;
   }
-
-  /* .lff-classement-score {
-    width: 3.5rem;
-  } */
 }

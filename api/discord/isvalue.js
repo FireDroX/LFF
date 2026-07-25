@@ -89,7 +89,7 @@ module.exports = async function isvalue(req, res) {
             footer: {
               text: `Total des points : ${compactNumber(totalPoints)}`,
             },
-            color: parseInt("9b59b6", 16), // Couleur embed
+            color: parseInt("b29a80", 16),
           },
         ],
       },

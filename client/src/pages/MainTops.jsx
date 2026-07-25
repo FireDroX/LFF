@@ -59,6 +59,11 @@ const MainTops = ({ isLogged, flags, currentUser }) => {
 
   return (
     <section className="App">
+      <header className="page-intro">
+        <span className="page-kicker">Saison en cours</span>
+        <h1>Classements LFF</h1>
+        <p>Suivez le podium et votre progression dans chaque catégorie.</p>
+      </header>
       <div className="lff-classements-container">
         {/* Classement Crystaux et IsCoin */}
         {keys.map((k) => (

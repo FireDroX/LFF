@@ -72,6 +72,11 @@ const tops = buildTops();
 const Rewards = () => {
   return (
     <section className="App">
+      <header className="page-intro">
+        <span className="page-kicker">Récompenses</span>
+        <h1>À chaque rang son gain</h1>
+        <p>Retrouvez les récompenses attribuées aux trois premières places.</p>
+      </header>
       <div className="lff-classements-container">
         {Object.keys(CATEGORY_CONFIG).map((k) => (
           <Leaderboard

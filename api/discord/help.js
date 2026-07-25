@@ -1,7 +1,7 @@
-const { commands } = require("./registerCommands");
+const { publicCommands } = require("./registerCommands");
 
 module.exports = async function help(req, res) {
-  const embedFields = commands.map((cmd) => ({
+  const embedFields = publicCommands.map((cmd) => ({
     name: `/${cmd.name}`,
     value: cmd.description || "Aucune description",
     inline: false,
@@ -15,7 +15,7 @@ module.exports = async function help(req, res) {
         {
           title: "📘 Liste des commandes disponibles",
           description: "Voici toutes les commandes utilisables sur le serveur.",
-          color: parseInt("9b59b6", 16), // Couleur embed
+          color: parseInt("b29a80", 16),
           fields: embedFields,
           footer: {
             text: "LFF — Système de commandes",

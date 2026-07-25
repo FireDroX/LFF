@@ -15,8 +15,13 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
 
   // Find the current user's position
   const userPosition = currentUser
-    ? sorted.findIndex((u) => u.userId === currentUser) + 1
+    ? sorted.findIndex(
+        (u) => u.userId != null && String(u.userId) === String(currentUser),
+      ) + 1
     : 0;
+  const maxScore = Math.max(Number(sorted[0]?.score) || 0, 1);
+  const progressWidth = (score) =>
+    `${Math.min(100, Math.max(0, ((Number(score) || 0) / maxScore) * 100))}%`;
 
   return (
     <div className="lff-leaderboard">
@@ -34,7 +39,6 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
       <ul className="lff-classement">
         {Array.isArray(sorted) &&
           sorted.slice(0, 3).flatMap(({ score, name }, index) => {
-            const maxScore = sorted.length > 0 ? sorted[0].score : 1;
             const currentUserData =
               userPosition > 0
                 ? {
@@ -51,25 +55,12 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
             const items = [];
 
             items.push(
-              <li key={`player-${index}`} className="lff-player">
+              <li
+                key={`player-${index}`}
+                className={`lff-player lff-player--rank-${index + 1}`}
+              >
                 <div className="lff-row">
-                  <span
-                    className="lff-classement-top"
-                    style={{
-                      color:
-                        index === 0
-                          ? "#FFD700"
-                          : index === 1
-                            ? "#C0C0C0"
-                            : "#CD7F32",
-                      textShadow:
-                        index === 0
-                          ? "0 0 10px #ffd90088"
-                          : index === 1
-                            ? "0 0 10px #c0c0c088"
-                            : "0 0 10px #cd7f3288",
-                    }}
-                  >
+                  <span className="lff-classement-top">
                     0{index + 1}
                   </span>
 
@@ -86,7 +77,7 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
                   <div
                     className="lff-progress-bar-fill"
                     style={{
-                      width: `${(score / maxScore) * 100}%`,
+                      width: progressWidth(score),
                     }}
                   />
                 </div>
@@ -125,11 +116,7 @@ const Leaderboard = ({ title, top, requiredAmount, currentUser }) => {
                     <div
                       className="lff-progress-bar-fill"
                       style={{
-                        width: `${
-                          currentUserData.score > 0
-                            ? (currentUserData.score / maxScore) * 100
-                            : 0
-                        }%`,
+                        width: progressWidth(currentUserData.score),
                       }}
                     />
                   </div>

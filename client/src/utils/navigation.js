@@ -2,6 +2,7 @@ const ROUTES = new Set([
   "leaderboards",
   "profile",
   "rewards",
+  "commands",
   "dashboard",
 ]);
 

@@ -85,6 +85,8 @@ export const historyTops = () => apiFetch("/leaderboard/history");
 
 export const getPublicConfig = () => apiFetch("/config");
 
+export const getCommands = () => apiFetch("/commands");
+
 export const profile = () =>
   apiFetch("/profile", {
     headers: {

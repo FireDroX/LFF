@@ -1,0 +1,245 @@
+.commands-intro {
+  padding-bottom: 0.75rem;
+}
+
+.commands-content {
+  width: min(70rem, 100%);
+  margin: 0 auto;
+  padding: 0 clamp(1rem, 4vw, 3rem) 4rem;
+}
+
+.commands-summary {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: max-content;
+  max-width: 100%;
+  margin-bottom: 1rem;
+  padding: 0.55rem 0.8rem;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 999px;
+  color: var(--text90);
+  background: color-mix(in srgb, var(--bg) 94%, var(--text));
+  text-align: left;
+}
+
+.commands-summary-icon {
+  display: grid;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: 0 0 2.2rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 10px;
+  color: var(--accent);
+  background: var(--accent15);
+  font-size: 1.25rem;
+  place-items: center;
+}
+
+.commands-summary div {
+  display: flex;
+  flex-direction: column;
+}
+
+.commands-summary strong {
+  font-size: 0.88rem;
+}
+
+.commands-summary div > span {
+  color: var(--text55);
+  font-size: 0.72rem;
+}
+
+.commands-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0.8rem;
+}
+
+.command-card {
+  position: relative;
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 0.65rem;
+  padding: 1rem;
+  overflow: hidden;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 1rem;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--accent) 6%, transparent), transparent 58%),
+    color-mix(in srgb, var(--bg) 97%, var(--text));
+  text-align: left;
+  transition:
+    border-color 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.command-card:hover {
+  border-color: var(--accent);
+  box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.13);
+  transform: translateY(-3px);
+}
+
+.command-card-index {
+  position: absolute;
+  top: 0.7rem;
+  right: 0.85rem;
+  color: var(--text15);
+  font-size: 1.8rem;
+  font-weight: 700;
+  letter-spacing: -0.08em;
+  line-height: 1;
+}
+
+.command-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.command-card-icon {
+  display: grid;
+  width: 1.9rem;
+  height: 1.9rem;
+  flex: 0 0 1.9rem;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 0.65rem;
+  color: var(--accent);
+  background: var(--accent10);
+  place-items: center;
+}
+
+.command-card h2 {
+  margin: 0;
+  color: var(--text95);
+  font-size: 1.05rem;
+  letter-spacing: -0.025em;
+}
+
+.command-card > p {
+  margin: 0;
+  color: var(--text60);
+  font-size: 0.76rem;
+  line-height: 1.45;
+}
+
+.command-usage {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 0.65rem;
+  overflow-x: auto;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 10px;
+  color: var(--accent);
+  background: color-mix(in srgb, var(--bg) 91%, var(--text));
+  font-size: 0.67rem;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.command-options {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  margin: 0;
+  padding: 0.6rem 0 0;
+  border-top: 1px solid var(--line);
+  list-style: none;
+}
+
+.command-options li {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.command-options li > div {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.command-options code {
+  color: var(--text85);
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.command-options span {
+  padding: 0.18rem 0.4rem;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--accent);
+  background: var(--accent10);
+  font-size: 0.54rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.command-options p {
+  margin: 0;
+  color: var(--text50);
+  font-size: 0.62rem;
+  text-align: right;
+}
+
+.commands-state {
+  display: flex;
+  min-height: 18rem;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 1rem;
+  color: var(--text60);
+}
+
+.commands-state--error {
+  min-height: auto;
+  padding: 1rem;
+  border: 1px solid rgba(255, 115, 115, 0.4);
+  border-radius: 12px;
+  color: #ffaaaa;
+  background: rgba(255, 115, 115, 0.1);
+}
+
+@media (max-width: 1050px) {
+  .commands-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 700px) {
+  .commands-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 625px) {
+  .commands-content {
+    padding: 0 0.75rem 4rem;
+  }
+
+  .commands-summary {
+    width: 100%;
+  }
+
+  .command-card {
+    padding: 1rem;
+    border-radius: 16px;
+  }
+
+  .command-options li {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0.25rem;
+  }
+
+  .command-options p {
+    text-align: left;
+  }
+}

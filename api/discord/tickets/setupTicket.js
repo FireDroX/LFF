@@ -9,7 +9,7 @@ module.exports = async function setupTicket(req, res) {
           description:
             "Dépose ta candidature en ouvrant un ticket via le menu ci-dessous.\n\n" +
             "⚠️ **Prends le temps de bien lire les informations avant de faire ton choix.**",
-          color: parseInt("9b59b6", 16), // Couleur embed
+          color: parseInt("b29a80", 16),
           fields: [
             {
               name: "💎 Rejoindre le Gang LFF",

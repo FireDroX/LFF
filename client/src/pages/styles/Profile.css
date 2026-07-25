@@ -1,136 +1,151 @@
 .profile-dashboard {
-  padding-block: 5rem;
   display: flex;
+  min-height: 100vh;
   flex-direction: column;
-  gap: 1.5rem;
-  color: var(--text85);
   align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  padding: 4rem 1.5rem;
+  color: var(--text85);
 }
 
 .profile-dashboard--center {
   justify-content: center;
-  align-items: center;
-  min-height: 60vh;
 }
 
 .profile-card {
-  background: var(--text5);
-  border: 1px solid var(--accent35);
-  border-radius: 16px;
-  padding: 1rem 0 0 1rem;
-  backdrop-filter: blur(6px);
+  position: relative;
   display: flex;
-  align-items: center;
-  justify-content: center;
+  width: min(41rem, 100%);
   flex-direction: column;
-  width: 550px;
-  gap: 1rem;
+  gap: 1.6rem;
+  padding: 1.5rem;
+  overflow: hidden;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(145deg, color-mix(in srgb, var(--accent) 7%, transparent), transparent 58%),
+    color-mix(in srgb, var(--bg) 97%, var(--text));
+  box-shadow: 0 1.25rem 4rem rgba(0, 0, 0, 0.13);
+}
+
+.profile-card::after {
+  display: none;
 }
 
 .profile-card-header {
   display: flex;
-  align-items: center;
-  justify-content: left;
-  flex-direction: row;
-  gap: 3rem;
   width: 100%;
+  align-items: center;
+  gap: 1.5rem;
+  padding-bottom: 1.35rem;
+  border-bottom: 1px solid var(--line);
+  text-align: left;
 }
 
 .profile-card-footer {
-  display: flex;
-  justify-content: center;
-  gap: 1rem;
+  display: grid;
   width: 100%;
+  grid-template-columns: minmax(8rem, 0.6fr) minmax(0, 1.7fr);
+  gap: 1.25rem;
+  align-items: center;
 }
 
 .profile-card-name {
   margin: 0;
+  color: var(--text95);
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  letter-spacing: -0.045em;
 }
 
 .profile-card-pic {
-  width: 128px;
-  height: 128px;
-  border-radius: 50%;
-  border: 2px solid var(--accent35);
+  width: 112px;
+  height: 112px;
+  border: 3px solid var(--accent35);
+  border-radius: 1rem;
+  box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.18);
+  object-fit: cover;
 }
 
 .profile-card-access {
-  margin-top: 0.3rem;
-  font-size: 0.9rem;
+  padding: 1rem;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--bg) 94%, var(--text));
   text-align: left;
+}
+
+.profile-card-access > p {
+  margin: 0 0 0.75rem;
+  color: var(--text55);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
 .profile-access-badges {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-  margin-top: 0.4rem;
 }
 
 .access-badge {
-  padding: 4px 10px;
-  border-radius: 8px;
-  font-size: 0.8rem;
-  font-weight: 600;
-  color: var(--text85);
   display: flex;
+  width: max-content;
   align-items: center;
   justify-content: center;
   gap: 0.4rem;
-  width: min-content;
-}
-
-.access-badge.gang {
-  background-color: var(--accent85);
-}
-
-.access-badge.island {
-  background-color: var(--accent85);
+  padding: 0.38rem 0.65rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text90);
+  background: linear-gradient(135deg, var(--accent20), var(--text5));
+  font-size: 0.72rem;
+  font-weight: 700;
 }
 
 .access-badge.admin {
-  background-color: #ff5252;
+  border-color: rgba(255, 103, 103, 0.35);
+  background: linear-gradient(135deg, rgba(255, 82, 82, 0.35), rgba(167, 0, 0, 0.2));
 }
 
 .profile-chart {
-  border-radius: 10px;
-  width: 400px;
-  height: 222px;
+  width: 100%;
+  height: auto;
+  min-height: 220px;
+  border: 1px solid rgba(123, 123, 123, 0.22);
+  border-radius: 0.85rem;
+  background: color-mix(in srgb, var(--bg) 94%, var(--text));
   object-fit: contain;
 }
 
-@media (max-width: 900px) {
+@media (max-width: 720px) {
+  .profile-dashboard {
+    padding: 1.5rem 0.75rem;
+  }
+
   .profile-card {
-    width: 400px;
-  }
-
-  .profile-card-footer {
-    flex-direction: column;
-  }
-
-  .profile-access-badges {
-    flex-direction: row;
-  }
-}
-
-@media (max-width: 500px) {
-  .profile-card {
-    width: 350px;
+    padding: 1rem;
+    border-radius: 18px;
   }
 
   .profile-card-header {
-    gap: 1.5rem;
+    gap: 1rem;
+  }
+
+  .profile-card-pic {
+    width: 78px;
+    height: 78px;
+    border-radius: 18px;
   }
 
   .profile-card-footer {
-    flex-direction: column;
+    grid-template-columns: 1fr;
   }
 
   .profile-access-badges {
     flex-direction: row;
-  }
-
-  .profile-chart {
-    width: 350px;
+    flex-wrap: wrap;
   }
 }

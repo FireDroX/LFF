@@ -16,7 +16,7 @@ module.exports = async function uptime(req, res) {
         {
           title: "⏱ Uptime du serveur",
           description: `Le serveur est en ligne depuis :\n**${niceUptime}**`,
-          color: parseInt("9b59b6", 16), // Couleur embed
+          color: parseInt("b29a80", 16),
         },
       ],
     },

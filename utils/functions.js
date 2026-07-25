@@ -42,7 +42,7 @@ export function buildHistoryEmbed(history, page, type) {
     footer: {
       text: `Période : ${start} → ${end} | Page ${page + 1}/${history.length}`,
     },
-    color: parseInt("9b59b6", 16), // Couleur embed
+    color: parseInt("b29a80", 16),
   };
 }
 

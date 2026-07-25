@@ -1,13 +1,13 @@
 import "./Navbar.css";
 import { useEffect, useState } from "react";
 import { getPublicConfig } from "../../utils/requests";
-import { navigateTo } from "../../utils/navigation";
+import { getCurrentRoute, navigateTo } from "../../utils/navigation";
 
 import { TbLogin2 } from "react-icons/tb";
 import { IoIosColorPalette } from "react-icons/io";
 import { VscDebugDisconnect } from "react-icons/vsc";
 import { CgTrash, CgProfile } from "react-icons/cg";
-import { FaHistory } from "react-icons/fa";
+import { FaHistory, FaTerminal } from "react-icons/fa";
 import { MdLeaderboard, MdAdminPanelSettings } from "react-icons/md";
 import { SlPresent } from "react-icons/sl";
 
@@ -20,6 +20,7 @@ const Navbar = ({ userData }) => {
   const [theme, setTheme] = useState(
     window.localStorage.getItem("theme") || "Dark",
   );
+  const [currentRoute, setCurrentRoute] = useState(getCurrentRoute);
 
   const [removeModal, setRemoveModal] = useState(false);
   const [historyModal, setHistoryModal] = useState(false);
@@ -41,6 +42,12 @@ const Navbar = ({ userData }) => {
     getPublicConfig()
       .then(setPublicConfig)
       .catch((error) => console.error("Public config loading failed:", error));
+  }, []);
+
+  useEffect(() => {
+    const handleNavigation = () => setCurrentRoute(getCurrentRoute());
+    window.addEventListener("popstate", handleNavigation);
+    return () => window.removeEventListener("popstate", handleNavigation);
   }, []);
 
   const handleDisconnect = () => {
@@ -99,6 +106,7 @@ const Navbar = ({ userData }) => {
                 userData && {
                   label: "Profile",
                   icon: <CgProfile />,
+                  route: "profile",
                   action: () => navigateTo("profile"),
                 },
 
@@ -106,6 +114,7 @@ const Navbar = ({ userData }) => {
                 {
                   label: "Leaderboards",
                   icon: <MdLeaderboard />,
+                  route: "leaderboards",
                   action: () => navigateTo("leaderboards"),
                 },
 
@@ -113,7 +122,16 @@ const Navbar = ({ userData }) => {
                 {
                   label: "Rewards",
                   icon: <SlPresent />,
+                  route: "rewards",
                   action: () => navigateTo("rewards"),
+                },
+
+                // --- COMMANDES ---
+                {
+                  label: "Commandes",
+                  icon: <FaTerminal />,
+                  route: "commands",
+                  action: () => navigateTo("commands"),
                 },
 
                 // --- HISTORY ---
@@ -134,6 +152,7 @@ const Navbar = ({ userData }) => {
                 userData?.isAdmin && {
                   label: "Dashboard",
                   icon: <MdAdminPanelSettings />,
+                  route: "dashboard",
                   action: () => navigateTo("dashboard"),
                 },
 
@@ -154,11 +173,15 @@ const Navbar = ({ userData }) => {
                 },
               ]
                 .filter(Boolean) // enlève les 'false' ou undefined
-                .map(({ label, icon, action, color }, i) => (
+                .map(({ label, icon, route, action, color }, i) => (
                   <li
                     key={i}
-                    className="dropdown-item"
+                    className={`dropdown-item ${
+                      route === currentRoute ? "nav-active" : ""
+                    }`}
                     onClick={action}
+                    title={label}
+                    aria-label={label}
                     style={{
                       ...(color && { color }),
                     }}

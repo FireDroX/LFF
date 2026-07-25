@@ -4,6 +4,7 @@ const router = express.Router();
 
 router.use("/healthz", require("./healthz"));
 router.use("/config", require("./config"));
+router.use("/commands", require("./commands"));
 router.use("/get/token", require("./getToken"));
 router.use("/get/me", require("./getMe"));
 router.use("/leaderboard/current", require("./currentTop"));

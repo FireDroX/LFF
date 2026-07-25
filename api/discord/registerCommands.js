@@ -106,6 +106,7 @@ const commands = [
   {
     name: "admin",
     description: "Commandes administrateurs",
+    default_member_permissions: "8",
     options: [
       {
         type: 2, // Subcommand Group
@@ -145,6 +146,10 @@ const commands = [
     ],
   },
 ];
+
+const publicCommands = commands.filter(
+  (command) => !command.default_member_permissions,
+);
 
 /**
  * 🔹 Fonction d’enregistrement des commandes Discord
@@ -188,4 +193,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { commands, registerCommands };
+module.exports = { commands, publicCommands, registerCommands };

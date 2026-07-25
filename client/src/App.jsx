@@ -10,6 +10,7 @@ const MainTops = lazy(() => import("./pages/MainTops"));
 const Rewards = lazy(() => import("./pages/Rewards"));
 const Dashboard = lazy(() => import("./pages/Dashboard"));
 const Profile = lazy(() => import("./pages/Profile"));
+const Commands = lazy(() => import("./pages/Commands"));
 
 const DynamicPage = ({ isLogged, data }) => {
   const [page, setPage] = useState(getCurrentRoute);
@@ -27,6 +28,8 @@ const DynamicPage = ({ isLogged, data }) => {
       return <Dashboard isLogged={isLogged} isAdmin={data?.isAdmin} />;
     case "rewards":
       return <Rewards />;
+    case "commands":
+      return <Commands />;
     default:
       return (
         <MainTops
