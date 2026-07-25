@@ -54,22 +54,27 @@ npm run build
 npm start
 ```
 
-En développement, lancer les deux processus dans deux terminaux :
+`npm start` déclenche également le build Vite automatiquement afin d'éviter
+qu'un ancien `index.html` référence des assets supprimés.
+
+En développement, une seule commande lance Express et Vite :
 
 ```bash
 npm run dev
-npm run dev:client
 ```
 
 Vite écoute sur `http://localhost:5173` et redirige les routes API vers
-`http://localhost:3001`.
+le port `PORT` défini dans `.env`.
+
+Les deux processus peuvent aussi être lancés séparément avec
+`npm run dev:server` et `npm run dev:client`.
 
 ## Configuration
 
 Les variables attendues sont documentées dans `.env.example`.
 
 ```env
-PORT=3001
+PORT=3000
 PUBLIC_URL=https://lff.addrien.fr
 FRONTEND_URL=https://lff.addrien.fr
 
@@ -116,7 +121,7 @@ chmod +x build.sh
 
 Par défaut, le script utilise l'image `lff-image:latest`, le conteneur `lff`,
 le réseau `mariadb-network` et publie l'application sur
-`127.0.0.1:3456`. Ces valeurs sont surchargeables :
+`127.0.0.1:3579`. Ces valeurs sont surchargeables :
 
 ```bash
 HOST_PORT=4567 CONTAINER_NAME=lff-prod ./build.sh

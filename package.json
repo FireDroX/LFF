@@ -1,7 +1,9 @@
 {
   "scripts": {
+    "prestart": "npm run build",
     "start": "node index.js",
-    "dev": "node --watch index.js",
+    "dev": "concurrently --kill-others-on-fail --names api,web --prefix-colors cyan,magenta \"npm:dev:server\" \"npm:dev:client\"",
+    "dev:server": "node --watch index.js",
     "dev:client": "npm --prefix client run dev",
     "build": "npm --prefix client run build",
     "db:init": "node scripts/initDatabase.js",
@@ -14,5 +16,8 @@
     "dotenv": "^17.2.2",
     "express": "^5.2.1",
     "mysql2": "^3.15.3"
+  },
+  "devDependencies": {
+    "concurrently": "^10.0.4"
   }
 }
