@@ -7,3 +7,8 @@
 # misc
 .env
 /backups/
+
+.agents
+graphify-out
+.claude
+CLAUDE.md
